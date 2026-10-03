@@ -4,84 +4,81 @@ Contributions are welcome. This document defines the working agreement: how
 changes are proposed, reviewed, and merged, and what the continuous-integration
 gates enforce.
 
+## What this repo is
+
+`kailash-packages` is the packaging overlay for the
+[Kailash OS](https://github.com/kailash-os/kailash-os) distribution: the
+manifests (`manifest/tools.yaml`, `manifest/categories.yaml`) drive the
+category tree and tool entries; `pkgs/` holds the auto-called derivations;
+`nvfetcher/` pins every upstream source. Changes here update the packaging
+surface **separately** from the OS itself (the OS repo pins this flake as an
+input).
+
 ## Ground rules
 
 1. **Never commit to `master`.** All work happens on a branch, one change per
    branch, merged via pull request. Branch names follow
-   `<type>/<short-description>` with kebab-case — e.g. `fix/clamd-fail-open`,
-   `feat/policy-feed`, `docs/client-setup`.
+   `<type>/<short-description>` with kebab-case — e.g. `feat/attack-tools`,
+   `fix/nvfetcher-pin`, `docs/category-map`.
 2. **Conventional Commits.** Every commit message follows
    the [specification](https://www.conventionalcommits.org/en/v1.0.0):
    `type(scope): subject`.
    - Types: `feat`, `fix`, `docs`, `refactor`, `test`, `build`, `ci`, `chore`.
-   - `scope` is a component: `nix` (flake/module), `images` (dockerTools),
-     `compose`, `vpn`, `policy`, `docs`, `ci`.
+   - `scope` is a surface: `manifest` (tools/categories), `pkgs`
+     (derivations), `nvfetcher` (source pins), `flake`, `docs`, `ci`.
    - Subject: imperative, lowercase, no trailing period. Body (optional):
      what changed and why; wrap at 72 columns.
 3. **Sign everything.** Commits must be GPG- or SSH-signed
    (`git config --global commit.gpgsign true`); releases are
-   [signed tags](docs/ci-release.qmd) — unsigned commits and unsigned tags are
+   signed tags — unsigned commits and unsigned tags are
    not merged/published. Verify with `git log --show-signature` / `git tag -v`.
 4. **One logical change per PR.** Small, reviewable diffs merge faster.
 5. **Pre-commit runs locally.** Install the hooks once per clone —
    `pre-commit install && pre-commit install --hook-type pre-push` —
    then every `git commit` and `git push` runs the same hook set CI runs
-   (no-op in clones without a config; bypass with `--no-verify` for the
-   rare legitimate exception). pre-commit.ci still gates every PR; local
-   hooks just catch violations before the push instead of after.
+   (bypass with `--no-verify` for the rare legitimate exception).
 
 ## Security-sensitive changes
 
-Anything touching the inspection path, the CA material, or the policy engine
-warrants extra care (see [SECURITY.md](SECURITY.md) for the full posture):
+Manifest and packaging changes are the security surface of the distribution
+(see [SECURITY.md](SECURITY.md)):
 
 - **Vulnerabilities are not issues.** Follow [SECURITY.md](SECURITY.md) — never
   open a public issue for an unreported vulnerability.
-- **CA and PKI material**: never commit new keys or certificates outside the
-  deliberate lab fixtures; `detect-private-key` and the legacy-dir excludes in
-  `.pre-commit-config.yaml` draw exactly that line.
-- **Policy/default changes** that alter the fail-open/fail-closed posture
-  (passlist > bumplist > default-bump) must state the new verdict order and
-  include decision-log samples for splice, bump, and INFECTED.
-- **Nix-built images:** keep `nix/images.nix` the only image source — every
-  runtime dependency belongs in the flake, pinned by the lockfile. The
-  Kubernetes manifests are declarative too: `k8s/manifests.cue` is the single
-  service model; render with `nix run .#k8s-manifests` and commit the output
-  with the change that altered the model.
+- **Offensive tooling entries** (`layer-attack`) must declare their safety
+  level in the manifest; tools with active-exploit safety stay
+  double-gated (host opt-in + shell opt-in) via the OS side. A manifest entry
+  that new-tools such a tool without its gates is rejected in review.
+- **Source pins are contract** — `nvfetcher` pins (with recorded hashes)
+  change only with the manifest entry they belong to, in the same PR.
+- **Taxonomy integrity:** category moves map to ATLAS/OWASP bindings; state
+  the mapping impact in the PR body.
 
-## The acceptance suite
+## CI on every pull request
 
-```
-nix flake check --all-systems --no-build   # everything evaluates, both linux systems
-nix develop -c pre-commit run --all-files  # the hook set CI runs
-```
+| Check | What it does |
+|---|---|
+| Dependency Review | flags vulnerable or licence-incompatible dependency changes |
+| OpenSSF Scorecard | publishes the security-posture score |
 
-`nix flake check` exits 0 only when the appliance module, host layout, QEMU VM
-targets and all four container-image derivations evaluate cleanly. For live
-behaviour (bump/splice/INFECTED over HTTPS), run the compose stack and probe
-with an EICAR file — see [README](README.md#verify-the-pipeline) /
-[docs/clients.qmd](docs/clients.qmd).
+pre-commit hooks (whitespace, YAML/JSON validity, large-file guards,
+`detect-private-key`, shellcheck) run locally on every commit.
 
-CI additionally runs on every PR:
-
-| Check       | What it does                                                        |
-|---|---|---|
-| `flake-check` | `nix flake check --all-systems --no-build` + per-image `--dry-run` builds |
-| `pre-commit.ci` | the [.pre-commit-config.yaml](.pre-commit-config.yaml) hook set (no autofix commits to your branch) |
-
-## Commits and PRs
+## Commits and pull requests
 
 - Push your branch and open a PR against `master`; describe the what and the why.
-- Releases are signed tags: `git tag -s vX.Y.Z`; the release workflow refuses
-  unsigned tags, builds images, and prepares a draft release with notes and
-  SBOMs — see [CI & Release](docs/ci-release.qmd).
-- Docs changes (`docs/**`, `index.qmd`, `_quarto.yml`) trigger the
-  [pages](https://github.com/kailash-os/kailash-packages/actions/workflows/pages.yml)
-  workflow on merge.
+- Link the `KA-XX` issue the change implements; the project board is
+  [kailash Roadmap](https://github.com/orgs/kailash-os/projects/1).
+- Releases are signed tags (`git tag -s vX.Y.Z`).
 
 ## Reporting bugs
 
-Open a [GitHub issue](https://github.com/kailash-os/kailash-packages/issues/new) with the
-flake revision (`nix flake metadata .# --rev` or the release tag), deployment
-path (compose / NixOS / QEMU), host OS, and the relevant `decisions.jsonl`
-excerpt. Security issues never go here — [SECURITY.md](SECURITY.md) instead.
+Open a [GitHub issue](https://github.com/kailash-os/kailash-packages/issues/new)
+with the flake revision, the manifest surface you hit, and the error excerpt.
+Security issues never go here — [SECURITY.md](SECURITY.md) instead.
+
+## Licence
+
+Contributions are made under **GPL-2.0** — the distribution's licence. By
+submitting a pull request you agree your work is licensed under the project's
+GPL-2.0 terms.
