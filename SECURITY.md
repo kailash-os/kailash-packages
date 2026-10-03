@@ -4,13 +4,72 @@
 
 Report security bugs and vulnerabilities to
 **[shain.singh@owasp.org](mailto:shain.singh@owasp.org)** — or use GitHub's private
-vulnerability reporting: [Report a vulnerability](https://github.com/kailash-os/kailash-packages/security/advisories/new).
+vulnerability reporting: [Report a vulnerability](https://github.com/kailash-os/kailash-os/security/advisories/new).
 Do not open a public issue for an unreported vulnerability.
 
 Email reports may be encrypted to the OpenPGP key below. Include a description of
 the issue, steps to reproduce, and the affected version or commit. Reports are
 triaged within a few days; accepted issues receive a fix and a release. Honour
 responsible disclosure until an advisory is published.
+
+## Scope
+
+This repository is the packaging overlay of the
+[Kailash OS](https://github.com/kailash-os/kailash-os) distribution. Its
+security surface is **supply-chain integrity**, not runtime behaviour:
+
+- **Manifest compromise** — a `manifest/tools.yaml` entry that resolves to
+  something other than its record declares (name, upstream URL, licence,
+  safety level), or a category entry that diverges from the ATLAS/OWASP
+  binding it claims.
+- **Source-pin drift** — `nvfetcher` pins whose fetched content does not
+  match the recorded hash, or pins updated separately from the manifest
+  entry they belong to.
+- **Derivation tampering** — `pkgs/` derivations that alter, substitute or
+  additionally enable anything beyond their pinned source (especially
+  network access or executables not declared by the manifest).
+- **Safety-level mislabeling** — an offensive tooling entry
+  (`layer-attack`) whose declared safety level understates what the tool
+  does; active-exploit tools must remain double-gated via the OS side.
+
+Vulnerabilities in the OS runtime, the lab-mode gating or the CLI belong to
+[kailash-os/kailash-os](https://github.com/kailash-os/kailash-os/security/advisories/new).
+
+## Secret hygiene
+
+- Secret scanning and push protection stay enabled in repo settings.
+- `detect-private-key` runs on every change via the pre-commit hook set.
+- Environment secrets (sops-nix) are read at runtime — never committed;
+  never paste decrypted secrets in issues or PRs.
+
+## How this repository maintains security hygiene
+
+**Supply-chain and dependency integrity**
+
+- Dependency Review — every PR is checked for license and vulnerability
+  differences versus its base
+  ([.github/workflows/dependency-review.yml](.github/workflows/dependency-review.yml)).
+- OpenSSF Scorecard — run on every change; results publish as a badge and
+  SARIF code-scanning upload.
+- Flake inputs and nvfetcher pins are hash-locked; the manifest is reviewed
+  as data — every tool entry, its licence and its safety level are
+  declarative records, not hand-kept prose.
+
+**Reproducibility controls**
+
+- All commits are GPG/SSH-signed; unsigned commits are not merged.
+- pre-commit hooks run the CI set locally before every commit/push.
+
+**Known boundaries, stated plainly**
+
+- The distribution is pre-release: CI gates prove build health and layout
+  integrity, not production readiness. Scope exclusions (what Kailash
+  deliberately does not ship) are documented in the project paper and PRD.
+
+Open a [general issue](https://github.com/kailash-os/kailash-os/issues/new) for
+non-sensitive questions; security reports follow the channels above.
+
+## OpenPGP key
 
 <details>
 <summary>OpenPGP public key — fingerprint 9CB1781DC2BB28D37A0155DCAAF8226F3F4C1712 (RSA 4096, no expiry)</summary>
@@ -175,61 +234,3 @@ kis=
 -----END PGP PUBLIC KEY BLOCK-----
 ```
 </details>
-
-## Special considerations for this project
-
-Kailash OS packages is a **TLS-inspection appliance**: it sits in the path of TLS traffic and
-holds decryption material by design. Vulnerabilities in it are high-value by
-nature. Keep that in mind when testing.
-
-- **This is a lab/testing appliance.** Deploy it only against networks and
-  clients you own or are authorised to test. Never point the edge at
-  third-party traffic.
-- **Interception material is sensitive.** The mitmproxy CA private key, the
-  OpenVPN CA and its PKI, and the JSONL decision log (which records hosts and
-  categories of browsed traffic) must all be treated as secret material.
-  Nothing is committed: PKI material lives in `./state/` (gitignored) or in
-  volumes. Do not commit or paste real key material in issues or PRs.
-- **Policy bypass is a vulnerability class here.** A bug that silently skips the
-  splice/bump verdict chain, blocks clamd from returning a verdict (fail-open),
-  or drops decision-log lines is a security bug, not a cosmetic one.
-
-## How this repository maintains security hygiene
-
-**Supply-chain and dependency integrity**
-
-- Everything is built by Nix from a lockfile (`flake.lock`) — no floating image
-  bases, no Dockerfile builds; CI publishes the same digests it built
-  ([.github/workflows/release-images.yml](.github/workflows/release-images.yml)).
-- Per-image SPDX SBOMs are generated on every release and attached as release
-  assets.
-- Dependency Review — every PR is checked for license and vulnerability
-  differences versus its base (add
-  [.github/workflows/dependency-review.yml](.github/workflows/dependency-review.yml)
-  via the ai-sec-lab workflow).
-- Dependabot — dependency manifests kept current; enable alerts in repo settings.
-
-**Secret hygiene**
-
-- Secret scanning and push protection — enable in repo settings (Settings →
-  Code security & analysis); blocked pushes containing credentials.
-- pre-commit runs `detect-private-key` on every change outside the legacy PKI
-  dirs ([.pre-commit-config.yaml](.pre-commit-config.yaml)).
-
-**Reproducibility controls**
-
-- pre-commit.ci runs the hook set on every PR — formatting, YAML/JSON validity,
-  large-file guards, secret detection.
-- The appliance is a pinned NixOS flake (`flake.lock`); the container images are
-  byte-identical derivations from the same nixpkgs.
-
-**Known boundaries, stated plainly**
-
-- The committed keys under the legacy directories are lab fixtures, generated
-  for this project's own test VPN — the README marks the whole appliance
-  *do not run unmodified in production*.
-- Transparent TCP interception in container mode is out of scope by design
-  (Docker bridges break TPROXY); use the NixOS appliance for that mode.
-
-Open a [general issue](https://github.com/kailash-os/kailash-packages/issues/new) for
-non-sensitive questions; security reports follow the channels above.
