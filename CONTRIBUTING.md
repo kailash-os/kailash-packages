@@ -73,7 +73,7 @@ Manifest and packaging changes are the security surface of the distribution
 
 | Check | What it does |
 |---|---|
-| `flake-check` | `nix flake check --all-systems` on hosted runners — everything evaluates for every declared system and the `manifest-wellformed` gate builds (full per-package matrix at KA-15) |
+| `flake-check` | hosted runners, one per declared system (x86_64 + aarch64): everything evaluates and the `manifest-wellformed` gate builds (full per-package matrix at KA-15) |
 | Dependency Review | flags vulnerable or licence-incompatible dependency changes |
 | OpenSSF Scorecard | publishes the security-posture score |
 
