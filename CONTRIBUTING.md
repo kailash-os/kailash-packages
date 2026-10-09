@@ -38,6 +38,21 @@ input).
    then every `git commit` and `git push` runs the same hook set CI runs
    (bypass with `--no-verify` for the rare legitimate exception).
 
+## Engineering standard: hypothesis-first TDD
+
+Every feature, fix and refactor follows **hypothesis → failing test → minimal implementation → refactor** (see kailash-os/kailash-os#119 for the scope clauses and #51 for the standing spec):
+
+1. State the hypothesis in the issue: expected behaviour, assumed mechanism, falsifying observation.
+2. **Commit the failing test first** on the feature branch; run it and paste the RED run's failure line into the PR.
+3. Implement the minimum that passes; then the suite; then refactor with tests green.
+4. Edge/error paths (overflow, malformed input, failure modes) are covered before close.
+
+For manifest work the test is the `manifest-wellformed` gate (and, from KA-05.1, the invariant suite) run against the changed file.
+
+**Harness before capability.** The check that gates a behaviour ships in the same PR as the behaviour; nothing merges ahead of the check that would catch its regression. Where a new gate surface is introduced, the negative case (the gate fails on defective input) is proven in CI, not asserted in prose.
+
+**GitHub Actions is the authoritative check and build surface.** The acceptance suite executes on hosted ubuntu runners (`nix flake check --all-systems`, derivation checks); contributor machines run the same suite for development only and never as merge evidence. Self-hosted runners are reserved for disk-bound image builds per the OS repo's KA-15 arrangement.
+
 ## Security-sensitive changes
 
 Manifest and packaging changes are the security surface of the distribution
@@ -58,6 +73,7 @@ Manifest and packaging changes are the security surface of the distribution
 
 | Check | What it does |
 |---|---|
+| `flake-check` | hosted runners, one per declared system (x86_64 + aarch64): everything evaluates and the `manifest-wellformed` gate builds (full per-package matrix at KA-15) |
 | Dependency Review | flags vulnerable or licence-incompatible dependency changes |
 | OpenSSF Scorecard | publishes the security-posture score |
 

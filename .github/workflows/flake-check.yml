@@ -1,0 +1,32 @@
+name: flake-check
+
+# The overlay's evaluation + manifest gate on hosted runners (issue #7 /
+# KA-02.4). One runner per declared system — nix flake check (current-
+# system scope) on each, so both systems evaluate and the
+# checks.manifest-wellformed gate builds without cross-arch emulation.
+# Grows into the full per-package build matrix at KA-15.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  flake-check:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-latest, system: x86_64-linux }
+          - { os: ubuntu-24.04-arm, system: aarch64-linux }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v23
+      - name: Flake check (${{ matrix.system }})
+        run: nix flake check
