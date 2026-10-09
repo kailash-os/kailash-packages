@@ -1,0 +1,121 @@
+# Kailash OS category taxonomy — the generated-everything source (KA-04).
+#
+# Schema (KA-02.2 #67 headers; per-entry fields below). Every later
+# artifact (category modules, menu, CLI, docs, site, verifier) generates
+# from this file — hand-maintained ONLY here.
+#
+# Layer names are taxonomy v3 (paper §4.1): CLASSIC / ATTACK / DEFENCE /
+# BUILD over the CORE substrate. The implementation plan v2 letters map:
+# A=CLASSIC, B=ATTACK, C=DEFENCE, D=BUILD. Entry ids use v3 letters
+# (c-01 … b-08) per the roadmap issues.
+#
+# Fields per entry:
+#   id            v3 slug, unique (validator-enforced at KA-05.1)
+#   layer         CLASSIC | ATTACK | DEFENCE | BUILD
+#   kind          category | data-pack (data-packs are opt-in, never on
+#                 default profiles/ISOs — D7; excluded from layer primary
+#                 slot counts)
+#   name          human name (menu/docs surface)
+#   purpose       one-line scope statement
+#   coverage      nixpkgs coverage profile (nixpkgs-native majority vs
+#                 bespoke-lean) — packaging effort signal
+#   tools         primary tool slots (~) from plan §3.6 post-purge census
+#   notes         decisions/constraints worth keeping beside the count
+#
+# Layer primary-slot totals (§3.6): CLASSIC 141 · ATTACK 59 · DEFENCE 46
+# · BUILD 91 = ~337 across 31 categories, plus the two opt-in data-packs
+# (c-07 sdr-tools here; kailash-data.wordlists-mega rides C-5 as its data
+# pack at KA-07.2). One-tool-one-primary-category; spanning tools carry
+# secondary tags (validated KA-05.1).
+schema_version: 1
+
+categories:
+  # ---- Layer CLASSIC (10 entries: 9 categories + the SDR data-pack) ----
+  - id: c-01-information-gathering
+    layer: CLASSIC
+    kind: category
+    name: Information Gathering
+    purpose: Classic recon/OSINT lead-in for AI engagements — the AI-surface on-ramp.
+    coverage: High
+    tools: 38
+    notes: classic Kali heritage; KA-06 first-four exemplar module.
+  - id: c-02-vulnerability-analysis
+    layer: CLASSIC
+    kind: category
+    name: Vulnerability Analysis
+    purpose: Local vulnerability scanning of software artefacts and hosts.
+    coverage: Medium
+    tools: 7
+    notes: GVM/OpenVAS ships as the KA-27 service module, not loose tools.
+  - id: c-03-web-application-assessment
+    layer: CLASSIC
+    kind: category
+    name: Web Application Assessment
+    purpose: Web/API proxy-based assessment and scanning.
+    coverage: Medium-High
+    tools: 10
+    notes: Burp/ZAP/Caido pinned to exact versions via the lock (KA-07.1).
+  - id: c-04-database-assessment
+    layer: CLASSIC
+    kind: category
+    name: Database Assessment
+    purpose: Database front-end assessment tooling.
+    coverage: High
+    tools: 7
+    notes: trivially native; KA-06 second-four module.
+  - id: c-05-password-offline-credential
+    layer: CLASSIC
+    kind: category
+    name: Password & Offline-Credential Attacks
+    purpose: Offline credential attacks (hashes, dumps, artefacts).
+    coverage: High
+    tools: 15
+    notes: online brute-forcing against live services stays OUT (§3.7);
+      wordlists ride the opt-in kailash-data.wordlists-mega pack (KA-07.2).
+  - id: c-06-reverse-engineering
+    layer: CLASSIC
+    kind: category
+    name: Reverse Engineering (software artefacts)
+    purpose: Binary/app artefact RE — software only.
+    coverage: Very High
+    tools: 26
+    notes: no hardware/RF RE per the §3.7 purge.
+  - id: c-07-signal-sdr
+    layer: CLASSIC
+    kind: data-pack
+    opt_in: true
+    data: kailash-data.sdr-tools
+    name: Signal & SDR Processing
+    purpose: Software-only signal processing pack for ML signal work (audio/waveform corpora) and the B-6 voice-clone research surface.
+    coverage: Medium
+    tools: 6
+    notes: the sole radio-adjacent concession (§4.1); category of record
+      but opt-in data-pack — never on default profiles/ISOs (D7). Module
+      stub exists but off everywhere by default; decision + revisit
+      condition recorded in the module comment (KA-07.2).
+  - id: c-08-exploitation-post-exploitation
+    layer: CLASSIC
+    kind: category
+    name: Exploitation & Post-Exploitation (software)
+    purpose: Software-target exploitation, webshells, privesc/post-exploitation.
+    coverage: Medium
+    tools: 9
+    notes: software-only — the AD/lateral-movement/C2 arsenal is excluded
+      as doctrine (§4.5); metasploit pinned (KA-07.3).
+  - id: c-09-forensics-ir-reporting
+    layer: CLASSIC
+    kind: category
+    name: Forensics, IR & Reporting
+    purpose: Artefact forensics, incident response, engagement reporting.
+    coverage: Medium-High
+    tools: 21
+    notes: faraday/timesketch as service modules.
+  - id: c-10-runtime-appsec-ai
+    layer: CLASSIC
+    kind: category
+    name: Runtime AppSec for AI Systems
+    purpose: AppSec toolkit aimed at AI endpoints — the ASVS-scoped runtime surface (the layer AISVS scopes out).
+    coverage: Medium
+    tools: 8
+    notes: mitmproxy/zap + AI-endpoint DAST (ais primary, llm-fuzzer,
+      oauth-mcp-prober, sdl3-stream-fuzzer bespoke entries) per KA-07.4.
