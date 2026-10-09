@@ -15,13 +15,18 @@
         # until then pkgs/ is empty and packages = {}
         packages = { };
         checks = {
+          # runs the validator against the flake source tree (src = self) so
+          # its relative manifest resolution holds in every context, with
+          # pyyaml guaranteed via withPackages — the hosted-runner failure
+          # (pyyaml absent, __file__-relative path in a filtered source copy)
+          # is the proof the gate needs both. Lenient until the real manifest
+          # lands (KA-02.2/KA-04/KA-05).
           manifest-wellformed = pkgs.runCommand "manifest-wellformed"
             {
-              nativeBuildInputs = [ pkgs.python3 ];
+              nativeBuildInputs = [ (pkgs.python3.withPackages (ps: [ ps.pyyaml ])) ];
+              src = self;
             } ''
-            # lenient until the real manifest lands (KA-04/KA-05):
-            # both files must exist and parse as YAML.
-            python3 ${./tests/validate_manifest.py}
+            python3 $src/tests/validate_manifest.py
             touch $out
           '';
         };
