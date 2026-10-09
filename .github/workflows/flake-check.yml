@@ -1,0 +1,25 @@
+name: flake-check
+
+# The overlay's evaluation + manifest gate on hosted runners (issue #7 /
+# KA-02.4): everything evaluates for every declared system and
+# checks.manifest-wellformed builds. Grows into the full per-package
+# build matrix at KA-15.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  flake-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v23
+      - name: Flake check (all systems, gate builds)
+        run: nix flake check --all-systems
