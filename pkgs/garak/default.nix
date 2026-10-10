@@ -33,6 +33,7 @@ python3.pkgs.buildPythonApplication {
   # leaves HOME=/homeless-shelter (not writable) — same fix as the
   # subfinder recipe: redirect HOME to a writable tmpdir for the check.
   nativeInstallCheckInputs = [ writableTmpDirAsHomeHook ];
+  nativeBuildInputs = [ writableTmpDirAsHomeHook ];
   # the smoke gate (issue #80): `import garak` pulls _config + _plugins,
   # i.e. yaml, xdg-base-dirs + the garak package itself — nothing
   # heavier: every model/encoding dep is function-scope (lazy) in the
