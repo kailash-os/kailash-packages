@@ -46,7 +46,6 @@ python3.pkgs.buildPythonApplication {
     tqdm
     cohere
     anthropic
-    replicate
     cmd2
     deepl
     wn
@@ -119,6 +118,11 @@ python3.pkgs.buildPythonApplication {
     "mikeshardmind-base2048"
     "lorem"
     "nvidia-riva-client"
+    # nixpkgs disables replicate on this interpreter (pydantic.v1 needs
+    # <3.14; the default python3 here is 3.14) and garak loads it only
+    # as an optional extra dep of generators/replicate.py at generator
+    # init (_load_deps) — never at import
+    "replicate"
   ];
 
   # flit builds need the version/module; garak ships pyproject-based
