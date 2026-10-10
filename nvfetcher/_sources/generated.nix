@@ -6,6 +6,20 @@
   dockerTools,
 }:
 {
+  art = {
+    pname = "art";
+    version = "4da50bdc5a1393bd33a52f7012f4928dd68fb260";
+    src = fetchgit {
+      url = "https://github.com/Trusted-AI/adversarial-robustness-toolbox";
+      rev = "4da50bdc5a1393bd33a52f7012f4928dd68fb260";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-vlPuS1faYYpqbG3vNp0dqBgW5whkuTW+7ST7eANv58U=";
+    };
+    date = "2026-10-08";
+  };
   dnsrecon = {
     pname = "dnsrecon";
     version = "13c47504dedd4203610f407ef9619fc085a2df97";
