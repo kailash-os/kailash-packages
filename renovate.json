@@ -2,9 +2,24 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:best-practices", ":semanticCommits"],
   "timezone": "Australia/Melbourne",
-  "schedule": ["after 6am", "before 10am every weekday"],
-  "lockFileMaintenance": { "enabled": true, "schedule": ["before 6am on monday"] },
+  "schedule": ["* 6-9 * * 1#1"],
+  "automerge": false,
+  "platformAutomerge": false,
+  "dependencyDashboard": true,
+  "major": {
+    "enabled": false
+  },
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["* 6-9 * * 1#1"]
+  },
   "packageRules": [
+    {
+      "description": "merge policy (§8.5): Renovate-side automerge is off at the repository level — a Renovate PR merges when its hosted checks are green AND the platform approval gate passes (the default-branch ruleset's pull_request rule requires a code-owner review); Renovate PRs get no bypass. The required_status_checks ruleset shape (empty, strict) reads ALL status checks on the PR, so no partial-green merge path exists. Major-version flake input bumps are suppressed — they ride the release-cycle review, not the monthly batch.",
+      "matchManagers": ["github-actions", "nix"],
+      "automerge": false,
+      "platformAutomerge": false
+    },
     {
       "description": "group github actions updates",
       "matchManagers": ["github-actions"],
@@ -13,9 +28,11 @@
       "automerge": false
     },
     {
-      "description": "nix flake lockfile maintenance",
+      "description": "nixpkgs + every other flake input: one monthly batched PR (the nix manager covers the whole lock: nixpkgs included); the first-Monday 06:00-09:59 Melbourne window in the top-level schedule governs the repo",
       "matchManagers": ["nix"],
-      "automerge": false
+      "groupName": "flake inputs (monthly)",
+      "automerge": false,
+      "platformAutomerge": false
     }
   ]
 }
