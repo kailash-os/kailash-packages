@@ -76,10 +76,20 @@ jobs:
           else
             echo "mirror copy not on kailash-os@master yet — identity check pending (enforces after both PRs merge)"
           fi
-      - name: Emit build matrix (repo-mode)
+      - name: Install PyYAML (matrix parse needs the §5.2 shape)
+        run: pip install --disable-pip-version-check pyyaml
+      - name: Matrix adapter self-test (the adapter gates itself)
+        run: python3 tools/emit-matrix.py --self-test
+      - name: Emit build matrix (repo-mode, KA-05.2 adapter)
         id: matrix
         run: |
-          OUT="$(python3 tools/manifest-matrix.py --manifest-dir manifest)"
+          # KA-05.2: the tools table is filled (146 CLASSIC rows), so the
+          # matrix follows the REAL pkgs/ build surface — the vendored
+          # byte-identical generator's repo-mode predates dict rows and
+          # its stdlib fallback only parses the header-only shape.
+          # tools/emit-matrix.py keeps the generator untouched (mirror
+          # contract) and emits the same JSON shape from the filled state.
+          OUT="$(python3 tools/emit-matrix.py --manifest-dir manifest)"
           echo "matrix<<EOF" >> "$GITHUB_OUTPUT"
           echo "$OUT" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"

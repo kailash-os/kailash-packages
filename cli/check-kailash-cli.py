@@ -76,15 +76,24 @@ def main():
           "manifest check counts == parsed tools.yaml",
           "%r != %d" % (inv.get("tools"), len(tools)))
 
-    # 2. list vs category rows — one row per entry, id-first ordering
+    # 2. list vs the tools table — one row per tool, id-first ordering
+    # (KA-05.2: the table is filled, so the CLI's tool view is the
+    # surface under test; the category-tree view belongs to the stub
+    # state and stays covered by the --layer/--category filters below)
     code, out = run_cli(["list"])
     rows = out.splitlines()
     check(code == 0, "list exit 0")
-    check(len(rows) == len(cats),
-          "list row count equals parsed categories",
-          "%d != %d" % (len(rows), len(cats)))
-    expect = ["%s\t%s\t%s\t%s" % (c["id"], c["layer"], c["kind"], c["tools"])
-              for c in cats]
+    if tools:
+        expect = ["%s\t%s\t%s\t%s" % (
+            t["id"], t["layer"], t["category"],
+            (t.get("packaging") or {}).get("status"))
+            for t in tools]
+    else:
+        expect = ["%s\t%s\t%s\t%s" % (c["id"], c["layer"], c["kind"], c["tools"])
+                  for c in cats]
+    check(len(rows) == len(expect),
+          "list row count equals parsed manifest rows",
+          "%d != %d" % (len(rows), len(expect)))
     check(rows == expect, "list rows equal parsed manifest content",
           "first divergence: %s" % next(
               ("%s != %s" % (a, b) for a, b in zip(rows, expect) if a != b),
@@ -96,15 +105,22 @@ def main():
           "list --json emits valid JSON")
     check(json.loads(jout) == rows, "list --json equals list rows")
 
-    # 3. --layer filter: per-layer counts match the parsed census sums
+    # 3. --layer filter: per-layer tool-row counts match the parsed rows
     if cats:
-        layer = cats[0]["layer"]
-        want = [c for c in cats if c["layer"] == layer]
+        layer = "CLASSIC" if any(c["layer"] == "CLASSIC" for c in cats) \
+            else cats[0]["layer"]
+        if tools:
+            want = [t for t in tools if t["layer"] == layer]
+            want_rows = ["%s\t%s\t%s\t%s" % (
+                t["id"], t["layer"], t["category"],
+                (t.get("packaging") or {}).get("status")) for t in want]
+        else:
+            want = [c for c in cats if c["layer"] == layer]
+            want_rows = ["%s\t%s\t%s\t%s" % (
+                c["id"], c["layer"], c["kind"], c["tools"]) for c in want]
         code, out = run_cli(["list", "--layer", layer])
-        check(code == 0 and out.splitlines() == [
-            "%s\t%s\t%s\t%s" % (c["id"], c["layer"], c["kind"], c["tools"])
-            for c in want],
-            "list --layer %s equals the parsed layer rows" % layer)
+        check(code == 0 and out.splitlines() == want_rows,
+              "list --layer %s equals the parsed layer rows" % layer)
         # a layer id absent from categories.yaml MUST be rejected as a
         # usage error (exit 2, not a silent no-results 1) — computed
         # from the data, not a hardcoded name
