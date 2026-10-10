@@ -71,10 +71,17 @@ pyritPython.pkgs.buildPythonApplication (finalAttrs: {
   preBuild = ''
     export PYRIT_SOURCE_COMMIT=${finalAttrs.passthru.sourceCommit}
     export PYRIT_SOURCE_DIRTY=false
-    stamp=$(cat > pyrit/_compatibility.json <<'STAMP'
+    # Coordinated-asset gate (build_scripts/build_backend._prepare →
+    # verify_distribution → verify_frontend) needs BOTH assets in-tree:
+    # pyrit/_compatibility.json stamped with the pin identity, and a
+    # pyrit/backend/frontend/ holding index.html (the committed repo-root
+    # frontend/ entry point — npm build is NOT executed in the sandbox)
+    # plus the matching compatibility.json.
+    mkdir -p pyrit/backend/frontend
+    cat > pyrit/_compatibility.json <<'STAMP'
     {"version": "1.2.0.dev0", "commit": "${finalAttrs.passthru.sourceCommit}", "dirty": false, "compatibility_id": "1.2.0.dev0+g${finalAttrs.passthru.sourceCommit}"}
     STAMP
-    )
+    cp frontend/index.html pyrit/backend/frontend/index.html
     cat > pyrit/backend/frontend/compatibility.json <<'FESTAMP'
     {"compatibility_id": "1.2.0.dev0+g${finalAttrs.passthru.sourceCommit}"}
     FESTAMP
