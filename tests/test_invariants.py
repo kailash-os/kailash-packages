@@ -259,7 +259,10 @@ class SecondaryShape(unittest.TestCase):
         t = full_tool(secondary_categories=[7])
         with self.assertRaises(AssertionError) as ctx:
             findings(FIX_CATS, [t])
-        only(ctx.exception.args[0], "secondary_categories entry must be a str")
+        only(
+            ctx.exception.args[0],
+            "secondary_categories entry must be a str",
+        )
 
     def test_no_second_primary(self):
         # the tool's own primary category repeated in the secondary list
@@ -271,6 +274,50 @@ class SecondaryShape(unittest.TestCase):
             ctx.exception.args[0],
             "single primary category",
         )
+
+
+class DefenceCensus(unittest.TestCase):
+    """KA-04.3: the DEFENCE census-existence invariant mirrors ATTACK/OPS."""
+
+    def test_missing_layer_fails_with_all_seven(self):
+        doc = {"categories": [CLASSIC_CAT, ATTACK_CAT, BUILD_CAT]}
+        fails = vm.defence_census_failures(doc["categories"])
+        assert len(fails) == 1, fails
+        only(fails[0], "DEFENCE census incomplete (KA-04.3)")
+        for slug in vm.DEFENCE_CENSUS_IDS:
+            assert slug in fails[0], slug
+
+    def test_extra_entry_fails(self):
+        # the full exact census first (else the incomplete branch fires
+        # first — mirrored from the OPS invariant's ordering), then the
+        # rogue extra entry.
+        exact = [
+            cat("DEFENCE", "d-01-runtime-defence"),
+            cat("DEFENCE", "d-02-detection-monitoring-observability"),
+            cat("DEFENCE", "d-03-assurance-evals-benchmarks"),
+            cat("DEFENCE", "d-04-provenance-signing-trust"),
+            cat("DEFENCE", "d-05-threat-modelling"),
+            cat("DEFENCE", "d-06-governance-regulation-mapping"),
+            cat("DEFENCE", "d-07-standards-verification"),
+        ]
+        d8 = cat("DEFENCE", "d-08-rogue")
+        base = [CLASSIC_CAT, ATTACK_CAT, BUILD_CAT]
+        fails = vm.defence_census_failures(base + exact + [d8])
+        assert len(fails) == 1, fails
+        only(fails[0], "DEFENCE census unexpected entries (KA-04.3)")
+
+    def test_exact_census_passes(self):
+        doc = {"categories": [CLASSIC_CAT, ATTACK_CAT, BUILD_CAT]}
+        rows = [
+            cat("DEFENCE", "d-01-runtime-defence"),
+            cat("DEFENCE", "d-02-detection-monitoring-observability"),
+            cat("DEFENCE", "d-03-assurance-evals-benchmarks"),
+            cat("DEFENCE", "d-04-provenance-signing-trust"),
+            cat("DEFENCE", "d-05-threat-modelling"),
+            cat("DEFENCE", "d-06-governance-regulation-mapping"),
+            cat("DEFENCE", "d-07-standards-verification"),
+        ]
+        assert vm.defence_census_failures(doc["categories"] + rows) == []
 
 
 if __name__ == "__main__":

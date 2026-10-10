@@ -80,6 +80,21 @@ ATLAS_TACTICS = {
 }
 ATLAS_TACTIC_BY_ID = {k: True for k in ATLAS_TACTICS}
 
+# §3.6 DEFENCE census — the category set KA-04.3 owns. The
+# census-existence invariant fails the gate while the DEFENCE layer is
+# still missing from categories.yaml (KA-04.3's RED), independent of
+# per-entry checks. Slug spellings per the plan §4.2 module tree
+# (d-01-runtime-defence … d-07-standards-verification).
+DEFENCE_CENSUS_IDS = {
+    "d-01-runtime-defence",
+    "d-02-detection-monitoring-observability",
+    "d-03-assurance-evals-benchmarks",
+    "d-04-provenance-signing-trust",
+    "d-05-threat-modelling",
+    "d-06-governance-regulation-mapping",
+    "d-07-standards-verification",
+}
+
 # §3.6 OPS census — the category set KA-04.4 owns. The census-existence
 # invariant fails the gate while the OPS layer is still missing from
 # categories.yaml (KA-04.4's RED), independent of per-entry checks.
@@ -341,6 +356,36 @@ def check_attack_census(e: dict) -> str:
     return ""
 
 
+def defence_census_failures(entries: list) -> list:
+    """KA-04.3 census-existence: the DEFENCE layer's 7-category set must
+    be present (and only it) — fails while categories.yaml still carries
+    no DEFENCE rows at all, where no per-entry check can fire. Mirrors
+    the ATTACK/OPS census-existence blocks; the per-layer primary-slot
+    total reconcile stays in main()'s §3.6 loop (46 lands with the rows,
+    permissive to absence before KA-04.3).
+    """
+    defence_ids = {
+        e["id"]
+        for e in entries
+        if isinstance(e, dict) and e.get("layer") == "DEFENCE"
+    }
+    failures = []
+    missing = DEFENCE_CENSUS_IDS - defence_ids
+    if missing:
+        failures.append(
+            "DEFENCE census incomplete (KA-04.3): missing %s"
+            % ", ".join(sorted(missing))
+        )
+        return failures
+    extra = defence_ids - DEFENCE_CENSUS_IDS
+    if extra:
+        failures.append(
+            "DEFENCE census unexpected entries (KA-04.3): %s"
+            % ", ".join(sorted(extra))
+        )
+    return failures
+
+
 def main() -> int:
     try:
         import yaml
@@ -423,6 +468,11 @@ def main() -> int:
             % ", ".join(sorted(extra_ops))
         )
 
+    # KA-04.3 census-existence: the DEFENCE layer's 7-category set must
+    # be present (and only it) — mirrored seam, single failure line.
+    for defence_fail in defence_census_failures(entries):
+        return fail(defence_fail)
+
     # KA-04.4 exclusions ledger: the header must carry the in-file
     # ledger block (plan §3.7, the no-resurrection guard) and name
     # every excluded class.
@@ -441,9 +491,10 @@ def main() -> int:
 
     # §3.6 post-purge reconcile: layer primary-slot totals count CATEGORIES
     # only — data-packs (c-07 sdr-tools +6; wordlists-mega at KA-07.2) are
-    # excluded, which is what makes the four totals sum to ~337. The
-    # reconcile stays permissive to layers whose rows have not landed yet
-    # (DEFENCE at KA-04.3) and enforces the landed layers exactly: the
+    # excluded, which is what makes the four totals sum to ~337. Each
+    # layer's ROW PRESENCE is enforced by its own census-existence
+    # invariant (ATTACK KA-04.2, DEFENCE KA-04.3, OPS KA-04.4); this
+    # reconcile enforces the landed per-layer totals exactly: the
     # BUILD→OPS rename keeps OPS at 91 (os#121 naming umbrella).
     LAYER_TOTALS = {"CLASSIC": 141, "ATTACK": 59, "DEFENCE": 46, "OPS": 91}
     for layer, got in sorted(per_layer.items()):
