@@ -14,6 +14,14 @@ name: build
 #
 # The vm-tests job is OS-repo-only (the distribution's image/VM gate).
 #
+# Gate order (plan §8.3): manifest → build-packages → vm-tests →
+# images. The packages repo carries the first two jobs; vm-tests and
+# images run in the OS repo (kailash-os#88's build.yml holds their
+# pipeline positions). build-packages never schedules a leg while the
+# manifest gate is red — it needs the manifest job green (and the
+# manifest job runs the repo validator itself, so a broken manifest
+# bites before the matrix).
+#
 # Cachix: the `kailash` push step is included COMMENTED below — the
 # CACHIX_AUTH_TOKEN secret is not configured yet (verified empty in the
 # repo's actions secrets). Uncomment both blocks once the secret lands.
@@ -38,6 +46,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      # §8.3 gate order: manifest → packages → vm-tests → images. The
+      # manifest job IS the gate that bites: it runs the repo's own
+      # validator (tests/validate_manifest.py — the single enforcement
+      # point for the §5.2 manifest invariants: unique ids, categories
+      # exist, bespoke ⇒ derivation path, ATLAS shape, safety.level,
+      # §3.7 no-resurrection, the census reconcile). A broken
+      # tools.yaml/categories.yaml fails HERE, before any build leg of
+      # the build-packages matrix is scheduled (needs: manifest).
+      # KA-15.2 negative-gate evidence recorded on the lane PR.
+      - name: Manifest validator (tests/validate_manifest.py)
+        run: |
+          python3 -m pip install --quiet --disable-pip-version-check pyyaml
+          python3 tests/validate_manifest.py
       - name: Generator self-test (the generator gates itself)
         run: python3 tools/manifest-matrix.py --self-test
       - name: Byte-identity check against the OS-repo mirror
