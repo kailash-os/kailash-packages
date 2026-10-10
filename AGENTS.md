@@ -90,6 +90,27 @@ an unsigned or badly-attributed commit blocks the PR. The signing key and
 the commit email must agree with a GitHub-verified identity or verification
 fails with `bad_email` and the PR cannot merge.
 
+## Architecture Decision Records
+
+Structural changes carry an ADR in the same PR. Most slices are
+leaf-sized — the issue's plan reference IS the design record, no ADR
+needed — write one only when **the change introduces a new persistent
+artifact** (a manifest schema field whose semantics lock, a profile
+contract, a wire format, a gate script) **or removes/changes one**.
+
+The record lives in [`docs/adr/`](docs/adr/):
+[`0000-architecture-decision-records.md`](docs/adr/0000-architecture-decision-records.md)
+explains the process and
+[`0001-record-format.md`](docs/adr/0001-record-format.md) fixes the
+format (NNNN-short-slug.md, numbered sequentially, one decision per
+file). Rules with teeth:
+
+- **Accepted ADRs are immutable.** A change that contradicts an accepted
+  ADR supersedes it with a new one; never rewrite the accepted record.
+- **Never invent discussion, deciders or quotes.** Cite commit/issue
+  permalinks, or write "No substantive technical discussion recorded".
+- Dependency bumps, docs and CI tweaks don't need ADRs.
+
 ## Pull requests
 
 Follow [`CONTRIBUTING.md`](CONTRIBUTING.md); leaf branch cut from **current
