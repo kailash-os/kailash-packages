@@ -1,0 +1,62 @@
+name: nvfetcher-cadence
+
+# nvfetcher source-pin update checks (KA-16.1, plan §8.5).
+#
+# DEFERRED ACTIVATE — this job is present but GATED OFF:
+#   * workflow_dispatch only (no schedule block active). It runs green
+#     as a no-op when a maintainer dispatches it and never runs on a
+#     timer.
+#   * Activation condition (name it in the PR that flips this): the
+#     first REAL downstream derivation lands — a tools.yaml row with
+#     packaging.status: bespoke + a pkgs/<tool>/default.nix that builds
+#     from the pin (KA-05.x fills the table; KA-10/11 successors own
+#     the builds). In that PR: add the tool ids to nvfetcher/cadence.toml
+#     under their class and uncomment the `schedule:` block below.
+#   * Until then there is nothing to update: the tools table is
+#     header-only and every existing pin's derivation is a seed/shape
+#     reference, so a weekly timer would only manufacture churn.
+#
+# When activated: fast-moving class checks WEEKLY (the schedule block
+# below), steady class checks FORTNIGHTLY (its own window; the class
+# mapping lives in nvfetcher/cadence.toml). PR only when the new rev
+# passes its smoke check — the smoke check runs before the PR.
+#
+# on:
+#   schedule:
+#     - cron: "0 20 * * 1"   # Mondays 07:00-07:59 Melbourne (20:00 UTC, AEDT)
+#   workflow_dispatch:
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cadence-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          persist-credentials: false
+      - name: Class map present (nvfetcher/cadence.toml)
+        run: |
+          test -f nvfetcher/cadence.toml
+          grep -q 'classes.fast-moving' nvfetcher/cadence.toml
+          grep -q 'classes.steady' nvfetcher/cadence.toml
+          echo "cadence.toml present: fast-moving + steady class map readable"
+      - name: Deferred-activate status
+        run: |
+          echo "DEFERRED-ACTIVATE: workflow_dispatch-only until the first real downstream derivation lands"
+          echo "activation = tool ids into nvfetcher/cadence.toml under their class + the schedule block uncommented, in the same PR"
+          echo "(class lists are empty today: nothing to check; this run is a green no-op)"
+      - name: Dry-run the active classes
+        if: ${{ false }}  # flips to a real condition at activation
+        run: |
+          # activation body (documented, deliberately unreachable):
+          #   nvfetcher -c nvfetcher/config.toml --dry-run
+          #   # classify the changed pins per nvfetcher/cadence.toml and
+          #   # open ONE PR per class ("PR only when the new rev passes
+          #   # its smoke check" — the smoke check runs before the PR):
+          echo "dry-run placeholder — wired at activation"

@@ -1,0 +1,32 @@
+# nvfetcher update-class mapping (KA-16.1, plan §8.5).
+#
+# The cadence workflow (.github/workflows/nvfetcher-cadence.yml) reads
+# this file to resolve which pinned tools belong to which update class:
+#
+#   fast-moving  — upstream churns weekly; check WEEKLY (Monday CI run)
+#   steady       — upstream churns fortnightly; check FORTNIGHTLY
+#   slow/locked  — rides the nixpkgs monthly refresh only; never listed
+#                  here (no dedicated cadence, Renovate owns the lock)
+#
+# DEFERRED ACTIVATE: the lists stay EMPTY until the first real
+# downstream derivation of the class lands (the census lanes KA-05.x
+# fill the tools table and KA-10/11 successors own the real builds).
+# With empty lists the workflow holds at the dispatch gate — it runs
+# green as a no-op and schedules nothing. Activation condition (also
+# named in the workflow header): add the tool ids here in the PR that
+# lands their first real derivation, and uncomment the `schedule:`
+# block in the workflow in the same PR.
+#
+# This file is data, not a second registry: tool ids must exist in
+# manifest/tools.yaml (KA-05.1 invariants); nvfetcher/config.toml
+# carries the pins themselves.
+
+[classes.fast-moving]
+# plan §3.6 fast-five class — fill when the first real derivation
+# lands (candidates today, all nvfetcher-pinned: garak, pyrit):
+tools = []
+
+[classes.steady]
+# scanner/packaging utilities — fill at the first steady-class
+# derivation:
+tools = []
