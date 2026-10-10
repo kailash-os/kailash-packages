@@ -11,6 +11,7 @@
   lib,
   callPackage,
   python3,
+  writableTmpDirAsHomeHook,
 }:
 
 let
@@ -27,6 +28,11 @@ python3.pkgs.buildPythonApplication {
 
   doCheck = false;
   doInstallCheck = true;
+  # `import garak` builds TransientConfig, which mkdirs $HOME
+  # (XDG config/data/cache dirs via xdg-base-dirs). The nix build sandbox
+  # leaves HOME=/homeless-shelter (not writable) — same fix as the
+  # subfinder recipe: redirect HOME to a writable tmpdir for the check.
+  nativeInstallCheckInputs = [ writableTmpDirAsHomeHook ];
   # the smoke gate (issue #80): `import garak` pulls _config + _plugins,
   # i.e. yaml, xdg-base-dirs + the garak package itself — nothing
   # heavier: every model/encoding dep is function-scope (lazy) in the
