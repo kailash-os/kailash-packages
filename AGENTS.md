@@ -90,6 +90,29 @@ an unsigned or badly-attributed commit blocks the PR. The signing key and
 the commit email must agree with a GitHub-verified identity or verification
 fails with `bad_email` and the PR cannot merge.
 
+## Architecture Decision Records
+
+Structural changes carry an ADR in the same PR. Most slices are
+leaf-sized — the issue's plan reference IS the design record, no ADR
+needed — write one only when **the change introduces a new persistent
+artifact** (a manifest schema field whose semantics lock, a profile
+contract, a wire format, a gate script) **or removes/changes one**.
+
+The ADR home is deliberately **single**: this distribution keeps its
+decision records in the OS repo's
+[`docs/adr/`](https://github.com/kailash-os/kailash-os/blob/master/docs/adr/0000-architecture-decision-records.md) —
+[the process](https://github.com/kailash-os/kailash-os/blob/master/docs/adr/0000-architecture-decision-records.md)
+and [the record format](https://github.com/kailash-os/kailash-os/blob/master/docs/adr/0001-record-format.md).
+Overlay decisions (locked manifest schema fields, nvfetcher wire
+formats) land there with the PR that makes the change, and the index
+gains its row. Rules with teeth:
+
+- **Accepted ADRs are immutable.** A change that contradicts an accepted
+  ADR supersedes it with a new one; never rewrite the accepted record.
+- **Never invent discussion, deciders or quotes.** Cite commit/issue
+  permalinks, or write "No substantive technical discussion recorded".
+- Dependency bumps, docs and CI tweaks don't need ADRs.
+
 ## Pull requests
 
 Follow [`CONTRIBUTING.md`](CONTRIBUTING.md); leaf branch cut from **current
