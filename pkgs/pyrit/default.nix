@@ -94,6 +94,17 @@ pyritPython.pkgs.buildPythonApplication (finalAttrs: {
 
   build-system = with pyritPython.pkgs; [ setuptools ];
 
+  # Version pins in upstream [project].dependencies the locked
+  # nixpkgs-locked python3Packages cannot satisfy (lock: datasets
+  # 4.5.0 < upstream >=4.8.0; mcp 1.29.0 < >=2.2; pyjwt 2.14.0 <
+  # >=2.15.0) — the metadata spec is relaxed, the locked derivation
+  # ships. Re-verify against the pinned pyproject at every pin update.
+  pythonRelaxDeps = [
+    "datasets"
+    "mcp"
+    "pyjwt"
+  ];
+
   dependencies = with pyritPython.pkgs; [
     aiofiles
     aioodbc
