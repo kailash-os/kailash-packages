@@ -34,8 +34,11 @@ buildGoModule (finalAttrs: {
   '';
 
   # must equal the pinned tree's go.mod; re-verified and updated with
-  # every pin update (the update PR carries the build status)
-  vendorHash = "sha256-+GBO8ufJp39l7dYl1L1V3g4pFVrDgNNzLBBaFp9C0OU=";
+  # every pin update (the update PR carries the build status). The first
+  # hosted build (KA-15.1 build.yml, this PR) caught the recorded value
+  # stale — the FOD hash below is the hosted-build `got:` value
+  # (kailash-packages#19).
+  vendorHash = "sha256-0aHBXN/Yd8hiZcowUUQy65vZI2rvLCHCk+QihjjtZrw=";
 
   subPackages = [ "cmd/subfinder/" ];
 
