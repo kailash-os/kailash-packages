@@ -1,0 +1,42 @@
+{
+    "dnsrecon": {
+        "cargoLock": null,
+        "date": "2026-10-09",
+        "extract": null,
+        "name": "dnsrecon",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "13c47504dedd4203610f407ef9619fc085a2df97",
+            "sha256": "sha256-pT2TEOqSmnjp/r0E72W3nFolkrM+Fec+iJGD1MptRcc=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/darkoperator/dnsrecon"
+        },
+        "version": "13c47504dedd4203610f407ef9619fc085a2df97"
+    },
+    "subfinder": {
+        "cargoLock": null,
+        "date": "2026-10-08",
+        "extract": null,
+        "name": "subfinder",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "c97f25802892093060f0fc424bfc3f39e273693a",
+            "sha256": "sha256-O1Er4Ep3kiYcswaHf0bxcmG2OysHm/j58uC5BXA4qLU=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/projectdiscovery/subfinder"
+        },
+        "version": "c97f25802892093060f0fc424bfc3f39e273693a"
+    }
+}

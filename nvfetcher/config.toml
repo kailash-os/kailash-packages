@@ -1,0 +1,24 @@
+# Kailash OS source pins — nvfetcher config (KA-02.3 #68, plan §5.4).
+#
+# Every bespoke tool's upstream pins here; `nvfetcher -c config.toml
+# -o _sources` materialises rev + sha256 into _sources/generated.nix,
+# and BOTH files are committed — pins are contract (CONTRIBUTING:
+# "source pins change only with the manifest entry they belong to, in
+# the same PR"). Research-grade tools pin to commit revs, not tags (R7);
+# the census (manifest/categories.yaml) names the tools needing overlay
+# currency — the first two seeds ride c-01 (information gathering):
+# subfinder and dnsrecon. The update loop is §5.4: update → commit →
+# build → PR; CI --dry-run cadence arrives with the milestone automation.
+#
+# Git sources track the upstream default branch head at pin time; the
+# committed _sources/ records the exact rev + SRI hash of record.
+
+[subfinder]
+src.git = "https://github.com/projectdiscovery/subfinder"
+src.branch = "main"
+fetch.git = "https://github.com/projectdiscovery/subfinder"
+
+[dnsrecon]
+src.git = "https://github.com/darkoperator/dnsrecon"
+src.branch = "master"
+fetch.git = "https://github.com/darkoperator/dnsrecon"
