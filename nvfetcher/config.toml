@@ -40,3 +40,17 @@ fetch.git = "https://github.com/Microsoft/PyRIT"
 src.git = "https://github.com/NVIDIA/garak"
 src.branch = "main"
 fetch.git = "https://github.com/NVIDIA/garak"
+
+[art]
+# KA-12.1 (kailash-os#84): Trusted-AI/adversarial-robustness-toolbox —
+# IBM's ART, the A-5 adversarial-ML research stack (Shape 1, §5.3).
+# Update-class steady (§8.5): MIT licence verified against the upstream
+# LICENSE at the pin (plan §11.3's "AGPL-class" note is superseded by
+# this read — recorded in the manifest entry). Pinned to the exact main
+# head at pin time, commit rev not a tag (R7), rev + SRI sha256
+# byte-verified against the commits API before committing (rev 4da50bdc
+# = main tip, dependabot merge of 2026-10-08).
+src.git = "https://github.com/Trusted-AI/adversarial-robustness-toolbox"
+src.branch = "main"
+src.commit = "4da50bdc5a1393bd33a52f7012f4928dd68fb260"
+fetch.git = "https://github.com/Trusted-AI/adversarial-robustness-toolbox"
