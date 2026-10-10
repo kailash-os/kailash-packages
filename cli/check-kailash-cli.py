@@ -185,6 +185,72 @@ def main():
           "unreadable manifest exits 2 with a message",
           "rc=%d stderr=%r" % (p.returncode, p.stderr[:120]))
 
+    # 7. §7.3 per-file manifest bake (KA-14.2): KAILASH_MANIFEST names
+    # the tools.yaml FILE and KAILASH_CATEGORIES the categories.yaml
+    # FILE — two independent paths, not one manifest directory. The
+    # derivation bakes both (wrapProgram), so the loader must resolve
+    # each file from its own env value: a per-file bake with a tools
+    # list pointing at file A and categories at file B only holds when
+    # the vars are read independently. Watched RED: the loader joins
+    # every value under the directory spelling and joins categories
+    # onto KAILASH_MANIFEST's directory, so the per-file bake breaks.
+    try:
+        env_tools = os.path.join(manifest_dir, "tools.yaml")
+        env_cats = os.path.join(manifest_dir, "categories.yaml")
+        if cats:
+            # both env values set to their files (subprocess: the env
+            # reaches a real `kailash list` like the wrapped binary's)
+            import subprocess as _sp
+
+            _p = _sp.run(
+                [sys.executable, "-c",
+                 "import sys; sys.path.insert(0, %r); from kailash import cli; "
+                 "sys.exit(cli.main(['list']))" % CLI],
+                env=dict(os.environ, KAILASH_MANIFEST=env_tools,
+                         KAILASH_CATEGORIES=env_cats),
+                capture_output=True, text=True)
+            check(_p.returncode == 0 and cats[0]["id"] in _p.stdout,
+                  "per-file env bake: list reads tools+categories from the baked files",
+                  "rc=%d stderr=%r" % (_p.returncode, _p.stderr[-160:]))
+
+            # categories-only override: KAILASH_CATEGORIES alone points at
+            # the categories file; the tools file resolves via __file__ as
+            # usual. Both views must still reconcile with the same data.
+            _p = _sp.run(
+                [sys.executable, "-c",
+                 "import sys; sys.path.insert(0, %r); from kailash import cli; "
+                 "sys.exit(cli.main(['list']))" % CLI],
+                env=dict(os.environ, KAILASH_CATEGORIES=env_cats),
+                capture_output=True, text=True)
+            check(_p.returncode == 0 and cats[0]["id"] in _p.stdout,
+                  "KAILASH_CATEGORIES alone redirects the categories view",
+                  "rc=%d stderr=%r" % (_p.returncode, _p.stderr[-160:]))
+
+        # in-process variant: both vars set to their files — a full CLI
+        # run must resolve BOTH files against the env values
+        os.environ["KAILASH_MANIFEST"] = env_tools
+        os.environ["KAILASH_CATEGORIES"] = env_cats
+        code, out = run_cli(["manifest", "check"])
+        ok = (code == 0
+              and json.loads(out or "{}").get("categories") == len(cats)
+              and json.loads(out or "{}").get("tools") == len(tools))
+        check(ok, "per-file env bake: manifest check against the baked files",
+              "rc=%d out=%r" % (code, out[:120]))
+        if cats:
+            code, out = run_cli(["list", "--category", cats[0]["id"]])
+            check(code == 0 and cats[0]["id"] in out,
+                  "per-file env bake: categories view via KAILASH_CATEGORIES",
+                  "rc=%d out=%r" % (code, out[:120]))
+        # tools list empty in the stub: the env-baked tools file is still
+        # the one consulted — search must exit 1 on the empty table, not
+        # crash resolving the wrong path
+        code, out = run_cli(["search", "zzz-no-such-tool-token"])
+        check(code == 1, "per-file env bake: tools view via KAILASH_MANIFEST",
+              "rc=%d out=%r" % (code, out[:120]))
+    finally:
+        os.environ.pop("KAILASH_MANIFEST", None)
+        os.environ.pop("KAILASH_CATEGORIES", None)
+
     print()
     if FAILURES:
         print("kailash-check: FAIL (%d):" % len(FAILURES))
