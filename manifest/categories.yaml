@@ -20,6 +20,13 @@
 #   coverage      nixpkgs coverage profile (nixpkgs-native majority vs
 #                 bespoke-lean) — packaging effort signal
 #   tools         primary tool slots (~) from plan §3.6 post-purge census
+#   atlas_tactics MITRE ATLAS tactic ids on ATTACK entries (KA-04.2) —
+#                 ids from the 2026.05 16-tactic matrix, set validated by
+#                 the in-repo manifest gate
+#   owasp_llm     OWASP LLM Top 10 class ids per epoch on ATTACK
+#                 categories (KA-04.2): "2026" = the 2026 list, v2 = the
+#                 v2:2025 list; ids mean different classes per epoch and
+#                 are recorded per epoch (§2.4)
 #   notes         decisions/constraints worth keeping beside the count
 #
 # Layer primary-slot totals (§3.6): CLASSIC 141 · ATTACK 59 · DEFENCE 46
@@ -119,3 +126,162 @@ categories:
     tools: 8
     notes: mitmproxy/zap + AI-endpoint DAST (ais primary, llm-fuzzer,
       oauth-mcp-prober, sdl3-stream-fuzzer bespoke entries) per KA-07.4.
+
+  # ---- Layer ATTACK (8 entries, ~59 slots; KA-04.2) ----
+  # ATLAS tactic ids verified against the official mitre-atlas/atlas-data
+  # dataset (dist/v6/ATLAS-2026.05.yaml + ATLAS-2026.07.yaml): tactic ids
+  # and technique placements below cross-checked per epoch — no invented
+  # identifiers. OWASP LLM Top 10 class ids per epoch — 2026 list
+  # (LLM01 Prompt Injection … LLM10 Improper Output Handling) and v2:2025
+  # list (LLM01 Prompt Injection … LLM10 Unbounded Consumption) — same
+  # id space, different class mapping per epoch (§2.4); A-3 carries the
+  # agentic technique set (ATLAS 2026.07 annex) + AISVS C9/C10 (AISVS 1.0,
+  # June 2026) per §4.2 Table 1.
+  - id: a-01-ai-recon
+    layer: ATTACK
+    kind: category
+    name: AI Reconnaissance & Target Discovery
+    purpose: Discover the AI surfaces a target exposes — models, agents, org artefacts, leaked AI-provider credentials.
+    coverage: Very Low
+    tools: 5
+    atlas_tactics: [AML.TA0002]
+    owasp_llm:
+      "2026": [LLM02]
+      v2: [LLM02, LLM07]
+    notes: all bespoke (recon-ai, llm-recon, huggingface-org-scan,
+      colab-crawler) plus trufflehog (native; secondary C-8) hunting
+      leaked AI-provider keys; the recon stage of the injection class —
+      ATLAS Reconnaissance (T0006 Active Scanning, T0004 Search
+      Application Repositories, T0064 Gather RAG-Indexed Targets) plus
+      Resource Development (T0021 Establish Accounts, T0065 LLM Prompt
+      Crafting), tactics recorded at the category level; LLM02 —
+      sensitive-info exposure surfaces via exposed artefacts (v2 LLM07
+      system-prompt leakage as the discovery prize).
+  - id: a-02-prompt-injection-jailbreaks
+    layer: ATTACK
+    kind: category
+    name: LLM Prompt Injection & Jailbreaking
+    purpose: Generation-stage prompt attacks — direct/indirect injection, jailbreaks, payload corpora.
+    coverage: Low-Medium
+    tools: 8
+    atlas_tactics: [AML.TA0005, AML.TA0007]
+    owasp_llm:
+      "2026": [LLM01]
+      v2: [LLM01]
+    notes: garak/pyrit/promptfoo flagship + inj3ct-llm + the payload/data
+      packs; techniques AML.T0051 LLM Prompt Injection (direct/indirect/
+      triggered sub-techniques) and AML.T0054 LLM Jailbreak — T0051
+      Execution-placed, T0054 Defense Evasion (dataset placements);
+      ais is primary-homed in C-10.
+  - id: a-03-agentic-mcp-tool-use
+    layer: ATTACK
+    kind: category
+    name: Agentic, MCP & Tool-Use Attacks
+    purpose: Attack the agentic control plane — tool-use/MCP scanners, agent fuzzers, poisoned-tool probes.
+    coverage: Very Low
+    tools: 10
+    atlas_tactics: [AML.TA0005, AML.TA0006, AML.TA0008, AML.TA0013, AML.TA0015]
+    owasp_llm:
+      "2026": [LLM01, LLM03, LLM08, LLM10]
+      v2: [LLM01, LLM03, LLM06, LLM08, LLM10]
+    aisvs: [C9, C10]
+    notes: the novel surface (mcp-inspector, mcp-scan, mcp-guardian,
+      mcp-unsafe-deser-probe, langchain-vuln-hunter, llm-agent-fuzzer,
+      mcpoison, agent-dojo + packs). Mapped to the ATLAS 2026.07 agentic
+      technique set — T0053 AI Agent Tool Invocation, T0103 Deploy AI
+      Agent, T0080 AI Agent Context Poisoning, T0110 AI Agent Tool
+      Poisoning (executing via T0011.002 Poisoned AI Agent Tool),
+      T0098/T0083 agent-credential harvesting, T0084 agent-config
+      discovery, T0105 Escape to Host; tactics above read off the
+      dataset's per-technique placements (T0053 also T0012/T0015 per
+      2026.07); 2026 class LLM03 Excessive Agency is the agentic class
+      (v2:2025 holds it at LLM06 — both epochs recorded); aisvs C9
+      (Orchestration & Agentic Security) + C10 (MCP Security) per
+      AISVS 1.0.
+  - id: a-04-model-supply-chain
+    layer: ATTACK
+    kind: category
+    name: Model Supply Chain & Artefact Poisoning
+    purpose: Attack the model/artefact supply chain — pickles/weights/registry scanners and artefact inspectors.
+    coverage: Very Low
+    tools: 8
+    atlas_tactics: [AML.TA0004, AML.TA0005]
+    owasp_llm:
+      "2026": [LLM04]
+      v2: [LLM03]
+    notes: guarddog/picklescan/modelscan + the artefact inspectors;
+      AML.T0010 AI Supply Chain Compromise (Initial Access; the
+      artefact-variety parent technique in the 2026 matrix) with
+      T0011.001 Malicious Package executing the malicious artefact
+      (Execution); LLM04 — the 2026 Supply Chain class (Data and Model
+      Poisoning is LLM05:2026); the v2:2025 epoch holds Supply Chain
+      at LLM03.
+  - id: a-05-model-extraction-inversion
+    layer: ATTACK
+    kind: category
+    name: Model Extraction, Inversion & MIA
+    purpose: Model theft and privacy attacks — extraction, inversion, membership inference.
+    coverage: Medium
+    tools: 8
+    atlas_tactics: [AML.TA0000, AML.TA0010]
+    owasp_llm:
+      "2026": [LLM02]
+      v2: [LLM02]
+    notes: counterfit (pinned reference), ART/foolbox/cleverhans research
+      stack + privacy-meter; techniques T0040/T0041/T0044/T0047 (AI Model
+      Access, TA0000) and T0024.002 Extract AI Model / T0057 LLM Data
+      Leakage (Exfiltration, TA0010); LLM02 sensitive-information
+      disclosure is the epoch-stable class for leakage-by-inference.
+  - id: a-06-multimodal-physical-ai
+    layer: ATTACK
+    kind: category
+    name: Multi-modal & Physical-AI Attacks
+    purpose: Semantic attacks past the text box — image/voice/camera injection, adversarial visuals; no RF (§3.7).
+    coverage: Very Low
+    tools: 5
+    atlas_tactics: [AML.TA0000, AML.TA0001]
+    owasp_llm:
+      "2026": [LLM01]
+      v2: [LLM01]
+    notes: vlm-image-injector, adversarial clothing/patches/camera packs,
+      audio-voice-clone-injector (pairs with C-7's software DSP pack);
+      techniques T0041 Physical Environment Access (TA0000 AI Model
+      Access — the camera/sensor channel), T0043 Craft Adversarial Data
+      + T0043.004 Insert Backdoor Trigger (TA0001 AI Attack Staging),
+      T0088 Generate Deepfakes (TA0001); cross-modal prompt injection is
+      folded into LLM01:2026 by the 2026 preface.
+  - id: a-07-ai-system-exploitation
+    layer: ATTACK
+    kind: category
+    name: AI System Exploitation
+    purpose: Exploit deployed AI platform services — inference servers, gateways, vector stores (§6.5 pairing thesis).
+    coverage: Very Low
+    tools: 9
+    atlas_tactics: [AML.TA0004, AML.TA0005, AML.TA0010]
+    owasp_llm:
+      "2026": [LLM02, LLM10]
+      v2: [LLM02, LLM10]
+    notes: mlflow-bypass, the *-pwn probes, shadow-ray (ATLAS case study
+      CS0023 ShadowRay), vector-db-ripper; T0010/T0049 Exploit
+      Public-Facing Application (Initial Access, the exposed-service
+      class) + T0050 Command and Scripting Interpreter (Execution) +
+      T0057 LLM Data Leakage / T0024.002 Extract AI Model (Exfiltration);
+      LLM02 — sensitive-data exposure via the misconfigured platform
+      (the v2:2025 LLM02 class is Sensitive Information Disclosure, the
+      same class).
+  - id: a-08-data-poisoning
+    layer: ATTACK
+    kind: category
+    name: Data Poisoning & Dataset Attacks
+    purpose: Upstream-of-model attack tooling — dataset poisoning, backdoored training data, split-view replay.
+    coverage: Very Low
+    tools: 6
+    atlas_tactics: [AML.TA0001, AML.TA0006]
+    owasp_llm:
+      "2026": [LLM05]
+      v2: [LLM04]
+    notes: poison-dataset-builder, trojai/trojan-lm toolkits,
+      prompt-backdoor-tool, data-exfil-via-poison, split-view-replay;
+      techniques T0020 Training Data Poisoning (2026.07 dataset
+      placement Persistence) and T0018.000 Poison AI Model (staging);
+      LLM05 — the 2026 Data and Model Poisoning class (v2:2025 = LLM04).
