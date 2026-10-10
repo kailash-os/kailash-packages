@@ -40,4 +40,28 @@ schema_version: 1
 
 # Table intentionally empty: header-only manifest (KA-02.2 #67).
 # KA-05.1 fills Layer ATTACK first; KA-05.2/05.3 follow with the rest.
-tools: []
+tools:
+  - id: broken-duplicate-seed
+    layer: ATTACK
+    category: a-02-prompt-injection-jailbreaks
+    name: broken duplicate seed
+    description: deliberately duplicate id for the KA-15.2 negative-gate RED run (removed in the restore commit)
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/broken-duplicate-seed/default.nix
+    safety:
+      level: safe
+    atlas_tactics: [AML.T0051]
+  - id: broken-duplicate-seed
+    layer: ATTACK
+    category: a-02-prompt-injection-jailbreaks
+    name: broken duplicate seed
+    description: deliberately duplicate id for the KA-15.2 negative-gate RED run (removed in the restore commit)
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/broken-duplicate-seed/default.nix
+    safety:
+      level: safe
+    atlas_tactics: [AML.T0051]
