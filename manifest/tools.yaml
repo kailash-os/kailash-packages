@@ -40,4 +40,2896 @@ schema_version: 1
 
 # Table intentionally empty: header-only manifest (KA-02.2 #67).
 # KA-05.1 fills Layer ATTACK first; KA-05.2/05.3 follow with the rest.
-tools: []
+# CLASSIC rows transcribed per the census (KA-05.2; issue kailash-os#75).
+tools:
+  - id: nmap
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: nmap
+    description: "Network scanner and security mapper — host/port discovery and service enumeration."
+    source:
+      vcs_owner: nmap
+      repo: nmap
+      vcs_url: "https://github.com/nmap/nmap"
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "nmap.svg"
+      exec: nmap
+      category: c-01-information-gathering
+    docs: layers/c-01/nmap.md
+    tags: [classic, native, recon, update:slow]
+  - id: masscan
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: masscan
+    description: "Mass IP port scanner — the whole internet in minutes."
+    source:
+      vcs_owner: robertdavidgraham
+      repo: masscan
+      vcs_url: "https://github.com/robertdavidgraham/masscan"
+    license: "AGPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "masscan.svg"
+      exec: masscan
+      category: c-01-information-gathering
+    docs: layers/c-01/masscan.md
+    tags: [classic, native, recon, update:slow]
+  - id: rustscan
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: rustscan
+    description: Fast port scanner that pipes results into Nmap.
+    source:
+      vcs_owner: bee-san
+      repo: RustScan
+      vcs_url: "https://github.com/bee-san/RustScan"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "rustscan.svg"
+      exec: rustscan
+      category: c-01-information-gathering
+    docs: layers/c-01/rustscan.md
+    tags: [classic, native, recon, update:slow]
+  - id: zenmap
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: zenmap
+    description: Official Nmap Security Scanner GUI.
+    source:
+      vcs_owner: nmap
+      repo: nmap
+      vcs_url: "https://github.com/nmap/nmap"
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "zenmap.svg"
+      exec: zenmap
+      category: c-01-information-gathering
+    docs: layers/c-01/zenmap.md
+    tags: [classic, native, recon, update:slow]
+  - id: the-harvester
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: "the-harvester"
+    description: Gathers emails, subdomains and names from public sources.
+    source:
+      vcs_owner: laramies
+      repo: theharvester
+      vcs_url: "https://github.com/laramies/theharvester"
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "the-harvester.svg"
+      exec: the-harvester
+      category: c-01-information-gathering
+    docs: layers/c-01/the-harvester.md
+    tags: [classic, native, recon, update:slow]
+  - id: amass
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: amass
+    description: "In-depth DNS enumeration and network mapping (OWASP Amass)."
+    source:
+      vcs_owner: owasp-amass
+      repo: Amass
+      vcs_url: "https://github.com/owasp-amass/Amass"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "amass.svg"
+      exec: amass
+      category: c-01-information-gathering
+    docs: layers/c-01/amass.md
+    tags: [classic, native, recon, update:slow]
+  - id: recon-ng
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: "recon-ng"
+    description: "Full-featured reconnaissance framework with a web-style module environment."
+    source:
+      vcs_owner: lanmaster53
+      repo: recon-ng
+      vcs_url: "https://github.com/lanmaster53/recon-ng"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "recon-ng.svg"
+      exec: recon-ng
+      category: c-01-information-gathering
+    docs: layers/c-01/recon-ng.md
+    tags: [classic, native, recon, update:slow]
+  - id: sublist3r
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: sublist3r
+    description: Subdomain enumeration using public search engines and services.
+    source:
+      vcs_owner: aboul3la
+      repo: Sublist3r
+      vcs_url: "https://github.com/aboul3la/Sublist3r"
+    license: "GPL-2.0-only"
+    packaging:
+      status: bespoke
+      derivation: pkgs/sublist3r/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "sublist3r.svg"
+      exec: sublist3r
+      category: c-01-information-gathering
+    docs: layers/c-01/sublist3r.md
+    tags: [bespoke, classic, recon]
+  - id: maltego-community
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: "maltego-community"
+    description: "OSINT graph platform — community edition, unfree licence."
+    license: "LicenseRef-Proprietary"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "maltego-community.svg"
+      exec: maltego-community
+      category: c-01-information-gathering
+    docs: layers/c-01/maltego-community.md
+    tags: [classic, native, recon, update:slow]
+  - id: dmitry
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: dmitry
+    description: "Deepmagic information-gathering tool — whois, subdomains, emails."
+    source:
+      vcs_owner: jaygreig86
+      repo: dmitry
+      vcs_url: "https://github.com/jaygreig86/dmitry"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "dmitry.svg"
+      exec: dmitry
+      category: c-01-information-gathering
+    docs: layers/c-01/dmitry.md
+    tags: [classic, native, recon, update:slow]
+  - id: fierce
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: fierce
+    description: "DNS reconnaissance for locating non-contiguous IP space."
+    source:
+      vcs_owner: mschwager
+      repo: fierce
+      vcs_url: "https://github.com/mschwager/fierce"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "fierce.svg"
+      exec: fierce
+      category: c-01-information-gathering
+    docs: layers/c-01/fierce.md
+    tags: [classic, native, recon, update:slow]
+  - id: dnsrecon
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: dnsrecon
+    description: "DNS enumeration script — zone transfers, records, reverse lookups (overlay pin)."
+    source:
+      vcs_owner: darkoperator
+      repo: dnsrecon
+      vcs_url: "https://github.com/darkoperator/dnsrecon"
+    license: "GPL-2.0-only"
+    packaging:
+      status: bespoke
+      derivation: pkgs/dnsrecon/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "dnsrecon.svg"
+      exec: dnsrecon
+      category: c-01-information-gathering
+    docs: layers/c-01/dnsrecon.md
+    tags: [bespoke, classic, recon]
+  - id: dnsenum
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: dnsenum
+    description: Enumerates DNS information including subdomains.
+    source:
+      vcs_owner: SparrowOchon
+      repo: dnsenum2
+      vcs_url: "https://github.com/SparrowOchon/dnsenum2"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "dnsenum.svg"
+      exec: dnsenum
+      category: c-01-information-gathering
+    docs: layers/c-01/dnsenum.md
+    tags: [classic, native, recon, update:slow]
+  - id: dnsmap
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: dnsmap
+    description: "Scans for subdomains using brute-force techniques."
+    source:
+      vcs_owner: resurrecting-open-source-projects
+      repo: dnsmap
+      vcs_url: "https://github.com/resurrecting-open-source-projects/dnsmap"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "dnsmap.svg"
+      exec: dnsmap
+      category: c-01-information-gathering
+    docs: layers/c-01/dnsmap.md
+    tags: [classic, native, recon, update:slow]
+  - id: massdns
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: massdns
+    description: Resolves large amounts of domain names.
+    source:
+      vcs_owner: blechschmidt
+      repo: massdns
+      vcs_url: "https://github.com/blechschmidt/massdns"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "massdns.svg"
+      exec: massdns
+      category: c-01-information-gathering
+    docs: layers/c-01/massdns.md
+    tags: [classic, native, recon, update:slow]
+  - id: assetfinder
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: assetfinder
+    description: Finds domains and subdomains related to a given domain.
+    source:
+      vcs_owner: tomnomnom
+      repo: assetfinder
+      vcs_url: "https://github.com/tomnomnom/assetfinder"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "assetfinder.svg"
+      exec: assetfinder
+      category: c-01-information-gathering
+    docs: layers/c-01/assetfinder.md
+    tags: [classic, native, recon, update:slow]
+  - id: findomain
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: findomain
+    description: "Fastest cross-platform subdomain enumerator."
+    source:
+      vcs_owner: findomain
+      repo: findomain
+      vcs_url: "https://github.com/findomain/findomain"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: stale
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "findomain.svg"
+      exec: findomain
+      category: c-01-information-gathering
+    docs: layers/c-01/findomain.md
+    tags: [classic, recon, stale, update:fast]
+  - id: gobuster
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: gobuster
+    description: "Brute-forces URIs, DNS subdomains, virtual hosts and open ports."
+    source:
+      vcs_owner: OJ
+      repo: gobuster
+      vcs_url: "https://github.com/OJ/gobuster"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "gobuster.svg"
+      exec: gobuster
+      category: c-01-information-gathering
+    docs: layers/c-01/gobuster.md
+    tags: [classic, native, recon, update:slow]
+  - id: dirb
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: dirb
+    description: Web content scanner.
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "dirb.svg"
+      exec: dirb
+      category: c-01-information-gathering
+    docs: layers/c-01/dirb.md
+    tags: [classic, native, recon, update:slow]
+  - id: dirsearch
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: dirsearch
+    description: "Command-line web-path brute-forcer for directories and files."
+    source:
+      vcs_owner: maurosoria
+      repo: dirsearch
+      vcs_url: "https://github.com/maurosoria/dirsearch"
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "dirsearch.svg"
+      exec: dirsearch
+      category: c-01-information-gathering
+    docs: layers/c-01/dirsearch.md
+    tags: [classic, native, recon, update:slow]
+  - id: feroxbuster
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: feroxbuster
+    description: Recursive content discovery tool (Rust).
+    source:
+      vcs_owner: epi052
+      repo: feroxbuster
+      vcs_url: "https://github.com/epi052/feroxbuster"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "feroxbuster.svg"
+      exec: feroxbuster
+      category: c-01-information-gathering
+    docs: layers/c-01/feroxbuster.md
+    tags: [classic, native, recon, update:slow]
+  - id: ffuf
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: ffuf
+    description: Fast web fuzzer written in Go.
+    source:
+      vcs_owner: ffuf
+      repo: ffuf
+      vcs_url: "https://github.com/ffuf/ffuf"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "ffuf.svg"
+      exec: ffuf
+      category: c-01-information-gathering
+    docs: layers/c-01/ffuf.md
+    tags: [classic, native, recon, update:slow]
+  - id: wfuzz
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: wfuzz
+    description: Web content fuzzer for web application assessment.
+    source:
+      vcs_owner: xmendez
+      repo: wfuzz
+      vcs_url: "https://github.com/xmendez/wfuzz"
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "wfuzz.svg"
+      exec: wfuzz
+      category: c-01-information-gathering
+    docs: layers/c-01/wfuzz.md
+    tags: [classic, native, recon, update:slow]
+  - id: whatweb
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: whatweb
+    description: "Next-generation web scanner — technology fingerprinting."
+    source:
+      vcs_owner: urbanadventurer
+      repo: whatweb
+      vcs_url: "https://github.com/urbanadventurer/whatweb"
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "whatweb.svg"
+      exec: whatweb
+      category: c-01-information-gathering
+    docs: layers/c-01/whatweb.md
+    tags: [classic, native, recon, update:slow]
+  - id: wafw00f
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: wafw00f
+    description: Identifies and fingerprints web application firewalls.
+    source:
+      vcs_owner: EnableSecurity
+      repo: wafw00f
+      vcs_url: "https://github.com/EnableSecurity/wafw00f"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "wafw00f.svg"
+      exec: wafw00f
+      category: c-01-information-gathering
+    docs: layers/c-01/wafw00f.md
+    tags: [classic, native, recon, update:slow]
+  - id: arjun
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: arjun
+    description: HTTP parameter discovery suite.
+    source:
+      vcs_owner: s0md3v
+      repo: Arjun
+      vcs_url: "https://github.com/s0md3v/Arjun"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "arjun.svg"
+      exec: arjun
+      category: c-01-information-gathering
+    docs: layers/c-01/arjun.md
+    tags: [classic, native, recon, update:slow]
+  - id: uro
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: uro
+    description: Declutters URL lists for crawling and pentesting.
+    source:
+      vcs_owner: s0md3v
+      repo: uro
+      vcs_url: "https://github.com/s0md3v/uro"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "uro.svg"
+      exec: uro
+      category: c-01-information-gathering
+    docs: layers/c-01/uro.md
+    tags: [classic, native, recon, update:slow]
+  - id: photon
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: photon
+    description: "Lightning-fast web crawler extracting URLs and OSINT intel."
+    source:
+      vcs_owner: s0md3v
+      repo: Photon
+      vcs_url: "https://github.com/s0md3v/Photon"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "photon.svg"
+      exec: photon
+      category: c-01-information-gathering
+    docs: layers/c-01/photon.md
+    tags: [classic, native, recon, update:slow]
+  - id: sherlock
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: sherlock
+    description: "Hunts down social-media accounts by username across sites."
+    source:
+      vcs_owner: sherlock-project
+      repo: sherlock
+      vcs_url: "https://github.com/sherlock-project/sherlock"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "sherlock.svg"
+      exec: sherlock
+      category: c-01-information-gathering
+    docs: layers/c-01/sherlock.md
+    tags: [classic, native, recon, update:slow]
+  - id: spiderfoot
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: spiderfoot
+    description: "OSINT automation platform — collects intel about a target from public sources."
+    source:
+      vcs_owner: smicallef
+      repo: spiderfoot
+      vcs_url: "https://github.com/smicallef/spiderfoot"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/spiderfoot/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "spiderfoot.svg"
+      exec: spiderfoot
+      category: c-01-information-gathering
+    docs: layers/c-01/spiderfoot.md
+    tags: [bespoke, classic, recon]
+  - id: httpx
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: httpx
+    description: "Fast and multi-purpose HTTP toolkit."
+    source:
+      vcs_owner: projectdiscovery
+      repo: httpx
+      vcs_url: "https://github.com/projectdiscovery/httpx"
+    license: MIT
+    packaging:
+      status: stale
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "httpx.svg"
+      exec: httpx
+      category: c-01-information-gathering
+    docs: layers/c-01/httpx.md
+    tags: [classic, recon, stale, update:fast]
+  - id: gospider
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: gospider
+    description: Fast web spider written in Go.
+    source:
+      vcs_owner: jaeles-project
+      repo: gospider
+      vcs_url: "https://github.com/jaeles-project/gospider"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "gospider.svg"
+      exec: gospider
+      category: c-01-information-gathering
+    docs: layers/c-01/gospider.md
+    tags: [classic, native, recon, update:slow]
+  - id: hakrawler
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: hakrawler
+    description: Web crawler for endpoint and asset discovery.
+    source:
+      vcs_owner: hakluke
+      repo: hakrawler
+      vcs_url: "https://github.com/hakluke/hakrawler"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "hakrawler.svg"
+      exec: hakrawler
+      category: c-01-information-gathering
+    docs: layers/c-01/hakrawler.md
+    tags: [classic, native, recon, update:slow]
+  - id: arp-scan
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: "arp-scan"
+    description: ARP scanning and fingerprinting tool (ethernet, not RF).
+    source:
+      vcs_owner: royhills
+      repo: arp-scan
+      vcs_url: "https://github.com/royhills/arp-scan"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "arp-scan.svg"
+      exec: arp-scan
+      category: c-01-information-gathering
+    docs: layers/c-01/arp-scan.md
+    tags: [classic, native, recon, update:slow]
+  - id: netdiscover
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: netdiscover
+    description: "Network address discovery via ARP — kept per the §3.2 ethernet rule."
+    source:
+      vcs_owner: netdiscover-scanner
+      repo: netdiscover
+      vcs_url: "https://github.com/netdiscover-scanner/netdiscover"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "netdiscover.svg"
+      exec: netdiscover
+      category: c-01-information-gathering
+    docs: layers/c-01/netdiscover.md
+    tags: [classic, native, recon, update:slow]
+  - id: katana
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: katana
+    description: "Next-generation crawling and spidering framework."
+    source:
+      vcs_owner: projectdiscovery
+      repo: katana
+      vcs_url: "https://github.com/projectdiscovery/katana"
+    license: MIT
+    packaging:
+      status: stale
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "katana.svg"
+      exec: katana
+      category: c-01-information-gathering
+    docs: layers/c-01/katana.md
+    tags: [classic, recon, stale, update:fast]
+  - id: subfinder
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: subfinder
+    description: "Subdomain discovery tool — overlay pin (pkgs/subfinder, KA-02.3)."
+    source:
+      vcs_owner: projectdiscovery
+      repo: subfinder
+      vcs_url: "https://github.com/projectdiscovery/subfinder"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/subfinder/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "subfinder.svg"
+      exec: subfinder
+      category: c-01-information-gathering
+    docs: layers/c-01/subfinder.md
+    tags: [bespoke, classic, recon, update:fast]
+  - id: puredns
+    layer: CLASSIC
+    category: c-01-information-gathering
+    name: puredns
+    description: "Domain resolver and subdomain brute-forcing tool."
+    source:
+      vcs_owner: d3mondev
+      repo: puredns
+      vcs_url: "https://github.com/d3mondev/puredns"
+    license: "GPL-3.0-only"
+    packaging:
+      status: stale
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "puredns.svg"
+      exec: puredns
+      category: c-01-information-gathering
+    docs: layers/c-01/puredns.md
+    tags: [classic, recon, stale]
+  - id: nikto
+    layer: CLASSIC
+    category: c-02-vulnerability-analysis
+    name: nikto
+    description: Web server scanner performing tests for dangerous files and misconfigurations.
+    source:
+      vcs_owner: sullo
+      repo: nikto
+      vcs_url: "https://github.com/sullo/nikto"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "nikto.svg"
+      exec: nikto
+      category: c-02-vulnerability-analysis
+    docs: layers/c-02/nikto.md
+    tags: [classic, native, scanner, update:slow]
+  - id: lynis
+    layer: CLASSIC
+    category: c-02-vulnerability-analysis
+    name: lynis
+    description: Security auditing tool for Linux, macOS and UNIX systems.
+    source:
+      vcs_owner: CISOfy
+      repo: lynis
+      vcs_url: "https://github.com/CISOfy/lynis"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "lynis.svg"
+      exec: lynis
+      category: c-02-vulnerability-analysis
+    docs: layers/c-02/lynis.md
+    tags: [classic, native, scanner, update:slow]
+  - id: wapiti
+    layer: CLASSIC
+    category: c-02-vulnerability-analysis
+    name: wapiti
+    description: Web application vulnerability scanner.
+    source:
+      vcs_owner: wapiti-scanner
+      repo: wapiti
+      vcs_url: "https://github.com/wapiti-scanner/wapiti"
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "wapiti.svg"
+      exec: wapiti
+      category: c-02-vulnerability-analysis
+    docs: layers/c-02/wapiti.md
+    tags: [classic, native, scanner, update:slow]
+  - id: legion
+    layer: CLASSIC
+    category: c-02-vulnerability-analysis
+    name: legion
+    description: "Semi-automated network pentesting framework with a GUI."
+    license: "GPL-3.0-only"
+    packaging:
+      status: bespoke
+      derivation: pkgs/legion/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "legion.svg"
+      exec: legion
+      category: c-02-vulnerability-analysis
+    docs: layers/c-02/legion.md
+    tags: [bespoke, classic, scanner]
+  - id: searchsploit
+    layer: CLASSIC
+    category: c-02-vulnerability-analysis
+    name: searchsploit
+    description: Exploit Database search CLI (ships with the exploitdb archive).
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "searchsploit.svg"
+      exec: searchsploit
+      category: c-02-vulnerability-analysis
+    docs: layers/c-02/searchsploit.md
+    tags: [classic, native, scanner, update:slow]
+  - id: nuclei
+    layer: CLASSIC
+    category: c-02-vulnerability-analysis
+    name: nuclei
+    description: "Configurable targeted vulnerability scanner — overlay-currency class."
+    source:
+      vcs_owner: projectdiscovery
+      repo: nuclei
+      vcs_url: "https://github.com/projectdiscovery/nuclei"
+    license: MIT
+    packaging:
+      status: stale
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "nuclei.svg"
+      exec: nuclei
+      category: c-02-vulnerability-analysis
+    docs: layers/c-02/nuclei.md
+    tags: [classic, scanner, stale, update:fast]
+  - id: gvm
+    layer: CLASSIC
+    category: c-02-vulnerability-analysis
+    name: gvm
+    description: "Greenbone Vulnerability Management — ships as services.kailash.gvm, not loose tools."
+    source:
+      vcs_owner: greenbone
+      repo: gvm-libs
+      vcs_url: "https://github.com/greenbone/gvm-libs"
+    license: "AGPL-3.0-only"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "gvm.svg"
+      exec: gvm
+      category: c-02-vulnerability-analysis
+    docs: layers/c-02/gvm.md
+    tags: [classic, module, scanner, update:slow]
+  - id: burpsuite
+    layer: CLASSIC
+    category: c-03-web-application-assessment
+    name: burpsuite
+    description: "Integrated platform for web security testing — free edition, pinned (KA-07.1)."
+    license: "LicenseRef-Proprietary"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "burpsuite.svg"
+      exec: burpsuite
+      category: c-03-web-application-assessment
+    docs: layers/c-03/burpsuite.md
+    tags: [classic, native, update:slow, web]
+  - id: zaproxy
+    layer: CLASSIC
+    category: c-03-web-application-assessment
+    secondary_categories: [c-10-runtime-appsec-ai]
+    name: zaproxy
+    description: "OWASP ZAP — web app penetration-testing proxy."
+    source:
+      vcs_owner: zaproxy
+      repo: zaproxy
+      vcs_url: "https://github.com/zaproxy/zaproxy"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "zaproxy.svg"
+      exec: zaproxy
+      category: c-03-web-application-assessment
+    docs: layers/c-03/zaproxy.md
+    tags: [classic, native, web]
+  - id: caido
+    layer: CLASSIC
+    category: c-03-web-application-assessment
+    name: caido
+    description: "Lightweight web security auditing toolkit (free tier), pinned (KA-07.1)."
+    license: "LicenseRef-Proprietary"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "caido.svg"
+      exec: caido
+      category: c-03-web-application-assessment
+    docs: layers/c-03/caido.md
+    tags: [classic, native, update:slow, web]
+  - id: graphw00f
+    layer: CLASSIC
+    category: c-03-web-application-assessment
+    name: graphw00f
+    description: GraphQL server engine fingerprinting utility.
+    source:
+      vcs_owner: dolevf
+      repo: graphw00f
+      vcs_url: "https://github.com/dolevf/graphw00f"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "graphw00f.svg"
+      exec: graphw00f
+      category: c-03-web-application-assessment
+    docs: layers/c-03/graphw00f.md
+    tags: [classic, native, update:slow, web]
+  - id: clairvoyance
+    layer: CLASSIC
+    category: c-03-web-application-assessment
+    name: clairvoyance
+    description: "Obtains GraphQL API schemas from introspection-disabled endpoints."
+    source:
+      vcs_owner: nikitastupin
+      repo: clairvoyance
+      vcs_url: "https://github.com/nikitastupin/clairvoyance"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "clairvoyance.svg"
+      exec: clairvoyance
+      category: c-03-web-application-assessment
+    docs: layers/c-03/clairvoyance.md
+    tags: [classic, native, update:slow, web]
+  - id: inql
+    layer: CLASSIC
+    category: c-03-web-application-assessment
+    secondary_categories: [c-04-database-assessment]
+    name: inql
+    description: "Security testing tool for GraphQL — query/schema analysis."
+    source:
+      vcs_owner: doyensec
+      repo: inql
+      vcs_url: "https://github.com/doyensec/inql"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/inql/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "inql.svg"
+      exec: inql
+      category: c-03-web-application-assessment
+    docs: layers/c-03/inql.md
+    tags: [bespoke, classic, web]
+  - id: kiterunner
+    layer: CLASSIC
+    category: c-03-web-application-assessment
+    name: kiterunner
+    description: Contextual content discovery tool for API routes.
+    source:
+      vcs_owner: assetnote
+      repo: kiterunner
+      vcs_url: "https://github.com/assetnote/kiterunner"
+    license: "AGPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "kiterunner.svg"
+      exec: kiterunner
+      category: c-03-web-application-assessment
+    docs: layers/c-03/kiterunner.md
+    tags: [classic, native, update:slow, web]
+  - id: gopherus
+    layer: CLASSIC
+    category: c-03-web-application-assessment
+    name: gopherus
+    description: Generates serialized payloads for SSRF/gopher attacks on internal services.
+    source:
+      vcs_owner: tarlogicsecurity
+      repo: gopherus
+      vcs_url: "https://github.com/tarlogicsecurity/gopherus"
+    license: "GPL-3.0-only"
+    packaging:
+      status: bespoke
+      derivation: pkgs/gopherus/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "gopherus.svg"
+      exec: gopherus
+      category: c-03-web-application-assessment
+    docs: layers/c-03/gopherus.md
+    tags: [bespoke, classic, web]
+  - id: commix
+    layer: CLASSIC
+    category: c-03-web-application-assessment
+    secondary_categories: [c-08-exploitation-post-exploitation]
+    name: commix
+    description: "Automated all-in-one OS command-injection exploitation tool."
+    source:
+      vcs_owner: commixproject
+      repo: commix
+      vcs_url: "https://github.com/commixproject/commix"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "commix.svg"
+      exec: commix
+      category: c-03-web-application-assessment
+    docs: layers/c-03/commix.md
+    tags: [classic, native, update:slow, web]
+  - id: sstimap
+    layer: CLASSIC
+    category: c-03-web-application-assessment
+    name: sstimap
+    description: "SSTI detection and exploitation assistant (Server-Side Template Injection)."
+    source:
+      vcs_owner: vladko312
+      repo: SSTImap
+      vcs_url: "https://github.com/vladko312/SSTImap"
+    license: "GPL-3.0-only"
+    packaging:
+      status: bespoke
+      derivation: pkgs/sstimap/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "sstimap.svg"
+      exec: sstimap
+      category: c-03-web-application-assessment
+    docs: layers/c-03/sstimap.md
+    tags: [bespoke, classic, web]
+  - id: sqlmap
+    layer: CLASSIC
+    category: c-04-database-assessment
+    secondary_categories: [c-03-web-application-assessment]
+    name: sqlmap
+    description: Automatic SQL injection and database takeover tool.
+    source:
+      vcs_owner: sqlmapproject
+      repo: sqlmap
+      vcs_url: "https://github.com/sqlmapproject/sqlmap"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "sqlmap.svg"
+      exec: sqlmap
+      category: c-04-database-assessment
+    docs: layers/c-04/sqlmap.md
+    tags: [classic, database, native, update:slow]
+  - id: mssql-cli
+    layer: CLASSIC
+    category: c-04-database-assessment
+    name: "mssql-cli"
+    description: "Command-line interface for SQL Server with autocompletion."
+    source:
+      vcs_owner: dbcli
+      repo: mssql-cli
+      vcs_url: "https://github.com/dbcli/mssql-cli"
+    license: "BSD-3-Clause"
+    packaging:
+      status: bespoke
+      derivation: pkgs/mssql-cli/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mssql-cli.svg"
+      exec: mssql-cli
+      category: c-04-database-assessment
+    docs: layers/c-04/mssql-cli.md
+    tags: [bespoke, classic, database]
+  - id: psql
+    layer: CLASSIC
+    category: c-04-database-assessment
+    name: psql
+    description: "Interactive terminal for PostgreSQL — front-end enumeration support."
+    source:
+      vcs_owner: postgres
+      repo: postgres
+      vcs_url: "https://github.com/postgres/postgres"
+    license: PostgreSQL
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "psql.svg"
+      exec: psql
+      category: c-04-database-assessment
+    docs: layers/c-04/psql.md
+    tags: [classic, database, native, update:slow]
+  - id: redis-cli
+    layer: CLASSIC
+    category: c-04-database-assessment
+    name: "redis-cli"
+    description: "Redis command-line client — front-end enumeration support."
+    source:
+      vcs_owner: redis
+      repo: redis
+      vcs_url: "https://github.com/redis/redis"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "redis-cli.svg"
+      exec: redis-cli
+      category: c-04-database-assessment
+    docs: layers/c-04/redis-cli.md
+    tags: [classic, database, native, update:slow]
+  - id: mongosh
+    layer: CLASSIC
+    category: c-04-database-assessment
+    name: mongosh
+    description: "MongoDB Shell — front-end enumeration support."
+    source:
+      vcs_owner: mongodb-js
+      repo: mongosh
+      vcs_url: "https://github.com/mongodb-js/mongosh"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mongosh.svg"
+      exec: mongosh
+      category: c-04-database-assessment
+    docs: layers/c-04/mongosh.md
+    tags: [classic, database, native, update:slow]
+  - id: sqlitebrowser
+    layer: CLASSIC
+    category: c-04-database-assessment
+    name: sqlitebrowser
+    description: "DB Browser for SQLite — artefact inspection front-end."
+    source:
+      vcs_owner: sqlitebrowser
+      repo: sqlitebrowser
+      vcs_url: "https://github.com/sqlitebrowser/sqlitebrowser"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "sqlitebrowser.svg"
+      exec: sqlitebrowser
+      category: c-04-database-assessment
+    docs: layers/c-04/sqlitebrowser.md
+    tags: [classic, database, native, update:slow]
+  - id: mycli
+    layer: CLASSIC
+    category: c-04-database-assessment
+    name: mycli
+    description: "Command-line interface for MySQL with autocompletion."
+    source:
+      vcs_owner: dbcli
+      repo: mycli
+      vcs_url: "https://github.com/dbcli/mycli"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mycli.svg"
+      exec: mycli
+      category: c-04-database-assessment
+    docs: layers/c-04/mycli.md
+    tags: [classic, database, native, update:slow]
+  - id: hashcat
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: hashcat
+    description: "Fast password cracker with GPU support and a rule-based engine."
+    source:
+      vcs_owner: NixOS
+      repo: nixpkgs
+      vcs_url: "https://github.com/NixOS/nixpkgs"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "hashcat.svg"
+      exec: hashcat
+      category: c-05-password-offline-credential
+    docs: layers/c-05/hashcat.md
+    tags: [classic, native, passwords, update:slow]
+  - id: john
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: john
+    description: John the Ripper password cracker (Jumbo build).
+    source:
+      vcs_owner: openwall
+      repo: john
+      vcs_url: "https://github.com/openwall/john"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "john.svg"
+      exec: john
+      category: c-05-password-offline-credential
+    docs: layers/c-05/john.md
+    tags: [classic, native, passwords, update:slow]
+  - id: johnny
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: johnny
+    description: "Open-source GUI frontend for John the Ripper."
+    source:
+      vcs_owner: openwall
+      repo: johnny
+      vcs_url: "https://github.com/openwall/johnny"
+    license: "BSD-2-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "johnny.svg"
+      exec: johnny
+      category: c-05-password-offline-credential
+    docs: layers/c-05/johnny.md
+    tags: [classic, native, passwords, update:slow]
+  - id: ophcrack
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: ophcrack
+    description: Windows password cracker based on rainbow tables.
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "ophcrack.svg"
+      exec: ophcrack
+      category: c-05-password-offline-credential
+    docs: layers/c-05/ophcrack.md
+    tags: [classic, native, passwords, update:slow]
+  - id: crunch
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: crunch
+    description: Wordlist generator.
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "crunch.svg"
+      exec: crunch
+      category: c-05-password-offline-credential
+    docs: layers/c-05/crunch.md
+    tags: [classic, native, passwords, update:slow]
+  - id: cewl
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: cewl
+    description: Custom wordlist generator that spiders a target URL.
+    source:
+      vcs_owner: digininja
+      repo: CeWL
+      vcs_url: "https://github.com/digininja/CeWL"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "cewl.svg"
+      exec: cewl
+      category: c-05-password-offline-credential
+    docs: layers/c-05/cewl.md
+    tags: [classic, native, passwords, update:slow]
+  - id: maskgen
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: maskgen
+    description: Generates optimized hashcat masks from password lists (PACK kit).
+    source:
+      vcs_owner: iphelix
+      repo: pack
+      vcs_url: "https://github.com/iphelix/pack"
+    license: "BSD-3-Clause"
+    packaging:
+      status: bespoke
+      derivation: pkgs/maskgen/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "maskgen.svg"
+      exec: maskgen
+      category: c-05-password-offline-credential
+    docs: layers/c-05/maskgen.md
+    tags: [bespoke, classic, passwords]
+  - id: policygen
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: policygen
+    description: "Generates hashcat mask policies from password-policy samples (PACK kit)."
+    source:
+      vcs_owner: iphelix
+      repo: pack
+      vcs_url: "https://github.com/iphelix/pack"
+    license: "BSD-3-Clause"
+    packaging:
+      status: bespoke
+      derivation: pkgs/policygen/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "policygen.svg"
+      exec: policygen
+      category: c-05-password-offline-credential
+    docs: layers/c-05/policygen.md
+    tags: [bespoke, classic, passwords]
+  - id: statsgen
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: statsgen
+    description: "Password-list statistics generator for mask analysis (PACK kit)."
+    source:
+      vcs_owner: iphelix
+      repo: pack
+      vcs_url: "https://github.com/iphelix/pack"
+    license: "BSD-3-Clause"
+    packaging:
+      status: bespoke
+      derivation: pkgs/statsgen/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "statsgen.svg"
+      exec: statsgen
+      category: c-05-password-offline-credential
+    docs: layers/c-05/statsgen.md
+    tags: [bespoke, classic, passwords]
+  - id: hashid
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: hashid
+    description: Identifies hash types from their format.
+    source:
+      vcs_owner: psypanda
+      repo: hashID
+      vcs_url: "https://github.com/psypanda/hashID"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "hashid.svg"
+      exec: hashid
+      category: c-05-password-offline-credential
+    docs: layers/c-05/hashid.md
+    tags: [classic, native, passwords, update:slow]
+  - id: hash-identifier
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: "hash-identifier"
+    description: Identifies the hash algorithm used to encrypt data.
+    source:
+      vcs_owner: blackploit
+      repo: hash-identifier
+      vcs_url: "https://github.com/blackploit/hash-identifier"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "hash-identifier.svg"
+      exec: hash-identifier
+      category: c-05-password-offline-credential
+    docs: layers/c-05/hash-identifier.md
+    tags: [classic, native, passwords, update:slow]
+  - id: bopscrk
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: bopscrk
+    description: "Smart wordlist generator that combines target-related words with transformations."
+    source:
+      vcs_owner: r3nt0n
+      repo: bopscrk
+      vcs_url: "https://github.com/r3nt0n/bopscrk"
+    license: "GPL-3.0-only"
+    packaging:
+      status: bespoke
+      derivation: pkgs/bopscrk/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "bopscrk.svg"
+      exec: bopscrk
+      category: c-05-password-offline-credential
+    docs: layers/c-05/bopscrk.md
+    tags: [bespoke, classic, passwords]
+  - id: rsmangler
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: rsmangler
+    description: Performs various manipulations on wordlists (mangling).
+    source:
+      vcs_owner: digininja
+      repo: RSMangler
+      vcs_url: "https://github.com/digininja/RSMangler"
+    license: "CC-BY-SA-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "rsmangler.svg"
+      exec: rsmangler
+      category: c-05-password-offline-credential
+    docs: layers/c-05/rsmangler.md
+    tags: [classic, native, passwords, update:slow]
+  - id: twofi
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: twofi
+    description: "Twofi — words of interest from Twitter for password cracking lists."
+    source:
+      vcs_owner: digininja
+      repo: twofi
+      vcs_url: "https://github.com/digininja/twofi"
+    license: "CC-BY-SA-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/twofi/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "twofi.svg"
+      exec: twofi
+      category: c-05-password-offline-credential
+    docs: layers/c-05/twofi.md
+    tags: [bespoke, classic, passwords]
+  - id: seclists
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: seclists
+    description: "Collection of security wordlists (passwords, usernames, URLs) — the opt-in wordlist pack seed row for KA-07.2."
+    source:
+      vcs_owner: danielmiessler
+      repo: SecLists
+      vcs_url: "https://github.com/danielmiessler/SecLists"
+    license: MIT
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "seclists.svg"
+      exec: seclists
+      category: c-05-password-offline-credential
+    docs: layers/c-05/seclists.md
+    tags: [classic, data, update:slow, wordlists]
+  - id: ghidra
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: ghidra
+    description: "Software reverse-engineering suite of tools (NSA)."
+    source:
+      vcs_owner: NationalSecurityAgency
+      repo: ghidra
+      vcs_url: "https://github.com/NationalSecurityAgency/ghidra"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "ghidra.svg"
+      exec: ghidra
+      category: c-06-reverse-engineering
+    docs: layers/c-06/ghidra.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: radare2
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: radare2
+    description: "UNIX-like reverse-engineering framework and command-line toolset."
+    source:
+      vcs_owner: radareorg
+      repo: radare2
+      vcs_url: "https://github.com/radareorg/radare2"
+    license: "LGPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "radare2.svg"
+      exec: radare2
+      category: c-06-reverse-engineering
+    docs: layers/c-06/radare2.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: rizin
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: rizin
+    description: "UNIX-like reverse-engineering framework (radare2 fork)."
+    source:
+      vcs_owner: rizinorg
+      repo: rizin
+      vcs_url: "https://github.com/rizinorg/rizin"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "rizin.svg"
+      exec: rizin
+      category: c-06-reverse-engineering
+    docs: layers/c-06/rizin.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: cutter
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: cutter
+    description: "Free and open-source reverse-engineering platform powered by rizin."
+    source:
+      vcs_owner: rizinorg
+      repo: cutter
+      vcs_url: "https://github.com/rizinorg/cutter"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "cutter.svg"
+      exec: cutter
+      category: c-06-reverse-engineering
+    docs: layers/c-06/cutter.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: iaito
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: iaito
+    description: Official radare2 GUI.
+    source:
+      vcs_owner: radareorg
+      repo: iaito
+      vcs_url: "https://github.com/radareorg/iaito"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "iaito.svg"
+      exec: iaito
+      category: c-06-reverse-engineering
+    docs: layers/c-06/iaito.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: gdb
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: gdb
+    description: GNU Project debugger.
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "gdb.svg"
+      exec: gdb
+      category: c-06-reverse-engineering
+    docs: layers/c-06/gdb.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: gef
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: gef
+    description: "GDB Enhanced Features — exploit-development plugin for GDB."
+    source:
+      vcs_owner: hugsy
+      repo: gef
+      vcs_url: "https://github.com/hugsy/gef"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "gef.svg"
+      exec: gef
+      category: c-06-reverse-engineering
+    docs: layers/c-06/gef.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: pwndbg
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: pwndbg
+    description: "Exploit-development plugin for GDB with modern UX."
+    source:
+      vcs_owner: pwndbg
+      repo: pwndbg
+      vcs_url: "https://github.com/pwndbg/pwndbg"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "pwndbg.svg"
+      exec: pwndbg
+      category: c-06-reverse-engineering
+    docs: layers/c-06/pwndbg.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: peda
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: peda
+    description: Python Exploit Development Assistance for GDB (upstream has no SPDX file).
+    source:
+      vcs_owner: longld
+      repo: peda
+      vcs_url: "https://github.com/longld/peda"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/peda/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "peda.svg"
+      exec: peda
+      category: c-06-reverse-engineering
+    docs: layers/c-06/peda.md
+    tags: [bespoke, classic, reverse-engineering]
+  - id: capstone
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: capstone
+    description: "Lightweight multi-platform CPU disassembly framework."
+    source:
+      vcs_owner: capstone-engine
+      repo: capstone
+      vcs_url: "https://github.com/capstone-engine/capstone"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "capstone.svg"
+      exec: capstone
+      category: c-06-reverse-engineering
+    docs: layers/c-06/capstone.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: cstool
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: cstool
+    description: Capstone's interactive disassembly CLI.
+    source:
+      vcs_owner: capstone-engine
+      repo: capstone
+      vcs_url: "https://github.com/capstone-engine/capstone"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "cstool.svg"
+      exec: cstool
+      category: c-06-reverse-engineering
+    docs: layers/c-06/cstool.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: checksec
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: checksec
+    description: Checks security properties of executables (RELRO/canary/NX/PIE).
+    source:
+      vcs_owner: slimm609
+      repo: checksec
+      vcs_url: "https://github.com/slimm609/checksec"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "checksec.svg"
+      exec: checksec
+      category: c-06-reverse-engineering
+    docs: layers/c-06/checksec.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: jadx
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: jadx
+    description: Dex to Java decompiler.
+    source:
+      vcs_owner: skylot
+      repo: jadx
+      vcs_url: "https://github.com/skylot/jadx"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "jadx.svg"
+      exec: jadx
+      category: c-06-reverse-engineering
+    docs: layers/c-06/jadx.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: bytecode-viewer
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: "bytecode-viewer"
+    description: Java/Android bytecode viewer, decompiler and editor.
+    source:
+      vcs_owner: Konloch
+      repo: bytecode-viewer
+      vcs_url: "https://github.com/Konloch/bytecode-viewer"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "bytecode-viewer.svg"
+      exec: bytecode-viewer
+      category: c-06-reverse-engineering
+    docs: layers/c-06/bytecode-viewer.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: apktool
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: apktool
+    description: "Reverse-engineers Android APK files (decode/rebuild)."
+    source:
+      vcs_owner: iBotPeaches
+      repo: Apktool
+      vcs_url: "https://github.com/iBotPeaches/Apktool"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "apktool.svg"
+      exec: apktool
+      category: c-06-reverse-engineering
+    docs: layers/c-06/apktool.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: dex2jar
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: dex2jar
+    description: Converts Android .dex files to Java .class (jar).
+    source:
+      vcs_owner: pxb1988
+      repo: dex2jar
+      vcs_url: "https://github.com/pxb1988/dex2jar"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "dex2jar.svg"
+      exec: dex2jar
+      category: c-06-reverse-engineering
+    docs: layers/c-06/dex2jar.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: javasnoop
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: javasnoop
+    description: Intercepts methods and alters data in Java applications at runtime.
+    source:
+      vcs_owner: CodeMason
+      repo: JavaSnoop
+      vcs_url: "https://github.com/CodeMason/JavaSnoop"
+    license: "GPL-3.0-only"
+    packaging:
+      status: bespoke
+      derivation: pkgs/javasnoop/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "javasnoop.svg"
+      exec: javasnoop
+      category: c-06-reverse-engineering
+    docs: layers/c-06/javasnoop.md
+    tags: [bespoke, classic, reverse-engineering]
+  - id: jd-gui
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: "jd-gui"
+    description: Java decompiler with a standalone graphical UI.
+    source:
+      vcs_owner: java-decompiler
+      repo: jd-gui
+      vcs_url: "https://github.com/java-decompiler/jd-gui"
+    license: "GPL-3.0-only"
+    packaging:
+      status: bespoke
+      derivation: pkgs/jd-gui/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "jd-gui.svg"
+      exec: jd-gui
+      category: c-06-reverse-engineering
+    docs: layers/c-06/jd-gui.md
+    tags: [bespoke, classic, reverse-engineering]
+  - id: smali
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: smali
+    description: "Assembler/disassembler for the Android dex format (upstream carries no SPDX licence file; AOSP mirror maps Apache-2.0)."
+    source:
+      vcs_owner: JesusFreke
+      repo: smali
+      vcs_url: "https://github.com/JesusFreke/smali"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "smali.svg"
+      exec: smali
+      category: c-06-reverse-engineering
+    docs: layers/c-06/smali.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: unicorn
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: unicorn
+    description: "Lightweight multi-architecture CPU emulator framework."
+    source:
+      vcs_owner: unicorn-engine
+      repo: unicorn
+      vcs_url: "https://github.com/unicorn-engine/unicorn"
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "unicorn.svg"
+      exec: unicorn
+      category: c-06-reverse-engineering
+    docs: layers/c-06/unicorn.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: angr
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: angr
+    description: "Binary analysis framework — symbolic execution and emulation."
+    source:
+      vcs_owner: angr
+      repo: angr
+      vcs_url: "https://github.com/angr/angr"
+    license: "BSD-2-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "angr.svg"
+      exec: angr
+      category: c-06-reverse-engineering
+    docs: layers/c-06/angr.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: qiling
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: qiling
+    description: "Cross-platform emulation framework built on Unicorn."
+    source:
+      vcs_owner: qilingframework
+      repo: qiling
+      vcs_url: "https://github.com/qilingframework/qiling"
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "qiling.svg"
+      exec: qiling
+      category: c-06-reverse-engineering
+    docs: layers/c-06/qiling.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: unipacker
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: unipacker
+    description: "Automatic and platform-independent unpacker for Windows binaries."
+    source:
+      vcs_owner: unipacker
+      repo: unipacker
+      vcs_url: "https://github.com/unipacker/unipacker"
+    license: "GPL-2.0-only"
+    packaging:
+      status: bespoke
+      derivation: pkgs/unipacker/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "unipacker.svg"
+      exec: unipacker
+      category: c-06-reverse-engineering
+    docs: layers/c-06/unipacker.md
+    tags: [bespoke, classic, reverse-engineering]
+  - id: pyinstaller-extractor
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: "pyinstaller-extractor"
+    description: Extracts packed executables from PyInstaller bundles.
+    source:
+      vcs_owner: extremecoders-re
+      repo: pyinstxtractor
+      vcs_url: "https://github.com/extremecoders-re/pyinstxtractor"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: bespoke
+      derivation: pkgs/pyinstaller-extractor/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "pyinstaller-extractor.svg"
+      exec: pyinstaller-extractor
+      category: c-06-reverse-engineering
+    docs: layers/c-06/pyinstaller-extractor.md
+    tags: [bespoke, classic, reverse-engineering]
+  - id: edb-debugger
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: "edb-debugger"
+    description: "Cross-platform AArch32/x86/x86-64 debugger."
+    source:
+      vcs_owner: eteran
+      repo: edb-debugger
+      vcs_url: "https://github.com/eteran/edb-debugger"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "edb-debugger.svg"
+      exec: edb-debugger
+      category: c-06-reverse-engineering
+    docs: layers/c-06/edb-debugger.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: binwalk
+    layer: CLASSIC
+    category: c-06-reverse-engineering
+    name: binwalk
+    description: "Firmware-image analysis — signature scanning and extraction."
+    source:
+      vcs_owner: ReFirmLabs
+      repo: binwalk
+      vcs_url: "https://github.com/ReFirmLabs/binwalk"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "binwalk.svg"
+      exec: binwalk
+      category: c-06-reverse-engineering
+    docs: layers/c-06/binwalk.md
+    tags: [classic, native, reverse-engineering, update:slow]
+  - id: gnuradio
+    layer: CLASSIC
+    category: c-07-signal-sdr
+    name: gnuradio
+    description: "GNU Radio — software-defined radio DSP framework (software-only)."
+    source:
+      vcs_owner: gnuradio
+      repo: gnuradio
+      vcs_url: "https://github.com/gnuradio/gnuradio"
+    license: "GPL-3.0-only"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "gnuradio.svg"
+      exec: gnuradio
+      category: c-07-signal-sdr
+    docs: layers/c-07/gnuradio.md
+    tags: [audio, classic, data, sdr, update:slow]
+  - id: gqrx
+    layer: CLASSIC
+    category: c-07-signal-sdr
+    name: gqrx
+    description: "Software-defined radio receiver built on GNU Radio."
+    source:
+      vcs_owner: gqrx-sdr
+      repo: gqrx
+      vcs_url: "https://github.com/gqrx-sdr/gqrx"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "gqrx.svg"
+      exec: gqrx
+      category: c-07-signal-sdr
+    docs: layers/c-07/gqrx.md
+    tags: [audio, classic, data, sdr, update:slow]
+  - id: hackrf-tools
+    layer: CLASSIC
+    category: c-07-signal-sdr
+    name: "hackrf-tools"
+    description: "Command-line utilities for HackRF hardware SDR platforms."
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "hackrf-tools.svg"
+      exec: hackrf-tools
+      category: c-07-signal-sdr
+    docs: layers/c-07/hackrf-tools.md
+    tags: [audio, classic, data, sdr, update:slow]
+  - id: sox
+    layer: CLASSIC
+    category: c-07-signal-sdr
+    name: sox
+    description: "Sound eXchange — audio processing and format conversion."
+    source:
+      vcs_owner: sox-ng
+      repo: sox
+      vcs_url: "https://github.com/sox-ng/sox"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "sox.svg"
+      exec: sox
+      category: c-07-signal-sdr
+    docs: layers/c-07/sox.md
+    tags: [audio, classic, data, sdr, update:slow]
+  - id: librosa
+    layer: CLASSIC
+    category: c-07-signal-sdr
+    name: librosa
+    description: "Audio and music-signal analysis library (Python)."
+    source:
+      vcs_owner: librosa
+      repo: librosa
+      vcs_url: "https://github.com/librosa/librosa"
+    license: ISC
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "librosa.svg"
+      exec: librosa
+      category: c-07-signal-sdr
+    docs: layers/c-07/librosa.md
+    tags: [audio, classic, data, sdr, update:slow]
+  - id: pysox
+    layer: CLASSIC
+    category: c-07-signal-sdr
+    name: pysox
+    description: Python bindings around SoX for audio DSP pipelines.
+    source:
+      vcs_owner: rabitt
+      repo: pysox
+      vcs_url: "https://github.com/rabitt/pysox"
+    license: "BSD-3-Clause"
+    packaging:
+      status: bespoke
+      derivation: pkgs/pysox/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "pysox.svg"
+      exec: pysox
+      category: c-07-signal-sdr
+    docs: layers/c-07/pysox.md
+    tags: [audio, bespoke, classic, sdr]
+  - id: metasploit-framework
+    layer: CLASSIC
+    category: c-08-exploitation-post-exploitation
+    name: "metasploit-framework"
+    description: "Exploit framework — pinned upstream (KA-07.3); web/API modules only."
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "metasploit-framework.svg"
+      exec: metasploit-framework
+      category: c-08-exploitation-post-exploitation
+    docs: layers/c-08/metasploit-framework.md
+    tags: [classic, exploitation, native, update:slow]
+  - id: msfvenom
+    layer: CLASSIC
+    category: c-08-exploitation-post-exploitation
+    name: msfvenom
+    description: Payload generation and encoding CLI from the Metasploit suite.
+    source:
+      vcs_owner: rapid7
+      repo: metasploit-framework
+      vcs_url: "https://github.com/rapid7/metasploit-framework"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "msfvenom.svg"
+      exec: msfvenom
+      category: c-08-exploitation-post-exploitation
+    docs: layers/c-08/msfvenom.md
+    tags: [classic, exploitation, native, update:slow]
+  - id: beef-xss
+    layer: CLASSIC
+    category: c-08-exploitation-post-exploitation
+    name: "beef-xss"
+    description: "Browser Exploitation Framework — XSS hooking and browser assessment."
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "beef-xss.svg"
+      exec: beef-xss
+      category: c-08-exploitation-post-exploitation
+    docs: layers/c-08/beef-xss.md
+    tags: [classic, exploitation, native, update:slow]
+  - id: weevely
+    layer: CLASSIC
+    category: c-08-exploitation-post-exploitation
+    name: weevely
+    description: "Weaponized web shell with a telnet-like console."
+    source:
+      vcs_owner: epinna
+      repo: weevely3
+      vcs_url: "https://github.com/epinna/weevely3"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "weevely.svg"
+      exec: weevely
+      category: c-08-exploitation-post-exploitation
+    docs: layers/c-08/weevely.md
+    tags: [classic, exploitation, native, update:slow]
+  - id: laudanum
+    layer: CLASSIC
+    category: c-08-exploitation-post-exploitation
+    name: laudanum
+    description: "Collection of ready-to-use injectable web-shell files."
+    source:
+      vcs_owner: junk13
+      repo: laudanum
+      vcs_url: "https://github.com/junk13/laudanum"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "laudanum.svg"
+      exec: laudanum
+      category: c-08-exploitation-post-exploitation
+    docs: layers/c-08/laudanum.md
+    tags: [classic, exploitation, native, update:slow]
+  - id: webshell-analysis-pack
+    layer: CLASSIC
+    category: c-08-exploitation-post-exploitation
+    name: "webshell-analysis-pack"
+    description: Reference pack of known webshell artefacts for detection and analysis.
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "webshell-analysis-pack.svg"
+      exec: webshell-analysis-pack
+      category: c-08-exploitation-post-exploitation
+    docs: layers/c-08/webshell-analysis-pack.md
+    tags: [classic, data, exploitation, update:slow]
+  - id: peass-ng
+    layer: CLASSIC
+    category: c-08-exploitation-post-exploitation
+    name: "peass-ng"
+    description: "Privilege-escalation awesome scripts suite (linpeas/winpeas)."
+    source:
+      vcs_owner: peass-ng
+      repo: PEASS-ng
+      vcs_url: "https://github.com/peass-ng/PEASS-ng"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "peass-ng.svg"
+      exec: peass-ng
+      category: c-08-exploitation-post-exploitation
+    docs: layers/c-08/peass-ng.md
+    tags: [classic, exploitation, native, update:slow]
+  - id: unix-privesc-check
+    layer: CLASSIC
+    category: c-08-exploitation-post-exploitation
+    name: "unix-privesc-check"
+    description: Finds misconfigurations allowing local privilege escalation.
+    source:
+      vcs_owner: NixOS
+      repo: nixpkgs
+      vcs_url: "https://github.com/NixOS/nixpkgs"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "unix-privesc-check.svg"
+      exec: unix-privesc-check
+      category: c-08-exploitation-post-exploitation
+    docs: layers/c-08/unix-privesc-check.md
+    tags: [classic, exploitation, native, update:slow]
+  - id: pspy
+    layer: CLASSIC
+    category: c-08-exploitation-post-exploitation
+    secondary_categories: [c-09-forensics-ir-reporting]
+    name: pspy
+    description: Monitors Linux processes without root permissions.
+    source:
+      vcs_owner: dominicbreuker
+      repo: pspy
+      vcs_url: "https://github.com/dominicbreuker/pspy"
+    license: "GPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "pspy.svg"
+      exec: pspy
+      category: c-08-exploitation-post-exploitation
+    docs: layers/c-08/pspy.md
+    tags: [classic, exploitation, native, update:slow]
+  - id: autopsy
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: autopsy
+    description: Digital forensics platform and GUI for The Sleuth Kit.
+    source:
+      vcs_owner: sleuthkit
+      repo: autopsy
+      vcs_url: "https://github.com/sleuthkit/autopsy"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "autopsy.svg"
+      exec: autopsy
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/autopsy.md
+    tags: [classic, forensics, native, update:slow]
+  - id: sleuthkit
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: sleuthkit
+    description: Library and CLI collection for filesystem forensics analysis.
+    source:
+      vcs_owner: sleuthkit
+      repo: sleuthkit
+      vcs_url: "https://github.com/sleuthkit/sleuthkit"
+    license: "CPL-1.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "sleuthkit.svg"
+      exec: sleuthkit
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/sleuthkit.md
+    tags: [classic, forensics, native, update:slow]
+  - id: volatility3
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: volatility3
+    description: Memory forensics framework (Volatility 3).
+    source:
+      vcs_owner: volatilityfoundation
+      repo: volatility3
+      vcs_url: "https://github.com/volatilityfoundation/volatility3"
+    license: "VSL-1.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "volatility3.svg"
+      exec: volatility3
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/volatility3.md
+    tags: [classic, forensics, native, update:slow]
+  - id: hashdeep
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: hashdeep
+    description: Hashing and audit utility with fuzzy matching (md5deep family).
+    source:
+      vcs_owner: jessek
+      repo: hashdeep
+      vcs_url: "https://github.com/jessek/hashdeep"
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "hashdeep.svg"
+      exec: hashdeep
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/hashdeep.md
+    tags: [classic, forensics, native, update:slow]
+  - id: chkrootkit
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: chkrootkit
+    description: Locally checks for signs of a rootkit.
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: bespoke
+      derivation: pkgs/chkrootkit/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "chkrootkit.svg"
+      exec: chkrootkit
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/chkrootkit.md
+    tags: [bespoke, classic, forensics]
+  - id: rkhunter
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: rkhunter
+    description: "Rootkit Hunter — scans for rootkits, backdoors and local exploits."
+    source:
+      vcs_owner: Rootkit-Hunter
+      repo: rkhunter
+      vcs_url: "https://github.com/Rootkit-Hunter/rkhunter"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: bespoke
+      derivation: pkgs/rkhunter/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "rkhunter.svg"
+      exec: rkhunter
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/rkhunter.md
+    tags: [bespoke, classic, forensics]
+  - id: dc3dd
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: dc3dd
+    description: "Forensic disk-imaging tool (DoD Cyber Crime Center fork of dd)."
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "dc3dd.svg"
+      exec: dc3dd
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/dc3dd.md
+    tags: [classic, forensics, native, update:slow]
+  - id: ewfacquire
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: ewfacquire
+    description: Acquires evidence in the Expert Witness Compression Format (libewf).
+    source:
+      vcs_owner: libyal
+      repo: libewf
+      vcs_url: "https://github.com/libyal/libewf"
+    license: "LGPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "ewfacquire.svg"
+      exec: ewfacquire
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/ewfacquire.md
+    tags: [classic, forensics, native, update:slow]
+  - id: guymager
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: guymager
+    description: Fast forensic imager with a graphical interface.
+    license: "GPL-2.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "guymager.svg"
+      exec: guymager
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/guymager.md
+    tags: [classic, forensics, native, update:slow]
+  - id: regripper
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: regripper
+    description: "Windows registry forensics — extracting artefacts from hives."
+    source:
+      vcs_owner: keydet89
+      repo: RegRipper3.0
+      vcs_url: "https://github.com/keydet89/RegRipper3.0"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "regripper.svg"
+      exec: regripper
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/regripper.md
+    tags: [classic, forensics, native, update:slow]
+  - id: testdisk
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: testdisk
+    description: "Data-recovery tool for lost partitions and filesystems."
+    source:
+      vcs_owner: cgsecurity
+      repo: testdisk
+      vcs_url: "https://github.com/cgsecurity/testdisk"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "testdisk.svg"
+      exec: testdisk
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/testdisk.md
+    tags: [classic, forensics, native, update:slow]
+  - id: photorec
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: photorec
+    description: "File-carving recovery tool shipped with TestDisk."
+    source:
+      vcs_owner: cgsecurity
+      repo: testdisk
+      vcs_url: "https://github.com/cgsecurity/testdisk"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "photorec.svg"
+      exec: photorec
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/photorec.md
+    tags: [classic, forensics, native, update:slow]
+  - id: bulk_extractor
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: bulk_extractor
+    description: Extracts features (emails, URLs, cards) from disk images without parsing the filesystem.
+    source:
+      vcs_owner: simsong
+      repo: bulk_extractor
+      vcs_url: "https://github.com/simsong/bulk_extractor"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "bulk_extractor.svg"
+      exec: bulk_extractor
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/bulk_extractor.md
+    tags: [classic, forensics, native, update:slow]
+  - id: chainsaw
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: chainsaw
+    description: Rapidly searches and hunts through Windows forensic artefacts (Sigma/YARA).
+    source:
+      vcs_owner: WithSecureLabs
+      repo: chainsaw
+      vcs_url: "https://github.com/WithSecureLabs/chainsaw"
+    license: "GPL-3.0-only"
+    packaging:
+      status: stale
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "chainsaw.svg"
+      exec: chainsaw
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/chainsaw.md
+    tags: [classic, forensics, stale, update:steady]
+  - id: hayabusa
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: hayabusa
+    description: "Windows event-log fast forensics timeline generator."
+    source:
+      vcs_owner: notarin
+      repo: hayabusa
+      vcs_url: "https://github.com/notarin/hayabusa"
+    license: "AGPL-3.0-only"
+    packaging:
+      status: stale
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "hayabusa.svg"
+      exec: hayabusa
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/hayabusa.md
+    tags: [classic, forensics, stale, update:steady]
+  - id: sigma-cli
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: "sigma-cli"
+    description: "Sigma rule conversion command-line interface."
+    source:
+      vcs_owner: SigmaHQ
+      repo: sigma-cli
+      vcs_url: "https://github.com/SigmaHQ/sigma-cli"
+    license: "LGPL-2.1-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "sigma-cli.svg"
+      exec: sigma-cli
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/sigma-cli.md
+    tags: [classic, forensics, native, update:slow]
+  - id: sysmon-modular
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: "sysmon-modular"
+    description: "A modular Sysmon configuration set for high-fidelity Windows logging."
+    source:
+      vcs_owner: olafhartong
+      repo: sysmon-modular
+      vcs_url: "https://github.com/olafhartong/sysmon-modular"
+    license: MIT
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "sysmon-modular.svg"
+      exec: sysmon-modular
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/sysmon-modular.md
+    tags: [classic, data, forensics, update:slow]
+  - id: plaso
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: plaso
+    description: "log2timeline — super-timeline generation and analysis."
+    source:
+      vcs_owner: log2timeline
+      repo: plaso
+      vcs_url: "https://github.com/log2timeline/plaso"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/plaso/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "plaso.svg"
+      exec: plaso
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/plaso.md
+    tags: [bespoke, classic, forensics]
+  - id: timesketch
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: timesketch
+    description: "Collaborative forensic timeline analysis — ships as a service module."
+    source:
+      vcs_owner: google
+      repo: timesketch
+      vcs_url: "https://github.com/google/timesketch"
+    license: "Apache-2.0"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "timesketch.svg"
+      exec: timesketch
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/timesketch.md
+    tags: [classic, forensics, module, update:slow]
+  - id: faraday
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: faraday
+    description: "Vulnerability-management and collaborative IR platform — service module."
+    source:
+      vcs_owner: lightninglabs
+      repo: faraday
+      vcs_url: "https://github.com/lightninglabs/faraday"
+    license: MIT
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "faraday.svg"
+      exec: faraday
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/faraday.md
+    tags: [classic, forensics, module, update:slow]
+  - id: pwndoc-ng
+    layer: CLASSIC
+    category: c-09-forensics-ir-reporting
+    name: "pwndoc-ng"
+    description: "Collaborative pentest reporting platform — service module."
+    source:
+      vcs_owner: pwndoc-ng
+      repo: pwndoc-ng
+      vcs_url: "https://github.com/pwndoc-ng/pwndoc-ng"
+    license: MIT
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "pwndoc-ng.svg"
+      exec: pwndoc-ng
+      category: c-09-forensics-ir-reporting
+    docs: layers/c-09/pwndoc-ng.md
+    tags: [classic, forensics, module, update:slow]
+  - id: mitmproxy
+    layer: CLASSIC
+    category: c-10-runtime-appsec-ai
+    name: mitmproxy
+    description: "Man-in-the-middle HTTP(S) proxy with a Python API — AI endpoint inspection."
+    source:
+      vcs_owner: mitmproxy
+      repo: mitmproxy
+      vcs_url: "https://github.com/mitmproxy/mitmproxy"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mitmproxy.svg"
+      exec: mitmproxy
+      category: c-10-runtime-appsec-ai
+    docs: layers/c-10/mitmproxy.md
+    tags: [ai, appsec, classic, native, update:slow]
+  - id: oauth-mcp-prober
+    layer: CLASSIC
+    category: c-10-runtime-appsec-ai
+    name: "oauth-mcp-prober"
+    description: "Probes OAuth flows behind AI-agent tool surfaces for broken auth patterns."
+    source:
+      vcs_owner: kailash-os
+      repo: oauth-mcp-prober
+      vcs_url: "https://github.com/kailash-os/oauth-mcp-prober"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/oauth-mcp-prober/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "oauth-mcp-prober.svg"
+      exec: oauth-mcp-prober
+      category: c-10-runtime-appsec-ai
+    docs: layers/c-10/oauth-mcp-prober.md
+    tags: [ai, appsec, bespoke, classic]
+  - id: sdl3-stream-fuzzer
+    layer: CLASSIC
+    category: c-10-runtime-appsec-ai
+    name: "sdl3-stream-fuzzer"
+    description: "Structure-aware stream fuzzer for media/SDK endpoints exposed by AI runtimes."
+    source:
+      vcs_owner: kailash-os
+      repo: sdl3-stream-fuzzer
+      vcs_url: "https://github.com/kailash-os/sdl3-stream-fuzzer"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/sdl3-stream-fuzzer/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "sdl3-stream-fuzzer.svg"
+      exec: sdl3-stream-fuzzer
+      category: c-10-runtime-appsec-ai
+    docs: layers/c-10/sdl3-stream-fuzzer.md
+    tags: [ai, appsec, bespoke, classic]
+  - id: llm-fuzzer
+    layer: CLASSIC
+    category: c-10-runtime-appsec-ai
+    secondary_categories: [a-02-prompt-injection-jailbreaks]
+    name: "llm-fuzzer"
+    description: "Fuzzes LLM-backed endpoints with adversarial input corpora."
+    source:
+      vcs_owner: kailash-os
+      repo: llm-fuzzer
+      vcs_url: "https://github.com/kailash-os/llm-fuzzer"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/llm-fuzzer/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "llm-fuzzer.svg"
+      exec: llm-fuzzer
+      category: c-10-runtime-appsec-ai
+    docs: layers/c-10/llm-fuzzer.md
+    tags: [ai, appsec, bespoke, classic]
+  - id: vulnerable-llm-apps
+    layer: CLASSIC
+    category: c-10-runtime-appsec-ai
+    secondary_categories: [a-02-prompt-injection-jailbreaks]
+    name: "vulnerable-llm-apps"
+    description: Deliberately vulnerable LLM application lab for AppSec training and verification.
+    source:
+      vcs_owner: kailash-os
+      repo: vulnerable-llm-apps
+      vcs_url: "https://github.com/kailash-os/vulnerable-llm-apps"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "vulnerable-llm-apps.svg"
+      exec: vulnerable-llm-apps
+      category: c-10-runtime-appsec-ai
+    docs: layers/c-10/vulnerable-llm-apps.md
+    tags: [ai, appsec, classic, data, update:slow]
+  - id: ais
+    layer: CLASSIC
+    category: c-10-runtime-appsec-ai
+    name: ais
+    description: "ai-scanner — AI-endpoint AppSec scanner (plan §3.2: AISVS-scoped runtime surface)."
+    source:
+      vcs_owner: gojis
+      repo: ais
+      vcs_url: "https://github.com/gojis/ais"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/ais/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "ais.svg"
+      exec: ais
+      category: c-10-runtime-appsec-ai
+    docs: layers/c-10/ais.md
+    tags: [ai, appsec, bespoke, classic]
+  - id: asvs-verification-toolkit
+    layer: CLASSIC
+    category: c-10-runtime-appsec-ai
+    secondary_categories: [d-07-standards-verification]
+    name: "asvs-verification-toolkit"
+    description: "ASVS verification data-pack — checklists driving the D-7 verifier."
+    source:
+      vcs_owner: kailash-os
+      repo: asvs-verification-toolkit
+      vcs_url: "https://github.com/kailash-os/asvs-verification-toolkit"
+    license: "Apache-2.0"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "asvs-verification-toolkit.svg"
+      exec: asvs-verification-toolkit
+      category: c-10-runtime-appsec-ai
+    docs: layers/c-10/asvs-verification-toolkit.md
+    tags: [ai, appsec, classic, data, update:slow]
