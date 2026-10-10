@@ -19,6 +19,26 @@
         },
         "version": "13c47504dedd4203610f407ef9619fc085a2df97"
     },
+    "pyrit": {
+        "cargoLock": null,
+        "date": "2026-10-10",
+        "extract": null,
+        "name": "pyrit",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "f916d8ee5df7b2e9859ff2c1ffef596d993db0d2",
+            "sha256": "sha256-lsTTcDrMx66yqen7jiTL8O3n6Mq/chkq1LL8hwVO/vE=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/Microsoft/PyRIT"
+        },
+        "version": "f916d8ee5df7b2e9859ff2c1ffef596d993db0d2"
+    },
     "subfinder": {
         "cargoLock": null,
         "date": "2026-10-08",
