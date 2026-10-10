@@ -78,6 +78,11 @@ pyritPython.pkgs.buildPythonApplication (finalAttrs: {
     # frontend/ entry point — npm build is NOT executed in the sandbox)
     # plus the matching compatibility.json.
     mkdir -p pyrit/backend/frontend
+    # The fetched source carries frontend/package.json → upstream's
+    # _prepare() takes the npm path and dies ("npm is not installed").
+    # This build is the git-free distribution path: drop the npm marker
+    # so _prepare() falls through to verify_distribution().
+    rm -f frontend/package.json
     cat > pyrit/_compatibility.json <<'STAMP'
     {"version": "1.2.0.dev0", "commit": "${finalAttrs.passthru.sourceCommit}", "dirty": false, "compatibility_id": "1.2.0.dev0+g${finalAttrs.passthru.sourceCommit}"}
     STAMP
