@@ -77,7 +77,7 @@ let
             azure-core,
           }:
           buildPythonPackage rec {
-            pname = "azure-ai-contentsafety";
+            pname = "azure_ai_contentsafety";  # PyPI filename/dirname seg uses underscores
             version = "1.0.0";
             format = "wheel";
             src = fetchPypi {
