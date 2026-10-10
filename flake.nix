@@ -10,17 +10,20 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [ "x86_64-linux" "aarch64-linux" ];
       imports = [ ./flake-parts ];
-      perSystem = { pkgs, system, ... }: {
-        # packages auto-called per manifest (KA-02.3 wires the harness);
-        # until then pkgs/ is empty and packages = {}
-        packages = { };
+      perSystem = { pkgs, system, lib ? nixpkgs.lib, ... }: {
+        # pkgs/ auto-call via the manifest (KA-02.3): every pkgs/<tool>/
+        # dir becomes a package; nixpkgs staples resolve to nixpkgs
+        # inside the derivations, bespoke ones to the overlay. The
+        # auto-call mirrors the §5.5 `overlays.tools` composition.
+        packages = import ./pkgs/auto-call.nix lib pkgs ./pkgs;
         checks = {
           # runs the validator against the flake source tree (src = self) so
           # its relative manifest resolution holds in every context, with
           # pyyaml guaranteed via withPackages — the hosted-runner failure
           # (pyyaml absent, __file__-relative path in a filtered source copy)
-          # is the proof the gate needs both. Lenient until the real manifest
-          # lands (KA-02.2/KA-04/KA-05).
+          # is the proof the gate needs both. Tools-table half of the gate
+          # present since KA-02.2 (entry invariants at KA-05.1); nvfetcher
+          # pins + pkgs/ scaffold wired with KA-02.3.
           manifest-wellformed = pkgs.runCommand "manifest-wellformed"
             {
               nativeBuildInputs = [ (pkgs.python3.withPackages (ps: [ ps.pyyaml ])) ];
@@ -31,5 +34,9 @@
           '';
         };
       };
+      flake.overlays.default =
+        let lib = nixpkgs.lib;
+        in final: prev:
+          import ./pkgs/auto-call.nix lib final ./pkgs;
     };
 }
