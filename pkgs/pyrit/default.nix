@@ -39,8 +39,13 @@
 
 let
   sources = callPackage ../../nvfetcher/_sources/generated.nix { };
+  # the three upstream core wheels the pinned nixpkgs does not package
+  # (aioodbc, azure-ai-contentsafety, confusables — see deps.nix for
+  # pins + provenance); pyrit resolves its dependencies against THIS
+  # pyrit-scoped python set, not a global python mutation
+  pyritPython = callPackage ./deps.nix { inherit python3; };
 in
-python3.pkgs.buildPythonApplication (finalAttrs: {
+pyritPython.pkgs.buildPythonApplication (finalAttrs: {
   pname = "pyrit";
   version = "1.2.0.dev0-unstable-2026-10-10";
   pyproject = true;
@@ -75,9 +80,9 @@ python3.pkgs.buildPythonApplication (finalAttrs: {
     FESTAMP
   '';
 
-  build-system = with python3.pkgs; [ setuptools ];
+  build-system = with pyritPython.pkgs; [ setuptools ];
 
-  dependencies = with python3.pkgs; [
+  dependencies = with pyritPython.pkgs; [
     aiofiles
     aioodbc
     aiosqlite
