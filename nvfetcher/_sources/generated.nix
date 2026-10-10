@@ -20,6 +20,20 @@
     };
     date = "2026-10-09";
   };
+  garak = {
+    pname = "garak";
+    version = "105164ba3f7960954cf69fb81a610fe672197eb0";
+    src = fetchgit {
+      url = "https://github.com/NVIDIA/garak";
+      rev = "105164ba3f7960954cf69fb81a610fe672197eb0";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-Z71oeb5DrHT/qIgYE3HID8yWlAcp5CVSVmHNBm+eb3A=";
+    };
+    date = "2026-10-09";
+  };
   pyrit = {
     pname = "pyrit";
     version = "f916d8ee5df7b2e9859ff2c1ffef596d993db0d2";

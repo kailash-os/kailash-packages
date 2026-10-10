@@ -30,3 +30,13 @@ fetch.git = "https://github.com/darkoperator/dnsrecon"
 src.git = "https://github.com/Microsoft/PyRIT"
 src.branch = "main"
 fetch.git = "https://github.com/Microsoft/PyRIT"
+
+[garak]
+# KA-10.1 (kailash-os#80): NVIDIA/garak — LLM vulnerability scanner
+# (Shape 1, §5.3). Update-class fast-moving: pinned to the main-branch
+# head at pin time; newest-commit check + SRI sha256 verified against
+# the GitHub commits API before committing (rev 105164ba = branch tip,
+# merge commit of 2026-10-09).
+src.git = "https://github.com/NVIDIA/garak"
+src.branch = "main"
+fetch.git = "https://github.com/NVIDIA/garak"
