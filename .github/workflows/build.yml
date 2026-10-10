@@ -1,0 +1,95 @@
+name: build
+
+# KA-15.1 mirror (kailash-os#88, plan §8.3/§8.10): the packages repo runs
+# the SAME generator in repo-mode — this repo IS the source of truth for
+# the manifest and the pkgs/ tree, so its workflow reads the local copy.
+# The OS repo's build.yml is the mirror job: it resolves the pinned rev
+# from the OS flake.lock (no floating heads) and runs the byte-identical
+# vendored generator against that pin.
+#
+#   job1 manifest      — self-test + emit the build matrix from the LOCAL
+#                        manifest/pkgs/ (repo-mode)
+#   job2 build-packages— one nix build leg per matrix entry, on THIS
+#                        flake's packages output (the derivations live here)
+#
+# The vm-tests job is OS-repo-only (the distribution's image/VM gate).
+#
+# Cachix: the `kailash` push step is included COMMENTED below — the
+# CACHIX_AUTH_TOKEN secret is not configured yet (verified empty in the
+# repo's actions secrets). Uncomment both blocks once the secret lands.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generator self-test (the generator gates itself)
+        run: python3 tools/manifest-matrix.py --self-test
+      - name: Byte-identity check against the OS-repo mirror
+        run: |
+          # the mirror contract: this copy == the OS copy. While the OS
+          # PR is not merged yet (404), the check notes and skips — it
+          # enforces strictly once both PRs land on their default
+          # branches; drift after that fails this job.
+          TMP="$(mktemp)"
+          if curl -fsSL -o "$TMP" \
+            "https://raw.githubusercontent.com/kailash-os/kailash-os/master/tools/manifest-matrix.py"; then
+            cmp tools/manifest-matrix.py "$TMP" \
+              || { echo "MIRROR DRIFT: tools/manifest-matrix.py differs from kailash-os@master"; exit 1; }
+            echo "mirror identity: byte-identical with kailash-os@master"
+          else
+            echo "mirror copy not on kailash-os@master yet — identity check pending (enforces after both PRs merge)"
+          fi
+      - name: Emit build matrix (repo-mode)
+        id: matrix
+        run: |
+          OUT="$(python3 tools/manifest-matrix.py --manifest-dir manifest)"
+          echo "matrix<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$OUT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+      - name: Matrix summary
+        run: |
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          echo '${{ steps.matrix.outputs.matrix }}' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+
+  build-packages:
+    needs: manifest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.manifest.outputs.matrix) }}
+    runs-on: ${{ matrix.system == 'x86_64-linux' && 'ubuntu-latest' || 'ubuntu-24.04-arm' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v23
+      - name: Build .#packages.<system>.<package>
+        run: |
+          nix build ".#packages.${{ matrix.system }}.${{ matrix.package }}" -L
+      # --- Cachix push — PENDING SECRET (uncomment when CACHIX_AUTH_TOKEN
+      # --- is added to the repo's actions secrets; cache name `kailash`).
+      # - name: Cachix push (kailash)
+      #   uses: cachix/cachix-action@v17
+      #   with:
+      #     name: kailash
+      #     authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"

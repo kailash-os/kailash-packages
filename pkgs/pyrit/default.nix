@@ -39,8 +39,13 @@
 
 let
   sources = callPackage ../../nvfetcher/_sources/generated.nix { };
+  # the three upstream core wheels the pinned nixpkgs does not package
+  # (aioodbc, azure-ai-contentsafety, confusables — see deps.nix for
+  # pins + provenance); pyrit resolves its dependencies against THIS
+  # pyrit-scoped python set, not a global python mutation
+  pyritPython = callPackage ./deps.nix { inherit python3; };
 in
-python3.pkgs.buildPythonApplication (finalAttrs: {
+pyritPython.pkgs.buildPythonApplication (finalAttrs: {
   pname = "pyrit";
   version = "1.2.0.dev0-unstable-2026-10-10";
   pyproject = true;
@@ -66,18 +71,41 @@ python3.pkgs.buildPythonApplication (finalAttrs: {
   preBuild = ''
     export PYRIT_SOURCE_COMMIT=${finalAttrs.passthru.sourceCommit}
     export PYRIT_SOURCE_DIRTY=false
-    stamp=$(cat > pyrit/_compatibility.json <<'STAMP'
+    # Coordinated-asset gate (build_scripts/build_backend._prepare →
+    # verify_distribution → verify_frontend) needs BOTH assets in-tree:
+    # pyrit/_compatibility.json stamped with the pin identity, and a
+    # pyrit/backend/frontend/ holding index.html (the committed repo-root
+    # frontend/ entry point — npm build is NOT executed in the sandbox)
+    # plus the matching compatibility.json.
+    mkdir -p pyrit/backend/frontend
+    # The fetched source carries frontend/package.json → upstream's
+    # _prepare() takes the npm path and dies ("npm is not installed").
+    # This build is the git-free distribution path: drop the npm marker
+    # so _prepare() falls through to verify_distribution().
+    rm -f frontend/package.json
+    cat > pyrit/_compatibility.json <<'STAMP'
     {"version": "1.2.0.dev0", "commit": "${finalAttrs.passthru.sourceCommit}", "dirty": false, "compatibility_id": "1.2.0.dev0+g${finalAttrs.passthru.sourceCommit}"}
     STAMP
-    )
+    cp frontend/index.html pyrit/backend/frontend/index.html
     cat > pyrit/backend/frontend/compatibility.json <<'FESTAMP'
     {"compatibility_id": "1.2.0.dev0+g${finalAttrs.passthru.sourceCommit}"}
     FESTAMP
   '';
 
-  build-system = with python3.pkgs; [ setuptools ];
+  build-system = with pyritPython.pkgs; [ setuptools ];
 
-  dependencies = with python3.pkgs; [
+  # Version pins in upstream [project].dependencies the locked
+  # nixpkgs-locked python3Packages cannot satisfy (lock: datasets
+  # 4.5.0 < upstream >=4.8.0; mcp 1.29.0 < >=2.2; pyjwt 2.14.0 <
+  # >=2.15.0) — the metadata spec is relaxed, the locked derivation
+  # ships. Re-verify against the pinned pyproject at every pin update.
+  pythonRelaxDeps = [
+    "datasets"
+    "mcp"
+    "pyjwt"
+  ];
+
+  dependencies = with pyritPython.pkgs; [
     aiofiles
     aioodbc
     aiosqlite
