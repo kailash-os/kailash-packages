@@ -23,7 +23,7 @@ python3.pkgs.buildPythonApplication {
   version = "0.17.1.pre1-unstable-2026-10-09";
 
   src = sources.garak.src;
-  format = "flit";
+  pyproject = true;
 
   doCheck = false;
   doInstallCheck = true;
