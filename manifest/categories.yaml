@@ -424,3 +424,83 @@ categories:
       tool on dogfood duty). Capability grants (short-lived,
       human-minted) scope agent actions (R11); the CI dogfood loop runs
       the A-3 scanner suite against the distro's own kailash-mcp.
+  - id: d-01-runtime-defence
+    layer: DEFENCE
+    kind: category
+    name: AI Runtime Defence & Guardrails
+    purpose: Guard and filter LLM traffic at runtime — prompts and completions pass defence rails before reaching the model or the user.
+    coverage: Low
+    tools: 7
+    notes: nemo-guardrails, llm-guard, guardrails-ai, rebuff, gaskunk,
+      llm-firewall, whisper-gate (§3.4); bespoke pip derivations,
+      Apache/MIT licence class (§11.3); the defensive counterpart the
+      attack lanes' requires-target tooling is tested against.
+  - id: d-02-detection-monitoring-observability
+    layer: DEFENCE
+    kind: category
+    name: AI Detection, Monitoring, Observability & IR
+    purpose: Detect and observe AI-system abuse — LLM traffic telemetry, prompt-injection detection models, canary tokens, incident-response hooks.
+    coverage: Low
+    tools: 8
+    notes: langfuse (module — the heavy one), phoenix, whylogs, evidently,
+      otel-ai, prompt-injection-detector-bert, canary-token-generator,
+      giskard (§3.4); OTel-aligned AI observability feeding incident
+      response.
+  - id: d-03-assurance-evals-benchmarks
+    layer: DEFENCE
+    kind: category
+    name: AI Assurance, Evals & Benchmarks
+    purpose: Measure model assurance — eval harnesses, adversarial-robustness benchmarks and fairness auditing on the defence side of the ladder.
+    coverage: Medium
+    tools: 6
+    notes: lm-eval-harness, deepeval, robustbench, huggingface-evaluate,
+      fairlearn, aif360 (§3.4); promptfoo is cross-tagged primary A-2 /
+      secondary D-3 (one tool, one primary; KA-11 wires the tags).
+  - id: d-04-provenance-signing-trust
+    layer: DEFENCE
+    kind: category
+    name: Model Provenance, Signing & Trust
+    purpose: Prove where models and artefacts came from — provenance attestation, model signing, SBOM/AI-BOM scanning for model supply chains.
+    coverage: Medium-High
+    tools: 10
+    notes: cosign, syft, grype, trivy, cyclonedx-cli (native, pinned) plus
+      cdxgen, sigstore-tools, modelsign, hf-repo-auditor,
+      model-card-toolkit (bespoke, §3.4); the AI-BOM flow lands at
+      Phase 6 per the release order.
+  - id: d-05-threat-modelling
+    layer: DEFENCE
+    kind: category
+    name: AI Threat Modelling
+    purpose: Threat-model AI systems — ATLAS-mapped worksheet packs, visualisers and playbook templates producing reviewable artefacts.
+    coverage: Very Low
+    tools: 6
+    notes: genai-threat-modelling-templates, atlas-visualiser,
+      stride-ai-worksheet, maestro, atlas-case-study-explorer,
+      ai-incident-playbook-packs (§3.4); data + small CLIs; the AISVS /
+      MLSVS assurance chapter mappings anchor here (§3.8) and are
+      transcribed per-tool at KA-05.5.
+  - id: d-06-governance-regulation-mapping
+    layer: DEFENCE
+    kind: category
+    name: AI Governance & Regulation Mapping
+    purpose: Map AI deployments to governance regimes — EU AI Act checks, NIST AI RMF tooling, ISO/IEC 42001 templates, vendor review forms.
+    coverage: n/a
+    tools: 4
+    notes: ai-act-compliance-checker, nist-ai-rmf-toolkit,
+      iso-42001-templates, genai-vendor-review-form (§3.4); pure
+      content (data + CLI); the AU IRAP/ISM governance lens-pack is
+      D-6 follow-on work (KA-40, backlog).
+  - id: d-07-standards-verification
+    layer: DEFENCE
+    kind: category
+    name: Standards Verification Toolkit
+    purpose: Verify against security standards — ASVS 5.0 / AISVS 1.0 / MLSVS / OWASP LLM Top 10 evidence tooling feeding the kailash verifier.
+    coverage: n/a
+    tools: 5
+    notes: asvs-verification-toolkit, aisvs-1.0-toolkit, mlsvs-toolkit,
+      llm-top10-toolkit, kailash-verifier (§3.4); D-7 is the
+      verification-standards category — the kailash verifier's source
+      data (§3.8 standard-first navigation mode); AISVS 1.0 chapters
+      C01–C12 and the MLSVS section set are the mapping targets,
+      transcribed per tool at KA-05.5 from the standards repos, never
+      invented.

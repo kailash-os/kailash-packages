@@ -491,9 +491,10 @@ def main() -> int:
 
     # §3.6 post-purge reconcile: layer primary-slot totals count CATEGORIES
     # only — data-packs (c-07 sdr-tools +6; wordlists-mega at KA-07.2) are
-    # excluded, which is what makes the four totals sum to ~337. The
-    # reconcile stays permissive to layers whose rows have not landed yet
-    # (DEFENCE at KA-04.3) and enforces the landed layers exactly: the
+    # excluded, which is what makes the four totals sum to ~337. Each
+    # layer's ROW PRESENCE is enforced by its own census-existence
+    # invariant (ATTACK KA-04.2, DEFENCE KA-04.3, OPS KA-04.4); this
+    # reconcile enforces the landed per-layer totals exactly: the
     # BUILD→OPS rename keeps OPS at 91 (os#121 naming umbrella).
     LAYER_TOTALS = {"CLASSIC": 141, "ATTACK": 59, "DEFENCE": 46, "OPS": 91}
     for layer, got in sorted(per_layer.items()):
