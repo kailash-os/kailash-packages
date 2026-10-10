@@ -20,6 +20,20 @@
     };
     date = "2026-10-09";
   };
+  pyrit = {
+    pname = "pyrit";
+    version = "f916d8ee5df7b2e9859ff2c1ffef596d993db0d2";
+    src = fetchgit {
+      url = "https://github.com/Microsoft/PyRIT";
+      rev = "f916d8ee5df7b2e9859ff2c1ffef596d993db0d2";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-lsTTcDrMx66yqen7jiTL8O3n6Mq/chkq1LL8hwVO/vE=";
+    };
+    date = "2026-10-10";
+  };
   subfinder = {
     pname = "subfinder";
     version = "c97f25802892093060f0fc424bfc3f39e273693a";
