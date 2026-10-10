@@ -387,6 +387,35 @@ def self_test() -> None:
         pass
     else:  # pragma: no cover - guard
         raise AssertionError("structured list entries must fail loudly in the fallback")
+    # 13. dict-row contract (§5.2 rows are dicts, KA-05.x): matrix entries
+    # derive from bespoke rows' packaging.derivation — native rows are
+    # nixpkgs-provided, not overlay buildables. RED probe of the dict
+    # shape KA-05.2 lands (current code stringifies whole dicts).
+    _rows = [
+        {"id": "subfinder", "packaging": {"status": "bespoke",
+         "derivation": "pkgs/subfinder/default.nix"}},
+        {"id": "nmap", "packaging": {"status": "native"}},
+    ]
+    assert manifest_dict_to_matrix({"tools": _rows}, None) == {
+        "include": [
+            {"package": "subfinder", "system": "x86_64-linux"},
+            {"package": "subfinder", "system": "aarch64-linux"},
+        ]
+    }, "dict rows must map bespoke derivations to matrix entries, got %r" % (
+        manifest_dict_to_matrix({"tools": _rows}, None),)
+    # 14. string rows (fixture-era shape) keep working — the pure core is
+    # row-shape agnostic at the call sites that pass plain names.
+    assert manifest_dict_to_matrix({"tools": ["subfinder"]}, None) == {
+        "include": [
+            {"package": "subfinder", "system": "x86_64-linux"},
+            {"package": "subfinder", "system": "aarch64-linux"},
+        ]
+    }
+    # 15. a bespoke row missing its derivation path contributes nothing
+    # (existence-gating rejects it inside the row walker; the pure core
+    # skips non-dict/derivation-less rows defensively).
+    _rows2 = [{"id": "lone", "packaging": {"status": "bespoke"}}]
+    assert manifest_dict_to_matrix({"tools": _rows2}, None) == {"include": []}
 
 
 def main(argv):
