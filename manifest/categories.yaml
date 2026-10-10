@@ -4,14 +4,16 @@
 # artifact (category modules, menu, CLI, docs, site, verifier) generates
 # from this file — hand-maintained ONLY here.
 #
-# Layer names are taxonomy v3 (paper §4.1): CLASSIC / ATTACK / DEFENCE /
-# BUILD over the CORE substrate. The implementation plan v2 letters map:
-# A=CLASSIC, B=ATTACK, C=DEFENCE, D=BUILD. Entry ids use v3 letters
-# (c-01 … b-08) per the roadmap issues.
+# Layer names are taxonomy v3 (paper §4.1), as renamed by the BUILD→OPS
+# naming umbrella (os#121, mirror kp#9): CLASSIC / ATTACK / DEFENCE /
+# OPS over the CORE substrate. The implementation plan v2 letters map:
+# A=CLASSIC, B=ATTACK, C=DEFENCE, D=OPS (the plan's v2.1 D- letters of
+# the platform layer are born-renamed O- at KA-04.4 per the rename
+# record). Entry ids use v3 letters (c-01 … o-07) per the roadmap issues.
 #
 # Fields per entry:
 #   id            v3 slug, unique (validator-enforced at KA-05.1)
-#   layer         CLASSIC | ATTACK | DEFENCE | BUILD
+#   layer         CLASSIC | ATTACK | DEFENCE | OPS
 #   kind          category | data-pack (data-packs are opt-in, never on
 #                 default profiles/ISOs — D7; excluded from layer primary
 #                 slot counts)
@@ -30,10 +32,49 @@
 #   notes         decisions/constraints worth keeping beside the count
 #
 # Layer primary-slot totals (§3.6): CLASSIC 141 · ATTACK 59 · DEFENCE 46
-# · BUILD 91 = ~337 across 31 categories, plus the two opt-in data-packs
+# · OPS 91 = ~337 across 31 categories, plus the two opt-in data-packs
 # (c-07 sdr-tools here; kailash-data.wordlists-mega rides C-5 as its data
 # pack at KA-07.2). One-tool-one-primary-category; spanning tools carry
 # secondary tags (validated KA-05.1).
+#
+# DELIBERATE EXCLUSIONS LEDGER — plan §3.7, recorded in-file (KA-04.4).
+# The no-resurrection guard: these classes stay out of every layer's
+# census, and the KA-05.1 tool-table purge guard enforces the same
+# classes upstream. Each class carries its §3.7 line reference (quoted
+# from the §3.7 bullet, the stable locater — v2.2 master).
+#
+#   - hardware & rf & wifi/bluetooth tooling — §3.7 "Hardware & RF &
+#     radio (v2, explicit)": all wifi attack tooling (aircrack-ng suite,
+#     airgeddon, wifite, kismet, reaver, bully, pixiewps, hcxdumptool,
+#     hcxtools, wifiphisher, fern, asleap, cowpatty, crackle, wifi-honey,
+#     wash), bluetooth stacks (ubertooth, bluelog, bluesnarfer,
+#     btscanner, blueranger, spooftooph, rfcat, chirp, fang), general
+#     hardware-hacking categories (Kali's 14-Hardware Hacking), USB/pcap
+#     device tooling, and RF transmission tooling. Sole exception: the
+#     c-07 signal & SDR pack — software-only DSP/audio tooling, opt-in
+#     data-pack, never on default profiles/ISOs (AI/ML signal work and
+#     the a-6 voice-clone research surface).
+#
+#   - paid-licence tools — §3.7 "Commercial/licensed": Nessus, Cobalt
+#     Strike, paid IDA. `kailash doctor <tool>` points at legit
+#     licensing.
+#
+#   - cloud-only SaaS — §3.7 "Cloud-only SaaS": no web-cloud service
+#     deliverables in the census; CLI-only deliverables (wandb-cli,
+#     O-1) are the recorded exception.
+#
+#   - unmaintained tools — §3.7 "Unmaintained": truecrack, paros,
+#     pre-2015 webshell collections. The same §3.7 bullet set's
+#     duplicate-scope rule keeps the maintained one and documents
+#     supersession (netexec→crackmapexec precedent; c-4's dropped
+#     sqlninja/jsql/sqlsus/tnscmd10g stragglers).
+#
+#   - network-infrastructure arsenal — §3.7 "Classic-network attack
+#     tooling": AD/lateral-movement tooling (impacket suite,
+#     mimikatz/rubeus/bloodhound-class), online password brute-forcing
+#     against live services, social-engineering tooling, C2 frameworks
+#     — Kali-for-networks territory, not the four pillars (§1.2).
+#
 schema_version: 1
 
 categories:
@@ -285,3 +326,101 @@ categories:
       techniques T0020 Training Data Poisoning (2026.07 dataset
       placement Persistence) and T0018.000 Poison AI Model (staging);
       LLM05 — the 2026 Data and Model Poisoning class (v2:2025 = LLM04).
+
+  # ---- Layer OPS (7 entries, 91 slots; KA-04.4) ----
+  # Transcribed from plan §3.6 Table 1 (post-purge census), born OPS per
+  # the rename record (os#121 + mirror kp#9): B-1…B-7 → O-1…O-7
+  # row-for-row, no scope/count/order change — 91 primary slots as
+  # planned. Platform surface, not tactic-mapped: no ATLAS field here
+  # (only ATTACK carries tactics per KA-04.2). Excluded classes live in
+  # the header's deliberate-exclusions ledger (§3.7) — e.g. cloud-only
+  # SaaS stays out, wandb CLI-only is the recorded exception (O-1).
+  - id: o-01-mlops-ml-engineering
+    layer: OPS
+    kind: category
+    name: MLOps & ML Engineering Suite
+    purpose: ML lifecycle tooling — tracking, data versioning, pipelines, the tabular stack.
+    coverage: High
+    tools: 18
+    notes: mlflow ships as the service module — the pairing-thesis lab
+      target (A-7 mlflow-bypass runs against it; lab-default open
+      binding documented, never defaulted); dvc, git-lfs, bentoml,
+      feast, kedro + kedro-datasets, clearml (module), airflow
+      (module), prefect (module), wandb-cli (the CLI-only deliverable
+      admitted past the §3.7 cloud-only SaaS exclusion); native
+      pandas/polars/scikit-learn/numpy/scipy/xgboost/lightgbm;
+      evidently/whylogs shared with D-2 (secondary tags at KA-05).
+  - id: o-02-compute-serving-infrastructure
+    layer: OPS
+    kind: category
+    name: Compute & Serving Infrastructure
+    purpose: Model serving, orchestration and container runtimes — the deployed-AI platform the attack layers target.
+    coverage: Medium
+    tools: 13
+    notes: vllm, tgi, torchserve, kserve + ray (module);
+      triton-inference-server as the docker-wrapper (§5.3 Shape 3 —
+      attack-surface tooling is never this shape); ollama, llama.cpp,
+      k3s, minikube, kind, podman native (pinned);
+      nvidia-container-toolkit native, unfree-class recorded (D4).
+  - id: o-03-vector-stores-retrieval
+    layer: OPS
+    kind: category
+    name: Vector Stores & Retrieval
+    purpose: Vector databases and retrieval stacks behind RAG surfaces — the A-7 rip targets.
+    coverage: Medium
+    tools: 9
+    notes: chromadb, qdrant, faiss, txtai, jina-embeddings-cli
+      native/overlay; weaviate, pgvector, elasticsearch as service
+      modules; milvus docker-wrapper.
+  - id: o-04-local-llm-inference-labs
+    layer: OPS
+    kind: category
+    name: Local LLM & Inference Labs
+    purpose: Local model serving and inference lab UIs — the self-hosted generation surface.
+    coverage: Medium-High
+    tools: 5
+    notes: ollama primary home here (with the documented tiny test
+      model for offline smoke tests); llama.cpp, text-generation-webui,
+      open-webui, gguf-quantiser. Ollama/llama.cpp also serve O-2 —
+      secondary tags at KA-05, never a second primary.
+  - id: o-05-ai-engineering-sdks-dev-env
+    layer: OPS
+    kind: category
+    name: AI Engineering SDKs & Dev Environment
+    purpose: LLM/agent SDKs, ML frameworks, and the dev environment — the builder layer.
+    coverage: Very High
+    tools: 26
+    notes: langchain, langgraph, llama-index, openai-python,
+      anthropic-python, google-genai, autogen, crewai; pytorch (cpu
+      default + explicit cuda variant, §5.3 Shape 4 — never a global
+      cudaSupport bool), torchvision, torchaudio, tensorflow, jax,
+      onnxruntime; transformers, datasets, peft, trl; vscode/
+      code-server, neovim, python-lsp-server, uv, ruff, mypy;
+      python313 + curated extras. nixvital/ml-pkgs torch/jax-family
+      overlay pin is the documented fallback (§5.3).
+  - id: o-06-documentation-reporting-authoring
+    layer: OPS
+    kind: category
+    name: Documentation, Reporting & Authoring
+    purpose: Engagement-report and docs authoring — the quarto/pandoc/typst pipeline behind generated reports.
+    coverage: High
+    tools: 12
+    notes: quarto, pandoc, typst, mdbook, drawio, excalidraw,
+      mermaid-cli, obsidian native; texlive-full rides the opt-in
+      kailash-data pack (never on default ISOs, §8.1 budgets) inside
+      this count; pwndoc-ng, dradis service modules; faraday secondary
+      to C-9.
+  - id: o-07-agent-mcp-operability
+    layer: OPS
+    kind: category
+    name: Agent & MCP Operability
+    purpose: Operate AI agents inside the distro — the MCP server surface, container/lab packs, capability grants.
+    coverage: mixed
+    tools: 8
+    notes: hexstrike-ai + mcp-kali-server (third-party deliverables,
+      exp), malicious-mcp-poc + insecure-mcp-lab (lab packs, exp),
+      kailash-mcp (first-party, generated from the manifest),
+      kailash-container, headless-agent image, mcp-inspector (the A-3
+      tool on dogfood duty). Capability grants (short-lived,
+      human-minted) scope agent actions (R11); the CI dogfood loop runs
+      the A-3 scanner suite against the distro's own kailash-mcp.
