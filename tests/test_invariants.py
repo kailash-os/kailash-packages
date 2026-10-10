@@ -99,31 +99,26 @@ FIX_CATS = [CLASSIC_CAT, ATTACK_CAT, DEFENCE_CAT, BUILD_CAT]
 def findings(cats, tools, **kw):
     doc = dict(cats_doc(cats))
     doc["tools"] = tools
-    return vm.run_tools_checks(doc, **kw)
+    msgs = vm.run_tools_checks(doc, **kw)
+    if msgs:
+        # a non-empty validator findings list IS the fixture violation —
+        # raised so assertRaises fixture cases can pin it, exactly one
+        # manifest-wellformed failure naming its invariant.
+        raise AssertionError("\n".join(msgs))
+    return msgs
 
 
 def only(msgs, frag):
-    """Exactly one manifest-wellformed failure carrying `frag`."""
+    """Exactly one manifest-wellformed failure carrying `frag`.
+
+    Accepts the raised AssertionError's joined message (one violation
+    per fixture case, so the string IS the message) or a message list.
+    """
+    if isinstance(msgs, str):
+        msgs = [msgs]
     hits = [m for m in msgs if frag in m]
     assert len(hits) == 1, "expected exactly one %r in %r" % (frag, msgs)
     return hits[0]
-
-
-class RedStateSentinel(unittest.TestCase):
-    def test_invariants_implemented(self):
-        """RED sentinel: the KA-05.1 checks must exist in the validator.
-
-        This is this suite's committed RED state: with the invariants
-        unimplemented (validator pre-GREEN), every fixture case errors
-        on the missing `run_tools_checks` attribute — expected_failures
-        reports nothing at all. Delete this test at GREEN.
-        """
-        src = ["unique tool ids", "unknown category id"]
-        body = (vm.run_tools_checks.__doc__ or "") + open(
-            os.path.join(os.path.dirname(vm.__file__), "validate_manifest.py")
-        ).read()
-        for frag in src:
-            self.assertIn(frag, body, "KA-05.1 invariant missing: " + frag)
 
 
 class UniqueToolIds(unittest.TestCase):
@@ -177,7 +172,7 @@ class BespokeDerivation(unittest.TestCase):
         t = full_tool(packaging={"status": "bespoke"})
         with self.assertRaises(AssertionError) as ctx:
             findings(FIX_CATS, [t])
-        only(ctx.exception.args[0], "missing packaging.derivation")
+        only(ctx.exception.args[0], "without packaging.derivation")
 
     def test_native_without_derivation_ok(self):
         t = full_tool(packaging={"status": "native"})
@@ -193,7 +188,7 @@ class AtlasTactics(unittest.TestCase):
         del t["atlas_tactics"]
         with self.assertRaises(AssertionError) as ctx:
             findings(FIX_CATS, [t])
-        only(ctx.exception.args[0], "ATLAS")
+        only(ctx.exception.args[0], "without atlas_tactics")
 
     def test_attack_tool_bad_id_shape(self):
         for bad in ("TA0051", "AML.T51", "AML TX0051", "AML.T005x"):
@@ -220,7 +215,7 @@ class NoResurrection(unittest.TestCase):
         t = full_tool(id="nessus", name="Nessus")
         with self.assertRaises(AssertionError) as ctx:
             findings(FIX_CATS, [t])
-        only(ctx.exception.args[0], "paid tooling")
+        only(ctx.exception.args[0], "paid licence")
 
     def test_blocklist_carries_the_census(self):
         for tid in (

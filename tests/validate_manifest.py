@@ -9,9 +9,14 @@ layers renamed BUILD→OPS per the naming umbrella os#121 + mirror #9,
 OPS=91 enforced exactly when present, per-layer reconcile permissive
 to layers whose rows have not landed) and the in-file exclusions
 ledger (plan §3.7, the no-resurrection guard, as a header comment
-block in categories.yaml); KA-05.1 adds the tools.yaml
-invariants (unique ids, categories exist, bespoke => derivation path,
-purge-resurrection guard).
+block in categories.yaml); KA-05.1 adds the tools.yaml invariants
+(§5.2 vocabulary: unique tool ids, unknown category ids rejected in
+category and secondary_categories, bespoke => derivation path,
+ATLAS tactics with the AML.T#### shape guard, §3.7
+purge-resurrection guard, safety.level vocabulary).
+The tools.yaml invariant suite is tests/test_invariants.py (fixture
+  RED/GREEN evidence; kailash-os#74); the blocklist data constant is
+  tests/invariants.py.
 
 Categories invariants (KA-04.1):
   - the file exists and parses as YAML
@@ -31,6 +36,18 @@ ATTACK census invariants (KA-04.2):
     MITRE ATLAS tactic ids (AML.TA0000…AML.TA0015, 2026.05 matrix)
   - every ATTACK category entry carries a non-empty owasp_llm field
     ({2026: [...], v2: [...]} or a map of epoch -> LLM classes)
+
+tools.yaml invariants (KA-05.1):
+  - ids are unique
+  - every tool category and secondary_categories value exists among
+    categories.yaml ids
+  - packaging.status bespoke carries a packaging.derivation path
+  - every ATTACK-layer tool carries >= 1 atlas_tactics entry shaped
+    AML.T#### (shape-level regex guard — dataset-lookup verification
+    stays the census lanes' review job)
+  - §3.7 no-resurrection: purged tool ids/names are a data-driven
+    blocklist (tests/invariants.py)
+  - safety.level is safe | requires-target | exp
 """
 import os
 import sys
@@ -89,6 +106,202 @@ LEDGER_CLASSES = (
     "unmaintained tools",
     "network-infrastructure arsenal",
 )
+# KA-05.1: shape-level guard for per-tool ATLAS technique ids. Only the
+# SHAPE is validated here (AML.T + exactly four digits — the pattern
+# every id in the public mitre-atlas dataset matches); the dataset
+# lookup is not. Per AGENTS.md, mapping accuracy is verified against
+# the public MITRE ATLAS dataset by the census lanes' review, never
+# invented in data; a malformed id such as AML.T51 or TA0051 is
+# validator-blocking even though it is a data defect, not a lookup one.
+ATLAS_TOOL_PATTERN_RE = r"^AML\.T\d{4}$"
+import re as _re  # noqa: E402  (kept beside the constant it names)
+
+ATLAS_TOOL_PATTERN = _re.compile(ATLAS_TOOL_PATTERN_RE)
+
+# KA-05.1: the safety.level vocabulary (§5.2). KA-19's exp-gating
+# wiring in the OS repo is out of scope here — the manifest row
+# records the class; the OS side wires the gate.
+SAFETY_LEVELS = {"safe", "requires-target", "exp"}
+
+
+def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) -> list:
+    """tools.yaml invariants (KA-05.1, plan §5.2 vocabulary).
+
+    Evaluates the invariant set over a parsed manifest document that
+    carries a 'tools' list; every category id referenced by a tool
+    (primary or secondary) must exist in the document's
+    'categories' list, or in the explicit `cat_ids` set main() passes
+    from the categories.yaml half it validated first (tools.yaml
+    itself carries no category table). Each invariant violation
+    becomes exactly ONE manifest-wellformed failure line, returned as
+    a list of strings in first-violation order:
+
+      - unique tool ids ("duplicate tool id")
+      - categories-exist ("unknown category id '<id>'") for the
+        primary category and every secondary_categories value;
+        secondary_categories is optional but must be a list of str
+        ("secondary_categories must be a list of strings") and never
+        repeat the primary ("single primary category:")
+      - packaging.status 'bespoke' carries a non-empty
+        packaging.derivation path ("bespoke tool without
+        packaging.derivation")
+      - ATTACK-layer tools carry >= 1 atlas_tactics entry shaped
+        AML.T#### ("ATTACK-layer tool without atlas_tactics" /
+        "bad MITRE ATLAS technique id shape")
+      - no-resurrection: tool id or name on the §3.7 blocklist
+        (tests/invariants.py) is refused ("purged tooling (§3.7
+        hardware/RF class)" / "purged tooling (§3.7 paid licence)")
+      - safety.level in {safe, requires-target, exp}
+        ("invalid safety.level")
+
+    `require_nonempty` flips the KA-02.2 handover constraint (the gate
+    accepts the empty tools list only until the census lanes seed
+    rows); tools rows are not counted here — §3.6 primary-slot layer
+    totals count category rows and are checked in main().
+    """
+    from invariants import BLOCK_PAID, NO_RESURRECTION  # §3.7 blocklist
+
+    findings: list = []
+    tools = doc.get("tools")
+    if not isinstance(tools, list):
+        findings.append(
+            "manifest-wellformed: FAIL: tools.yaml: top-level 'tools' list missing"
+        )
+        return findings
+    if not tools and require_nonempty:
+        findings.append(
+            "manifest-wellformed: FAIL: tools.yaml: no entries (KA-05 seeds rows)"
+        )
+        return findings
+
+    if cat_ids is None:
+        cat_ids = {
+            e.get("id") for e in (doc.get("categories") or []) if isinstance(e, dict)
+        }
+
+    seen_tools = set()
+    for t in tools:
+        if not isinstance(t, dict):
+            findings.append(
+                "manifest-wellformed: FAIL: tool entry is not a mapping: %r" % (t,)
+            )
+            return findings
+        tid = t.get("id")
+
+        # ids are unique
+        if not tid or not isinstance(tid, str):
+            findings.append("manifest-wellformed: FAIL: tool entry missing id")
+            return findings
+        if tid in seen_tools:
+            findings.append(
+                "manifest-wellformed: FAIL: duplicate tool id: %s" % tid
+            )
+            return findings
+        seen_tools.add(tid)
+
+        # §3.7 no-resurrection guard: blocklisted tool ids and names
+        # are refused wherever they turn up in the row.
+        needles = [tid, str(t.get("name", "")).lower()]
+        needles += [str(x).lower() for x in (t.get("tags") or [])]
+        for needle in needles:
+            if needle in NO_RESURRECTION:
+                if needle in BLOCK_PAID:
+                    findings.append(
+                        "manifest-wellformed: FAIL: %s: purged tooling (§3.7 paid "
+                        "licence): %r — no resurrection of excluded classes"
+                        % (tid, needle)
+                    )
+                else:
+                    findings.append(
+                        "manifest-wellformed: FAIL: %s: purged tooling (§3.7 "
+                        "hardware/RF class): %r — no resurrection of excluded "
+                        "classes" % (tid, needle)
+                    )
+                return findings
+
+        # every category exists
+        category = t.get("category")
+        if category not in cat_ids:
+            findings.append(
+                "manifest-wellformed: FAIL: %s: unknown category id %r"
+                % (tid, category)
+            )
+            return findings
+        secondary_categories = t.get("secondary_categories", [])
+        if not isinstance(secondary_categories, list):
+            findings.append(
+                "manifest-wellformed: FAIL: %s: secondary_categories must be a "
+                "list" % tid
+            )
+            return findings
+        if any(not isinstance(x, str) for x in secondary_categories):
+            findings.append(
+                "manifest-wellformed: FAIL: %s: secondary_categories entry must "
+                "be a str: %r"
+                % (
+                    tid,
+                    next(
+                        x
+                        for x in secondary_categories
+                        if not isinstance(x, str)
+                    ),
+                )
+            )
+            return findings
+        for s in secondary_categories:
+            if s == category:
+                findings.append(
+                    "manifest-wellformed: FAIL: %s: single primary category: %r "
+                    "repeated in secondary_categories" % (tid, s)
+                )
+                return findings
+            if s not in cat_ids:
+                findings.append(
+                    "manifest-wellformed: FAIL: %s: unknown category id %r "
+                    "(secondary_categories)" % (tid, s)
+                )
+                return findings
+
+        # packaging: bespoke tools carry a derivation path
+        packaging = t.get("packaging") or {}
+        if packaging.get("status") == "bespoke" and not packaging.get(
+            "derivation"
+        ):
+            findings.append(
+                "manifest-wellformed: FAIL: %s: bespoke tool without "
+                "packaging.derivation" % tid
+            )
+            return findings
+
+        # ATTACK-layer tools carry >= 1 ATLAS tactic; shaped AML.T####
+        if t.get("layer") == "ATTACK":
+            tactics = t.get("atlas_tactics")
+            if not isinstance(tactics, list) or not any(
+                isinstance(x, str) for x in tactics
+            ):
+                findings.append(
+                    "manifest-wellformed: FAIL: %s: ATTACK-layer tool without "
+                    "atlas_tactics (KA-05.1)" % tid
+                )
+                return findings
+            for tactic in tactics:
+                if not ATLAS_TOOL_PATTERN.match(tactic):
+                    findings.append(
+                        "manifest-wellformed: FAIL: %s: bad MITRE ATLAS technique "
+                        "id shape (AML.T####): %r" % (tid, tactic)
+                    )
+                    return findings
+
+        # safety.level vocabulary
+        level = (t.get("safety") or {}).get("level")
+        if level not in SAFETY_LEVELS:
+            findings.append(
+                "manifest-wellformed: FAIL: %s: invalid safety.level %r (expected "
+                "one of: %s)" % (tid, level, ", ".join(sorted(SAFETY_LEVELS)))
+            )
+            return findings
+
+    return findings
 
 
 def fail(msg: str) -> int:
@@ -241,10 +454,26 @@ def main() -> int:
                 % (layer, got, want)
             )
 
+    # tools.yaml invariants (KA-05.1): the tools-table half of the gate
+    # runs through the same seam the invariant suite drives
+    # (tests/test_invariants.py) — unique ids, categories exist,
+    # bespoke => derivation, ATTACK ATLAS coverage + id shape,
+    # §3.7 no-resurrection, safety.level vocabulary. `require_nonempty`
+    # stays False until the KA-05 seed lanes land rows (KA-02.2's
+    # handover constraint: the empty stub is well-formed for now).
+    tools_path = os.path.join(MANIFEST, "tools.yaml")
+    if not os.path.exists(tools_path):
+        return fail("tools.yaml missing (KA-02.2 owns it)")
+    with open(tools_path) as f:
+        tdoc = yaml.safe_load(f) or {}
+    for tool_fail in run_tools_checks(tdoc, cat_ids=seen):
+        return fail(tool_fail.split("manifest-wellformed: FAIL: ", 1)[-1])
+
     print(
-        "manifest-wellformed: OK (%d entries; primary slots: %s; data-packs excluded from counts)"
+        "manifest-wellformed: OK (%d category entries, %d tools; primary slots: %s; data-packs excluded from counts)"
         % (
             len(entries),
+            len(tdoc.get("tools") or []),
             ", ".join("%s %d" % (l, n) for l, n in sorted(per_layer.items())) or "none",
         )
     )
