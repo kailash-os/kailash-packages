@@ -52,7 +52,8 @@ let
             src = fetchPypi {
               inherit pname version;
               format = "wheel";
-              dist = "py3";
+              dist = "py3";    # URL directory segment
+              python = "py3";  # the wheel FILENAME tag (default py2.py3 404s)
               sha256 = "sha256-vK8W8AeFX6S/DOZ1Sx9yxsWj1UQYiElXfd1VxdxCmF4=";
             };
             propagatedBuildInputs = [ pyodbc ];
@@ -82,7 +83,8 @@ let
             src = fetchPypi {
               inherit pname version;
               format = "wheel";
-              dist = "py3";
+              dist = "py3";    # URL directory segment
+              python = "py3";  # the wheel FILENAME tag (default py2.py3 404s)
               sha256 = "sha256-4cVXSlQfkpD90HHSNTXhSx9GOvIxpvCsD5F+El8EY88=";
             };
             propagatedBuildInputs = [
@@ -112,7 +114,8 @@ let
             src = fetchPypi {
               inherit pname version;
               format = "wheel";
-              dist = "py3";
+              dist = "py3";    # URL directory segment
+              python = "py3";  # the wheel FILENAME tag (default py2.py3 404s)
               sha256 = "sha256-DD5KjvimF58iLoy26mWsWnH6XHDS3iGVDRTpn5M+z1I=";
             };
             # no declared runtime deps (upstream [project] carries none)
