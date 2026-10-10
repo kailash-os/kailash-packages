@@ -1,0 +1,43 @@
+# Kailash OS tool manifest — the single source of truth (KA-02.2 #67,
+# plan §5.2). Every tool lands here exactly once with one primary
+# category; secondary cross-refs only where dual-use is real. This file
+# drives: (1) the overlay's derivations, (2) the category modules'
+# package lists, (3) the desktop menu, (4) the CLI, (5) the mdBook
+# docs, (6) the website's generated sections — six views, one truth.
+# Hand-maintained ONLY here; every consumer generates from it.
+#
+# The table is FILLED by KA-05 (census → manifest transcription). This
+# revision carries the schema header and an empty tools list; the
+# manifest-wellformed gate accepts the empty list only until KA-05.1
+# lands, then requires non-empty with the full entry invariants.
+#
+# Fields per entry (§5.2 vocabulary; validator type-guards the field
+# names now, full invariants at KA-05.1):
+#   id                    slug, unique (garak)
+#   layer                 CLASSIC | ATTACK | DEFENCE | BUILD
+#   category              primary category id — the census slug
+#                         (c-01-information-gathering), one per tool
+#   secondary_categories  optional cross-refs to other census slugs —
+#                         never a second primary
+#   name                  human name (menu/docs surface)
+#   description           one-line what-it-does
+#   source                {vcs_owner, repo, vcs_url} — pinned upstream;
+#                         research-grade tools pin to commit revs (R7)
+#   license               SPDX identifier
+#   packaging             status: native | stale | bespoke | module | data;
+#                         derivation: pkgs/<tool>/default.nix (bespoke only)
+#   safety                level: safe | requires-target | exp;
+#                         target-required: bool — layer-attack tools
+#                         declare their level and stay double-gated
+#                         (host opt-in + shell opt-in) via the OS side
+#   nixos_menu            {icon, exec, category} — desktop surface
+#   atlas_tactics         [AML.T…] — >= 1 tactic for ATTACK-layer tools
+#   owasp_llm             map of epoch → mapped risk ({2026: LLM01, v2:
+#                         LLM01}) — both epochs, per §2.4
+#   docs                  layers/<layer>/<tool>.md (mdBook surface)
+#   tags                  free-form, lowercase
+schema_version: 1
+
+# Table intentionally empty: header-only manifest (KA-02.2 #67).
+# KA-05.1 fills Layer ATTACK first; KA-05.2/05.3 follow with the rest.
+tools: []
