@@ -45,6 +45,11 @@ python3.pkgs.buildPythonApplication {
     colorama
     tqdm
     cohere
+    anthropic
+    replicate
+    cmd2
+    deepl
+    wn
     google-api-python-client
     backoff
     nltk
