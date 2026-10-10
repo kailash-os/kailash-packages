@@ -54,3 +54,18 @@ src.git = "https://github.com/Trusted-AI/adversarial-robustness-toolbox"
 src.branch = "main"
 src.commit = "4da50bdc5a1393bd33a52f7012f4928dd68fb260"
 fetch.git = "https://github.com/Trusted-AI/adversarial-robustness-toolbox"
+
+[counterfit]
+# KA-12.2 (kailash-os#85): Azure/counterfit — the counterfit CLI, the
+# A-5 model-attack automation layer. REFERENCE POSTURE, pinned frozen:
+# upstream is dormant (main tip c00edbf5 = maintainer-list updates of
+# 2025-07-18; the repo moved from secureworks/counterfit — 404 there —
+# to Azure/counterfit); the census carries it as pinned reference
+# (plan §3.3 A-5 / Appendix A). Pinned to the exact main head at pin
+# time, commit rev not a tag (R7); rev + SRI sha256 byte-verified
+# against the commits API before committing. Freshness is NOT claimed:
+# upstream moved last in July 2025 and the pin records that.
+src.git = "https://github.com/Azure/counterfit"
+src.branch = "main"
+src.commit = "c00edbf595303a85a4ce0ac9d8d55d505abf4de5"
+fetch.git = "https://github.com/Azure/counterfit"

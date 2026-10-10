@@ -98,5 +98,25 @@
             "url": "https://github.com/projectdiscovery/subfinder"
         },
         "version": "c97f25802892093060f0fc424bfc3f39e273693a"
+    },
+    "counterfit": {
+        "cargoLock": null,
+        "date": "2025-07-18",
+        "extract": null,
+        "name": "counterfit",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "c00edbf595303a85a4ce0ac9d8d55d505abf4de5",
+            "sha256": "sha256-bnFQ3HgL+Z+dpYP+svm/JwtYQGSdpk16Wr2g/FO8QwE=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/Azure/counterfit"
+        },
+        "version": "c00edbf595303a85a4ce0ac9d8d55d505abf4de5"
     }
 }
