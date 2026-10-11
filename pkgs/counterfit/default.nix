@@ -40,6 +40,18 @@
 #     strip (the augly attack configs stay listed by the scanner,
 #     marked unavailable exactly as upstream degrades optional
 #     frameworks).
+#   - pandas, tqdm — UNDECLARED runtime imports upstream at this pin:
+#     both are imported at module top level on the eager `import
+#     counterfit` chain (targets/movie_reviews.py `import pandas as pd`,
+#     reached via targets/__init__.py; tqdm in targets/cart_pole/
+#     cart_pole_initstate.py and frameworks/augly/augly.py) yet NEITHER
+#     appears in upstream's requirements.txt (grep-verified at the pin)
+#     — upstream metadata defect, dormant repo. Hosted RED at
+#     38101416710 (x86_64 leg of the 83ccb81 merge sha) exposed it the
+#     moment the strip fix let the build reach pythonImportsCheck:
+#     `ModuleNotFoundError: No module named 'pandas'`. Added to the
+#     kept set (upstream declares no version for them — the requirements
+#     rewrite carries none; no pythonRelaxDeps entry needed).
 #
 # The strip is anchored: every rewritten string is asserted before
 # rewriting, so a pin update that moves these lines fails the build
@@ -104,6 +116,7 @@ python313.pkgs.buildPythonApplication (finalAttrs: {
     onnxruntime
     optuna
     orjson
+    pandas
     pillow
     protobuf
     pygame
@@ -114,6 +127,7 @@ python313.pkgs.buildPythonApplication (finalAttrs: {
     scipy
     tensorflow
     torchvision
+    tqdm
     ]
     );
 
@@ -159,6 +173,7 @@ python313.pkgs.buildPythonApplication (finalAttrs: {
     onnxruntime
     optuna
     orjson
+    pandas
     Pillow
     protobuf
     pygame
@@ -169,6 +184,7 @@ python313.pkgs.buildPythonApplication (finalAttrs: {
     scipy
     tensorflow
     torchvision
+    tqdm
     REQS
 
     python3 - <<'PYEOF'
@@ -218,6 +234,33 @@ python313.pkgs.buildPythonApplication (finalAttrs: {
     if old2 not in s2:
         raise SystemExit("anchored strip 2 moved at this pin: " + str(p2))
     p2.write_text(s2.replace(old2, new2, 1))
+
+    # Anchored strip 3: Pillow 10 removed the deprecated `Image.CUBIC`
+    # alias — CUBIC and BICUBIC have carried the same value since
+    # forever, so this is a pure rename to the modern name, no behavior
+    # change. Upstream drift vs the locked Pillow (hosted RED at
+    # 38102834696, the kp#37 x86_64 leg: `AttributeError: module
+    # 'PIL.Image' has no attribute 'CUBIC'` — module-level, blocks the
+    # imports check).
+    p3 = pathlib.Path("counterfit/targets/cart_pole/DCPW.py")
+    s3 = p3.read_text()
+    old3 = "T.Resize(40, interpolation=Image.CUBIC)"
+    if old3 not in s3:
+        raise SystemExit("anchored strip 3 moved at this pin: " + str(p3))
+    p3.write_text(s3.replace(old3, "T.Resize(40, interpolation=Image.BICUBIC)", 1))
+
+    # Anchored strip 4: numpy 1.24 removed the deprecated `np.float`
+    # alias — it WAS float64, so `float` is the identical spelling.
+    # Same proven class as strip 3 (deprecated-alias removal in the
+    # locked set); digits_mlp.py sits on the eager import chain and the
+    # call site is a target's quantize path — leaving a known
+    # AttributeError in the shipped surface is not acceptable.
+    p4 = pathlib.Path("counterfit/targets/digits_mlp.py")
+    s4 = p4.read_text()
+    old4 = "astype(np.float)"
+    if old4 not in s4:
+        raise SystemExit("anchored strip 4 moved at this pin: " + str(p4))
+    p4.write_text(s4.replace(old4, "astype(float)", 1))
     PYEOF
 
     # Console-script repair (see header): ship the terminal as
