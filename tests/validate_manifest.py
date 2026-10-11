@@ -316,6 +316,21 @@ def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) ->
             )
             return findings
 
+        # nixos_menu.category joins the census (os#139): the menu block's
+        # category value is the census-slug vocabulary — consumers (the
+        # desktop menu generator, CLI category filters) join it against
+        # categories.yaml ids, so a short-form id silently drops the row.
+        menu = t.get("nixos_menu")
+        if isinstance(menu, dict) and menu.get("category") is not None:
+            mcat = menu.get("category")
+            if mcat not in cat_ids:
+                findings.append(
+                    "manifest-wellformed: FAIL: %s: nixos_menu.category %r is "
+                    "not a census category id (menu consumers join on the full "
+                    "slug)" % (tid, mcat)
+                )
+                return findings
+
     return findings
 
 

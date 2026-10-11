@@ -3023,7 +3023,7 @@ tools:
     nixos_menu:
       icon: "art.svg"
       exec: art
-      category: a-05
+      category: a-05-model-extraction-inversion
     atlas_tactics: [AML.T0043]
     owasp_llm:
       2026: [LLM02]
@@ -3049,7 +3049,7 @@ tools:
     nixos_menu:
       icon: "counterfit.svg"
       exec: counterfit
-      category: a-05
+      category: a-05-model-extraction-inversion
     atlas_tactics: [AML.T0024]
     owasp_llm:
       2026: [LLM02]
@@ -3075,7 +3075,7 @@ tools:
     nixos_menu:
       icon: "foolbox.svg"
       exec: foolbox
-      category: a-05
+      category: a-05-model-extraction-inversion
     atlas_tactics: [AML.T0043]
     owasp_llm:
       2026: [LLM02]
@@ -3101,7 +3101,7 @@ tools:
     nixos_menu:
       icon: "cleverhans.svg"
       exec: cleverhans
-      category: a-05
+      category: a-05-model-extraction-inversion
     atlas_tactics: [AML.T0043]
     owasp_llm:
       2026: [LLM02]
