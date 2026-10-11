@@ -4898,6 +4898,7 @@ tools:
   - id: mcp-inspector
     layer: OPS
     category: o-07-agent-mcp-operability
+    secondary_categories: [a-03-agentic-mcp-tool-use]
     name: "mcp-inspector"
     description: "MCP Inspector — visual testing tool for MCP servers (dogfood duty in CI; licence MIT→Apache-2.0 transition)."
     source:
@@ -6228,32 +6229,6 @@ tools:
   # the C-10 precedent; live upstream probes confirmed no canonical
   # match). exp-gated: mcp-unsafe-deser-probe, mcpoison,
   # poisoned-skill-pack (Appendix A safety column).
-
-  - id: mcp-inspector
-    layer: ATTACK
-    category: a-03-agentic-mcp-tool-use
-    name: mcp-inspector
-    description: "MCP Inspector — client/protocol inspector for exercising and probing MCP servers and tool surfaces."
-    source:
-      vcs_owner: modelcontextprotocol
-      repo: inspector
-      vcs_url: "https://github.com/modelcontextprotocol/inspector"
-    license: "Apache-2.0"
-    packaging:
-      status: bespoke
-      derivation: pkgs/mcp-inspector/default.nix
-    safety:
-      level: safe
-    nixos_menu:
-      icon: "mcp-inspector.svg"
-      exec: mcp-inspector
-      category: a-03-agentic-mcp-tool-use
-    atlas_tactics: [AML.T0053]
-    owasp_llm:
-      2026: [LLM03]
-      v2: [LLM06]
-    docs: layers/a-03/mcp-inspector.md
-    tags: [attack, offensive, mcp, node, bespoke, update:weekly]
 
   - id: mcp-scan
     layer: ATTACK
