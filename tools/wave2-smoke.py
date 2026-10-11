@@ -143,6 +143,14 @@ SMOKE_TABLE = {
         # TF+torch import chain at CLI boot crosses 300s cold on hosted
         # runners (two timed-out legs at 300.0s exactly); 600 is honest.
         "timeout_s": 600,
+        # counterfit's console main is examples.terminal.terminal:main —
+        # a cmd2 interactive REPL (Terminal().cmdloop()), NOT an argparse
+        # CLI: there is no --help, and with no input it loops forever
+        # (both hosted legs timed out even warm: 300s, then 600s). The
+        # bounded behavioural surface for a REPL app is EOF-on-stdin:
+        # `exit` (cmd2's terminate command) ends cmdloop with rc 0 — the
+        # real CLI boots, initialises TF+torch, and exits cleanly.
+        "input_text": "exit\n",
         # counterfit/__init__.py at c00edbf5
         # counterfit/__init__.py at c00edbf5 carries __version__ = "1.1.0"
         "expect_version": "1.1.0",
@@ -267,8 +275,15 @@ def smoke_console(tool, out_path, build_log=""):
         if version != entry["expect_version"]:
             return False, "expected version %r, dist-info says %r" % (
                 entry["expect_version"], version)
-        # behavioural half: --help through the real installed CLI
-        argv = [interp, wrapped, "--help"]
+        # behavioural half: run the real installed CLI. cmd2 REPL apps
+        # (counterfit, entry carries input_text) get their terminate
+        # command on stdin instead of --help — a REPL has no --help and
+        # loops forever without it (both hosted legs timed out).
+        # argparse-style import CLIs (none tonight) would take --help.
+        if entry.get("input_text"):
+            argv = [interp, wrapped]
+        else:
+            argv = [interp, wrapped, "--help"]
         # HOME: cmd2/matplotlib-class init at import time wants a writable
         # HOME (counterfit); the runner provides one, and the VM likewise.
         env.setdefault("HOME", "/tmp")
@@ -282,10 +297,12 @@ def smoke_console(tool, out_path, build_log=""):
             env["HOME"] = os.environ.get("SMOKE_HOME") or "/tmp"
 
     timeout_s = entry.get("timeout_s", SMOKE_TIMEOUT_DEFAULT_S)
+    input_text = entry.get("input_text")
     try:
         proc = subprocess.run(
             argv, capture_output=True, text=True,
             timeout=timeout_s, env=env, cwd="/",
+            input=input_text,
         )
     except subprocess.TimeoutExpired:
         return False, "smoke timed out after %ss" % timeout_s
@@ -300,8 +317,9 @@ def smoke_console(tool, out_path, build_log=""):
         marker = SMOKE_TABLE[tool].get("build_log_marker")
         if marker and marker in build_log:
             pass  # locally-built leg: imports-check proven in THIS log too
-        return True, ("version %s from dist-info; --help rc=0 through the "
-                      "wrapped CLI" % version, lines)
+        verb = "stdin-exit" if SMOKE_TABLE[tool].get("input_text") else "--help"
+        return True, ("version %s from dist-info; %s rc=0 through the "
+                      "wrapped CLI" % (version, verb), lines)
     if tool == "garak":
         # the pin prints raw colourama ANSI (no garak init() call on the
         # posix path — rehearsed: raw escapes regardless of TTY) — strip
