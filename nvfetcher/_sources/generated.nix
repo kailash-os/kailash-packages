@@ -20,6 +20,20 @@
     };
     date = "2026-10-08";
   };
+  counterfit = {
+    pname = "counterfit";
+    version = "c00edbf595303a85a4ce0ac9d8d55d505abf4de5";
+    src = fetchgit {
+      url = "https://github.com/Azure/counterfit";
+      rev = "c00edbf595303a85a4ce0ac9d8d55d505abf4de5";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-bnFQ3HgL+Z+dpYP+svm/JwtYQGSdpk16Wr2g/FO8QwE=";
+    };
+    date = "2025-07-18";
+  };
   dnsrecon = {
     pname = "dnsrecon";
     version = "13c47504dedd4203610f407ef9619fc085a2df97";

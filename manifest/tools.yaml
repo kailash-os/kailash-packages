@@ -40,7 +40,6 @@ schema_version: 1
 
 # Table intentionally empty: header-only manifest (KA-02.2 #67).
 # KA-05.1 fills Layer ATTACK first; KA-05.2/05.3 follow with the rest.
-# CLASSIC rows transcribed per the census (KA-05.2; issue kailash-os#75).
 tools:
   - id: nmap
     layer: CLASSIC
@@ -2979,3 +2978,131 @@ tools:
       v2: [LLM01]
     docs: layers/a-02/garak.md
     tags: [scanner, offensive, llm, nvidia, update:weekly]
+  # KA-12 child lanes (kailash-os#84/#85; plan §3.3 A-5, Appendix A):
+  # art (KA-12.1) and counterfit (KA-12.2) are the pinned derivations.
+  # counterfit is the REFERENCE POSTURE row: upstream dormant (last
+  # upstream move 2025-07-18; repo relocated secureworks → Azure), pinned
+  # frozen — no freshness claimed. foolbox and cleverhans are the
+  # foolbox and cleverhans are the week-after rows of #85: sources probed
+  # upstream (bethgelab/foolbox, cleverhans-lab/cleverhans; both MIT at
+  # the upstream LICENSE — foolbox 3.3.4, cleverhans 4.0.0 latest at
+  # packaging time), bespoke rows recorded here per the census (§3.3
+  # A-5 / Appendix A) while the derivations land in the week-after
+  # slice. The harness contract (kp#32, os#135) existence-gates matrix
+  # legs against pkgs/<dir>/default.nix on disk, so these rows stay out
+  # of the build matrix until their derivation dirs land — no phantom
+  # legs, no placeholder statuses.
+  #
+  # A-5 ATLAS mapping note (the category carries the tactic set TA0000 AI
+  # Model Access + TA0010 Exfiltration in categories.yaml; tool rows carry
+  # TECHNIQUE ids — the AML.TA#### tactic ids stay the census rows'): the
+  # issue's two tags map as: AML.T0024 (technique) on the counterfit row —
+  # its sub-technique T0024.002 IS Extract AI Model, tactic TA0000 AI
+  # Model Access in the dataset — and the TA0000 tactic lives on the
+  # category row (already recorded). art supplies the craft/eval
+  # primitives = AML.T0043 Craft Adversarial Data; foolbox/cleverhans
+  # carry the same primitives mapping as art.
+  - id: art
+    layer: ATTACK
+    category: a-05-model-extraction-inversion
+    name: art
+    description: "Adversarial Robustness Toolbox — IBM's ML security library: evasion, poisoning, extraction and inference attacks, defences and metrics."
+    source:
+      vcs_owner: Trusted-AI
+      repo: adversarial-robustness-toolbox
+      vcs_url: "https://github.com/Trusted-AI/adversarial-robustness-toolbox"
+    license: "MIT"
+    packaging:
+      status: bespoke
+      derivation: pkgs/art/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "art.svg"
+      exec: art
+      category: a-05
+    atlas_tactics: [AML.T0043]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02]
+    docs: layers/a-05/art.md
+    tags: [attack, offensive, adversarial-ml, library]
+  - id: counterfit
+    layer: ATTACK
+    category: a-05-model-extraction-inversion
+    name: counterfit
+    description: "Counterfit — CLI automation layer for assessing the security of ML models (pinned reference posture; upstream dormant since 2025-07)."
+    source:
+      vcs_owner: Azure
+      repo: counterfit
+      vcs_url: "https://github.com/Azure/counterfit"
+    license: "MIT"
+    packaging:
+      status: bespoke
+      derivation: pkgs/counterfit/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "counterfit.svg"
+      exec: counterfit
+      category: a-05
+    atlas_tactics: [AML.T0024]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02]
+    docs: layers/a-05/counterfit.md
+    tags: [attack, offensive, adversarial-ml, pinned-reference]
+  - id: foolbox
+    layer: ATTACK
+    category: a-05-model-extraction-inversion
+    name: foolbox
+    description: "Foolbox — python toolbox for adversarial attacks on ML models (week-after: derivation pending)."
+    source:
+      vcs_owner: bethgelab
+      repo: foolbox
+      vcs_url: "https://github.com/bethgelab/foolbox"
+    license: "MIT"
+    packaging:
+      status: bespoke
+      derivation: pkgs/foolbox/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "foolbox.svg"
+      exec: foolbox
+      category: a-05
+    atlas_tactics: [AML.T0043]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02]
+    docs: layers/a-05/foolbox.md
+    tags: [attack, offensive, adversarial-ml, week-after]
+  - id: cleverhans
+    layer: ATTACK
+    category: a-05-model-extraction-inversion
+    name: cleverhans
+    description: "CleverHans — adversarial-examples library for benchmarking ML robustness (week-after: derivation pending)."
+    source:
+      vcs_owner: cleverhans-lab
+      repo: cleverhans
+      vcs_url: "https://github.com/cleverhans-lab/cleverhans"
+    license: "MIT"
+    packaging:
+      status: bespoke
+      derivation: pkgs/cleverhans/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "cleverhans.svg"
+      exec: cleverhans
+      category: a-05
+    atlas_tactics: [AML.T0043]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02]
+    docs: layers/a-05/cleverhans.md
+    tags: [attack, offensive, adversarial-ml, week-after]
