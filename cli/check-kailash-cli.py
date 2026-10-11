@@ -182,6 +182,15 @@ def main():
     code, out = run_cli(["--json", "info", "totally-absent-tool"])
     check(code == 1, "info --json on an absent id exits 1", "rc=%d" % code)
 
+    # 8 (KA-14.3): `kailash manifest validate` wires the CLI surface onto
+    # the repo validator — every CLI surface wired by KA-14.x lands with
+    # a check here (the checker is the flake's cli gate). Positive: the
+    # real manifest validates (exit 0, the manifest-wellformed OK line
+    # printed). Negative: a synthetic broken-manifest fixture (a tools
+    # row with no safety.level) is refused (exit non-zero). RED anchor:
+    # this block is the watched-RED placeholder for the KA-14.3 slice.
+    check(False, "checker anchor: KA-14.3", "placeholder")
+
     # 7. usage errors exit 2 (argparse SystemExit path)
     try:
         kcli.main(["info"])
