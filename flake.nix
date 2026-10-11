@@ -79,6 +79,7 @@
             export WAVE2_SMOKE_EXPECT_TOOLS="$(
               nix eval --accept-flake-config --raw --impure --expr '
                 let f = builtins.getFlake (toString $src); in
+                let lib = f.inputs.nixpkgs.lib; in
                 with f.packages.x86_64-linux;
                 lib.concatStringsSep " " (builtins.sort builtins.lessThan
                   (map (n: (builtins.getAttr n f.packages.x86_64-linux).pname or n)
@@ -86,6 +87,8 @@
                                         || n == "art" || n == "counterfit")
                       (builtins.attrNames f.packages.x86_64-linux))))'
             )"
+            nixStoreRoot="$(nix eval --raw --impure --expr 'builtins.storeDir')"
+            echo "flake-resolved tool set: $WAVE2_SMOKE_EXPECT_TOOLS (store: $nixStoreRoot)"
             python3 $src/tools/wave2-smoke.py --dry-run
             touch $out
           '';
