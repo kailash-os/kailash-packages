@@ -207,6 +207,10 @@ def main():
         _shutil.copytree(os.path.join(SRC, "manifest"), fixture_dir,
                          dirs_exist_ok=True)
         tools_path = os.path.join(fixture_dir, "tools.yaml")
+        # the flake src is a read-only store path (444 bits) — copytree
+        # preserves them, so the fixture rewrite needs its copy made
+        # writable first (PermissionError otherwise, hosted-run verified)
+        os.chmod(tools_path, 0o644)
         with open(tools_path) as fh:
             doc = yaml.safe_load(fh)
         if not doc.get("tools"):
