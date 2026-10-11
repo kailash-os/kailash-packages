@@ -401,14 +401,30 @@ def defence_census_failures(entries: list) -> list:
     return failures
 
 
-def main() -> int:
+def main(argv=None) -> int:
     try:
         import yaml
     except ImportError:
         print("pyyaml unavailable in check env")
         return 1
 
-    cats_path = os.path.join(MANIFEST, "categories.yaml")
+    # --manifest-dir (KA-14.3): an optional seam for the CLI's
+    # `kailash manifest validate` (kailash-os#137), which runs this
+    # validator in-process against the manifest IT resolves (the §7.3
+    # per-file env contract included). Default stays the file-sibling
+    # manifest dir — the CI-manifest-job and checks.manifest-wellformed
+    # subprocess invocation is unchanged by the seam.
+    manifest_dir = MANIFEST
+    if argv:
+        args = list(argv)
+        if "--manifest-dir" in args:
+            idx = args.index("--manifest-dir")
+            if idx + 1 >= len(args) or not args[idx + 1]:
+                print("--manifest-dir requires a directory argument")
+                return 1
+            manifest_dir = args[idx + 1]
+
+    cats_path = os.path.join(manifest_dir, "categories.yaml")
     if not os.path.exists(cats_path):
         return fail("categories.yaml missing (KA-04.1 owns it)")
     with open(cats_path) as f:
@@ -531,7 +547,7 @@ def main() -> int:
     # §3.7 no-resurrection, safety.level vocabulary. `require_nonempty`
     # stays False until the KA-05 seed lanes land rows (KA-02.2's
     # handover constraint: the empty stub is well-formed for now).
-    tools_path = os.path.join(MANIFEST, "tools.yaml")
+    tools_path = os.path.join(manifest_dir, "tools.yaml")
     if not os.path.exists(tools_path):
         return fail("tools.yaml missing (KA-02.2 owns it)")
     with open(tools_path) as f:

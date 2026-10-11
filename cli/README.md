@@ -46,8 +46,15 @@ never re-implements them.
 - `kailash info <tool-id> [--json]` — the manifest record as JSON; an
   absent id exits 1 (with the header-only stub, every id is absent).
 - `kailash manifest check` — loader self-inventory as JSON (test aid for
-  data-driven assertions; `manifest validate` runs the repo validator at
-  KA-14.2).
+  data-driven assertions).
+- `kailash manifest validate` — runs the repo manifest gate
+  (`tests/validate_manifest.py`) in-process against the manifest the CLI
+  itself resolves (the §7.3 per-file env contract included: a baked
+  store path validates the baked bytes). Exit 0 with the validator's OK
+  line on a well-formed manifest, 1 with the FAIL line on gate failure,
+  2 when `tests/` is not beside the package (installed wheels carry
+  `cli/` only). This is KA-14's "`kailash manifest validate` runs the CI
+  gate locally" clause (KA-14.3, kailash-os#137).
 
 Exit codes: **0** ok · **1** no results · **2** usage error or
 unreadable/unparsable manifest (argparse exits 2 on its own). `--json`

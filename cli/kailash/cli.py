@@ -17,6 +17,7 @@ in tests/validate_manifest.py, never duplicated here.
 """
 import argparse
 import json
+import os
 import sys
 
 from . import manifest
@@ -184,6 +185,60 @@ def cmd_check(args):
     return 0
 
 
+def cmd_validate(args):
+    """kailash manifest validate — runs the repo validator in-process.
+
+    KA-14.3 (kailash-os#137): this is the CLI surface onto the CI gate —
+    `kailash manifest validate` runs tests/validate_manifest.py (the
+    single enforcement point for the §5.2/§3.6 manifest invariants) the
+    way cli/check-kailash-cli.py imports the package: sys.path insertion
+    beside the package, then in-process import, so the SAME env that
+    ships pyyaml ships the validator (`kailash manifest validate runs
+    the CI gate locally` — KA-14's acceptance clause).
+
+    The validator runs against the manifest THE CLI RESOLVES — the §7.3
+    per-file env contract included: KAILASH_MANIFEST/KAILASH_CATEGORIES
+    overrides name the files, so a baked store path validates the baked
+    bytes and a repo tree validates the repo files. Unset, resolution
+    falls back to the __file__-relative sibling manifest dir both here
+    and in the validator. Exit codes mirror the validator's: 0 when the
+    gate passes (its OK line is printed verbatim), 1 on gate failure
+    (the FAIL line printed verbatim), 2 when the validator cannot be
+    located in this environment.
+    """
+    here = os.path.dirname(os.path.abspath(__file__))
+    tests_dir = os.path.join(here, os.pardir, os.pardir, "tests")
+    if not os.path.isfile(os.path.join(tests_dir, "validate_manifest.py")):
+        return _fail(
+            "tests/validate_manifest.py not found beside the package "
+            "(installed wheels carry cli/ only; the validator ships with "
+            "the repo tree)",
+            code=2,
+        )
+
+    sys.path.insert(0, os.path.abspath(tests_dir))
+    try:
+        import validate_manifest as vm  # noqa: E402
+
+        # tests/ stays on sys.path for the CALL: the validator's blocklist
+        # constant is a sibling import (from invariants import ...) inside
+        # run_tools_checks — the plain-script run resolves it via
+        # sys.path[0] = the script dir, and an in-process import needs the
+        # same entry present when the deferred import fires.
+        manifest_dir = os.path.dirname(manifest.tools_path())
+        rc = vm.main(["--manifest-dir", manifest_dir])
+    except ImportError as exc:
+        return _fail("validator unavailable: %s" % exc)
+    finally:
+        try:
+            sys.path.remove(os.path.abspath(tests_dir))
+        except ValueError:
+            pass
+    sys.stdout.flush()
+    sys.stderr.flush()
+    return 1 if rc else 0
+
+
 def build_parser():
     p = argparse.ArgumentParser(
         prog=PROG,
@@ -231,7 +286,11 @@ def build_parser():
 
     man = sub.add_parser("manifest", help="manifest subcommands")
     mansub = man.add_subparsers(dest="manifest_command", required=True)
-    mansub.add_parser("validate", help="run the repo validator (KA-14.2)")
+    val = mansub.add_parser(
+        "validate",
+        help="run the repo manifest gate in-process (KA-14.3): exit 0 on a "
+             "well-formed manifest, non-zero on gate failure")
+    val.set_defaults(func=cmd_validate)
     chk = mansub.add_parser("check", help="loader self-inventory as JSON "
                                            "(counts read back from the files)")
     chk.set_defaults(func=cmd_check)
