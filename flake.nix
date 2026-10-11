@@ -54,6 +54,41 @@
             python3 $src/cli/check-kailash-cli.py
             touch $out
           '';
+          # Gate leg: wave2-smoke-script (KA-10/11/12 acceptance smokes).
+          # The flagship-five acceptance clauses name RECORDED smoke runs
+          # (garak --list_probes probe index; pyrit/promptfoo version
+          # smokes; ART/counterfit import-checks). tools/wave2-smoke.py is
+          # that per-tool smoke; this gate proves its command table — the
+          # tool set must equal the packages output THIS flake eval
+          # computes (WAVE2_SMOKE_EXPECT_TOOLS from builtins.attrNames of
+          # the wave-2 subset) and each tool's smoke command/assertions
+          # must match the acceptance shapes. The real smokes run on the
+          # build-packages legs (see .github/workflows/build.yml — the
+          # per-tool smoke step after the nix build; needs a linux
+          # builder) and in the ko vm-tests job once Wave 5's KA-06.3
+          # lands the VM harness (PENDING-VM markers on the lane PR).
+          # Cachix posture: the legs PULL from cache.kailash.cachix.org
+          # when warm (extra-substituters above + the cachix-action push
+          # step in build.yml) — the hosted smokes exercise the cached
+          # derivation outputs, not a local rebuild.
+          wave2-smoke-script = pkgs.runCommand "wave2-smoke-script"
+            {
+              nativeBuildInputs = [ pkgs.nix pkgs.python3 ];
+              src = self;
+            } ''
+            export WAVE2_SMOKE_EXPECT_TOOLS="$(
+              nix eval --accept-flake-config --raw --impure --expr '
+                let f = builtins.getFlake (toString $src); in
+                with f.packages.x86_64-linux;
+                lib.concatStringsSep " " (builtins.sort builtins.lessThan
+                  (map (n: (builtins.getAttr n f.packages.x86_64-linux).pname or n)
+                    (builtins.filter (n: n == "garak" || n == "pyrit" || n == "promptfoo"
+                                        || n == "art" || n == "counterfit")
+                      (builtins.attrNames f.packages.x86_64-linux))))'
+            )"
+            python3 $src/tools/wave2-smoke.py --dry-run
+            touch $out
+          '';
         };
       };
       flake.overlays.default =
