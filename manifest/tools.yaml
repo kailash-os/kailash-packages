@@ -4898,6 +4898,7 @@ tools:
   - id: mcp-inspector
     layer: OPS
     category: o-07-agent-mcp-operability
+    secondary_categories: [a-03-agentic-mcp-tool-use]
     name: "mcp-inspector"
     description: "MCP Inspector — visual testing tool for MCP servers (dogfood duty in CI; licence MIT→Apache-2.0 transition)."
     source:
@@ -5895,3 +5896,787 @@ tools:
       category: d-07-standards-verification
     docs: layers/d-07/kailash-verifier.md
     tags: [bespoke, defence]
+
+
+  # ======= KA-05.3 — Layer ATTACK entries A-1…A-4 (kailash-os#76) =======
+  # Census: a-01 5, a-02 8 (2 landed #33/#35 + 6 new here), a-03 10,
+  # a-04 8 — 29 new rows appended at EOF per the multi-writer rule.
+  # Every row: >=1 ATLAS technique (dataset-verified against
+  # mitre-atlas/atlas-data dist/v6/ATLAS-2026.05.yaml) + both OWASP
+  # LLM epochs (§2.4; the categories.yaml census notes are the per-
+  # category mapping base).
+
+  # KA-05.3 (kailash-os#76): A-1 AI Reconnaissance & Target Discovery —
+  # Appendix A "all bespoke" corrected at the pin: trufflehog is NATIVE
+  # at nixpkgs e7439b6b (3.99.0, AGPL-3.0-only; Appendix A's "GPL"
+  # shorthand), read live via GitHub API. recon-ai/llm-recon and the
+  # org-scan/colab probes are planned surface: no canonical public repo
+  # matches the plan's tool names (probed live 2026-10-11), so the
+  # landed C-10 planned-pack precedent holds (kailash-os/<id>, Wave-6
+  # derivs; LicenceRef-Unknown until first-party licence grant).
+  # ATLAS ids dataset-verified (ATLAS-2026.05.yaml, A0002 Reconnaissance
+  # tactic): technique level per tool, T0003 Search Victim-Owned
+  # Websites + T0055 Unsecured Credentials for key-leak surfaces.
+
+  - id: recon-ai
+    layer: ATTACK
+    category: a-01-ai-recon
+    name: recon-ai
+    description: "AI-surface reconnaissance — discovers model endpoints, agentic surfaces and org-published AI artefacts on a target scope."
+    source:
+      vcs_owner: kailash-os
+      repo: recon-ai
+      vcs_url: "https://github.com/kailash-os/recon-ai"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/recon-ai/default.nix
+    safety:
+      level: requires-target
+    nixos_menu:
+      icon: "recon-ai.svg"
+      exec: recon-ai
+      category: a-01-ai-recon
+    atlas_tactics: [AML.T0006, AML.T0003]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02, LLM07]
+    docs: layers/a-01/recon-ai.md
+    tags: [attack, offensive, recon, bespoke]
+
+  - id: llm-recon
+    layer: ATTACK
+    category: a-01-ai-recon
+    name: llm-recon
+    description: "LLM-focused reconnaissance — enumerates LLM API endpoints, model families and provider metadata from exposed surfaces."
+    source:
+      vcs_owner: kailash-os
+      repo: llm-recon
+      vcs_url: "https://github.com/kailash-os/llm-recon"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/llm-recon/default.nix
+    safety:
+      level: requires-target
+    nixos_menu:
+      icon: "llm-recon.svg"
+      exec: llm-recon
+      category: a-01-ai-recon
+    atlas_tactics: [AML.T0006, AML.T0014]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02, LLM07]
+    docs: layers/a-01/llm-recon.md
+    tags: [attack, offensive, recon, bespoke]
+
+  - id: trufflehog
+    secondary_categories: [c-08-exploitation-post-exploitation]
+    layer: ATTACK
+    category: a-01-ai-recon
+    name: trufflehog
+    description: "Secret scanner — hunts leaked AI-provider keys in repos and paths (A-1 AI-key hunting; C-8 classic secret scanning)."
+    source:
+      vcs_owner: trufflesecurity
+      repo: trufflehog
+      vcs_url: "https://github.com/trufflesecurity/trufflehog"
+    license: "AGPL-3.0-only"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "trufflehog.svg"
+      exec: trufflehog
+      category: a-01-ai-recon
+    atlas_tactics: [AML.T0004, AML.T0055]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02, LLM07]
+    docs: layers/a-01/trufflehog.md
+    tags: [attack, offensive, recon, secrets, native, update:steady]
+
+  - id: huggingface-org-scan
+    layer: ATTACK
+    category: a-01-ai-recon
+    name: huggingface-org-scan
+    description: "Enumerates a target organization's Hugging Face presence — models, datasets, spaces and their freshness as attack surface."
+    source:
+      vcs_owner: kailash-os
+      repo: huggingface-org-scan
+      vcs_url: "https://github.com/kailash-os/huggingface-org-scan"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/huggingface-org-scan/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "huggingface-org-scan.svg"
+      exec: huggingface-org-scan
+      category: a-01-ai-recon
+    atlas_tactics: [AML.T0002, AML.T0007]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02, LLM07]
+    docs: layers/a-01/huggingface-org-scan.md
+    tags: [attack, offensive, recon, huggingface, bespoke]
+
+  - id: colab-crawler
+    layer: ATTACK
+    category: a-01-ai-recon
+    name: colab-crawler
+    description: "Crawls shared compute notebooks for leaked credentials, mounted secrets and exposed model endpoints."
+    source:
+      vcs_owner: kailash-os
+      repo: colab-crawler
+      vcs_url: "https://github.com/kailash-os/colab-crawler"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/colab-crawler/default.nix
+    safety:
+      level: requires-target
+    nixos_menu:
+      icon: "colab-crawler.svg"
+      exec: colab-crawler
+      category: a-01-ai-recon
+    atlas_tactics: [AML.T0003, AML.T0055]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02, LLM07]
+    docs: layers/a-01/colab-crawler.md
+    tags: [attack, offensive, recon, bespoke]
+
+  # KA-05.3 (kailash-os#76): A-2 LLM Prompt Injection & Jailbreaking —
+  # garak/promptfoo landed via #33/#35; this lane lands pyrit,
+  # inj3ct-llm and the four payload/data packs. Canonical upstreams
+  # verified live (2026-10-11): PyRIT mitted to microsoft/PyRIT (MIT);
+  # the jailbreak packs keyed to elder-plinius/L1B3RT4S (the plan's
+  # L1B3RT-4S; AGPL-3.0 repo licence) and JailbreakBench/jailbreakbench
+  # (MIT). Pack content licences vary per source (Appendix A "varies");
+  # data packs ride kailash-data's opt-in gating at the OS side.
+
+  - id: pyrit
+    layer: ATTACK
+    category: a-02-prompt-injection-jailbreaks
+    name: pyrit
+    description: "PyRIT — Microsoft's Python Risk Identification Tool: automated adversarial-text pipelines for probing generative-AI endpoints."
+    source:
+      vcs_owner: microsoft
+      repo: PyRIT
+      vcs_url: "https://github.com/microsoft/PyRIT"
+    license: "MIT"
+    packaging:
+      status: bespoke
+      derivation: pkgs/pyrit/default.nix
+    safety:
+      level: requires-target
+    nixos_menu:
+      icon: "pyrit.svg"
+      exec: pyrit
+      category: a-02-prompt-injection-jailbreaks
+    atlas_tactics: [AML.T0051]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-02/pyrit.md
+    tags: [attack, offensive, llm, microsoft, bespoke, update:weekly]
+
+  - id: inj3ct-llm
+    layer: ATTACK
+    category: a-02-prompt-injection-jailbreaks
+    name: inj3ct-llm
+    description: "Injection harness — curates and drives prompt-injection payloads against targeted LLM deployments."
+    source:
+      vcs_owner: kailash-os
+      repo: inj3ct-llm
+      vcs_url: "https://github.com/kailash-os/inj3ct-llm"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/inj3ct-llm/default.nix
+    safety:
+      level: requires-target
+    nixos_menu:
+      icon: "inj3ct-llm.svg"
+      exec: inj3ct-llm
+      category: a-02-prompt-injection-jailbreaks
+    atlas_tactics: [AML.T0051, AML.T0068]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-02/inj3ct-llm.md
+    tags: [attack, offensive, llm, bespoke]
+
+  - id: llm-red-team-col
+    layer: ATTACK
+    category: a-02-prompt-injection-jailbreaks
+    name: llm-red-team-col
+    description: "Curated red-team prompt corpus — collected real-world attack prompts with sources, for injection and jailbreak testing."
+    source:
+      vcs_owner: kailash-os
+      repo: llm-red-team-col
+      vcs_url: "https://github.com/kailash-os/llm-red-team-col"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "llm-red-team-col.svg"
+      exec: llm-red-team-col
+      category: a-02-prompt-injection-jailbreaks
+    atlas_tactics: [AML.T0065]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-02/llm-red-team-col.md
+    tags: [attack, offensive, data, prompts, update:slow]
+
+  - id: jailbreak-payloads
+    layer: ATTACK
+    category: a-02-prompt-injection-jailbreaks
+    name: jailbreak-payloads
+    description: "Jailbreak payload pack — packages the L1B3RT-4S corpus (the plan's libertas-prompts twin; content use-restrictions beyond the repo licence)."
+    source:
+      vcs_owner: elder-plinius
+      repo: L1B3RT4S
+      vcs_url: "https://github.com/elder-plinius/L1B3RT4S"
+    license: "AGPL-3.0"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "jailbreak-payloads.svg"
+      exec: jailbreak-payloads
+      category: a-02-prompt-injection-jailbreaks
+    atlas_tactics: [AML.T0054, AML.T0068]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-02/jailbreak-payloads.md
+    tags: [attack, offensive, data, prompts, update:steady]
+
+  - id: libertas-prompts
+    layer: ATTACK
+    category: a-02-prompt-injection-jailbreaks
+    name: libertas-prompts
+    description: "L1B3RT-4S prompt data pack — vendor-organized jailbreak corpus (L1B3RT-4S) for jailbreak testing."
+    source:
+      vcs_owner: elder-plinius
+      repo: L1B3RT4S
+      vcs_url: "https://github.com/elder-plinius/L1B3RT4S"
+    license: "AGPL-3.0"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "libertas-prompts.svg"
+      exec: libertas-prompts
+      category: a-02-prompt-injection-jailbreaks
+    atlas_tactics: [AML.T0054]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-02/libertas-prompts.md
+    tags: [attack, offensive, data, prompts, update:steady]
+
+  - id: llm-jailbreak-bench
+    layer: ATTACK
+    category: a-02-prompt-injection-jailbreaks
+    name: llm-jailbreak-bench
+    description: "JailbreakBench harness + artifact pack — standardized jailbreak robustness evaluation corpora."
+    source:
+      vcs_owner: JailbreakBench
+      repo: jailbreakbench
+      vcs_url: "https://github.com/JailbreakBench/jailbreakbench"
+    license: "MIT"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "llm-jailbreak-bench.svg"
+      exec: llm-jailbreak-bench
+      category: a-02-prompt-injection-jailbreaks
+    atlas_tactics: [AML.T0054, AML.T0042]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-02/llm-jailbreak-bench.md
+    tags: [attack, offensive, data, benchmark, update:slow]
+
+  # KA-05.3 (kailash-os#76): A-3 Agentic, MCP & Tool-Use Attacks — the
+  # novel surface (plan §3.3), mapped to the ATLAS 2026.07 agentic
+  # technique set via dataset-verified ids (T0053 AI Agent Tool
+  # Invocation, T0103 Deploy AI Agent, T0080/T0110 agent-tool
+  # poisoning, T0098/T0083 agent-credential harvesting, T0105 Escape to
+  # Host; per-technique tactic placements read off the dataset).
+  # Canonical upstreams verified live (2026-10-11): mcp-inspector →
+  # modelcontextprotocol/inspector (Apache-2.0 transition licence read
+  # at the LICENSE head; absent from the nixpkgs pin — Appendix A's
+  # "native/overlay" corrected), mcp-scan → invariantlabs-ai/mcp-scan
+  # (Apache-2.0), mcp-guardian → eqtylab/mcp-guardian (Apache-2.0),
+  # mcp-remote → geelen/mcp-remote (MIT, the npm @modelcontextprotocol
+  # distro upstream), agent-dojo → ethz-spylab/agentdojo (MIT; plan
+  # spelling kept as the row id), mcpoison keyed to the public PoC
+  # (pulkitb124/mcpoison, no licence file → LicenceRef-Unknown).
+  # The unsafe-deser probe, langchain-vuln-hunter, llm-agent-fuzzer and
+  # the poisoned-skill pack are planned surface (kailash-os/<id> per
+  # the C-10 precedent; live upstream probes confirmed no canonical
+  # match). exp-gated: mcp-unsafe-deser-probe, mcpoison,
+  # poisoned-skill-pack (Appendix A safety column).
+
+  - id: mcp-scan
+    layer: ATTACK
+    category: a-03-agentic-mcp-tool-use
+    name: mcp-scan
+    description: "mcp-scan — Invariant's scanner: detects tool poisoning, prompt injection and tool-description drift in installed MCP servers."
+    source:
+      vcs_owner: invariantlabs-ai
+      repo: mcp-scan
+      vcs_url: "https://github.com/invariantlabs-ai/mcp-scan"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/mcp-scan/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mcp-scan.svg"
+      exec: mcp-scan
+      category: a-03-agentic-mcp-tool-use
+    atlas_tactics: [AML.T0110, AML.T0051]
+    owasp_llm:
+      2026: [LLM03, LLM01]
+      v2: [LLM06, LLM01]
+    docs: layers/a-03/mcp-scan.md
+    tags: [attack, offensive, mcp, scanner, bespoke, update:weekly]
+
+  - id: mcp-guardian
+    layer: ATTACK
+    category: a-03-agentic-mcp-tool-use
+    name: mcp-guardian
+    description: "MCP Guardian — proxy and guard layer for exercising MCP server controls (allow-lists, ratelimits) from the attacker side."
+    source:
+      vcs_owner: eqtylab
+      repo: mcp-guardian
+      vcs_url: "https://github.com/eqtylab/mcp-guardian"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/mcp-guardian/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mcp-guardian.svg"
+      exec: mcp-guardian
+      category: a-03-agentic-mcp-tool-use
+    atlas_tactics: [AML.T0053]
+    owasp_llm:
+      2026: [LLM03]
+      v2: [LLM06]
+    docs: layers/a-03/mcp-guardian.md
+    tags: [attack, offensive, mcp, bespoke]
+
+  - id: mcp-remote
+    layer: ATTACK
+    category: a-03-agentic-mcp-tool-use
+    name: mcp-remote
+    description: "mcp-remote — stdio/HTTP bridge for reachability and man-in-the-middle tests of remote MCP transports."
+    source:
+      vcs_owner: geelen
+      repo: mcp-remote
+      vcs_url: "https://github.com/geelen/mcp-remote"
+    license: "MIT"
+    packaging:
+      status: bespoke
+      derivation: pkgs/mcp-remote/default.nix
+    safety:
+      level: requires-target
+    nixos_menu:
+      icon: "mcp-remote.svg"
+      exec: mcp-remote
+      category: a-03-agentic-mcp-tool-use
+    atlas_tactics: [AML.T0053]
+    owasp_llm:
+      2026: [LLM03, LLM10]
+      v2: [LLM06, LLM10]
+    docs: layers/a-03/mcp-remote.md
+    tags: [attack, offensive, mcp, node, bespoke, update:weekly]
+
+  - id: mcp-unsafe-deser-probe
+    layer: ATTACK
+    category: a-03-agentic-mcp-tool-use
+    name: mcp-unsafe-deser-probe
+    description: "Unsafe-deserialization probe — plants maliciously crafted tool payloads to test MCP/agent parser hardening (lab-gated)."
+    source:
+      vcs_owner: kailash-os
+      repo: mcp-unsafe-deser-probe
+      vcs_url: "https://github.com/kailash-os/mcp-unsafe-deser-probe"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/mcp-unsafe-deser-probe/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "mcp-unsafe-deser-probe.svg"
+      exec: mcp-unsafe-deser-probe
+      category: a-03-agentic-mcp-tool-use
+    atlas_tactics: [AML.T0110, AML.T0105]
+    owasp_llm:
+      2026: [LLM03, LLM10]
+      v2: [LLM06, LLM10]
+    docs: layers/a-03/mcp-unsafe-deser-probe.md
+    tags: [attack, offensive, mcp, lab, bespoke]
+
+  - id: langchain-vuln-hunter
+    layer: ATTACK
+    category: a-03-agentic-mcp-tool-use
+    name: langchain-vuln-hunter
+    description: "LangChain vulnerability hunter — drives CVE probes against langchain-based agent deployments."
+    source:
+      vcs_owner: kailash-os
+      repo: langchain-vuln-hunter
+      vcs_url: "https://github.com/kailash-os/langchain-vuln-hunter"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/langchain-vuln-hunter/default.nix
+    safety:
+      level: requires-target
+    nixos_menu:
+      icon: "langchain-vuln-hunter.svg"
+      exec: langchain-vuln-hunter
+      category: a-03-agentic-mcp-tool-use
+    atlas_tactics: [AML.T0010, AML.T0053]
+    owasp_llm:
+      2026: [LLM03, LLM04]
+      v2: [LLM06, LLM03]
+    docs: layers/a-03/langchain-vuln-hunter.md
+    tags: [attack, offensive, agentic, bespoke]
+
+  - id: llm-agent-fuzzer
+    layer: ATTACK
+    category: a-03-agentic-mcp-tool-use
+    name: llm-agent-fuzzer
+    description: "Agent fuzzer — mutation-guided goal chasing across agent tool-call loops; unsafe-path discovery."
+    source:
+      vcs_owner: kailash-os
+      repo: llm-agent-fuzzer
+      vcs_url: "https://github.com/kailash-os/llm-agent-fuzzer"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/llm-agent-fuzzer/default.nix
+    safety:
+      level: requires-target
+    nixos_menu:
+      icon: "llm-agent-fuzzer.svg"
+      exec: llm-agent-fuzzer
+      category: a-03-agentic-mcp-tool-use
+    atlas_tactics: [AML.T0053, AML.T0105]
+    owasp_llm:
+      2026: [LLM03, LLM10]
+      v2: [LLM06, LLM10]
+    docs: layers/a-03/llm-agent-fuzzer.md
+    tags: [attack, offensive, agentic, bespoke]
+
+  - id: mcpoison
+    layer: ATTACK
+    category: a-03-agentic-mcp-tool-use
+    name: mcpoison
+    description: "MCPoison — public PoC demonstrating agent trickery via poisoned MCP tool definitions (lab-gated)."
+    source:
+      vcs_owner: pulkitb124
+      repo: mcpoison
+      vcs_url: "https://github.com/pulkitb124/mcpoison"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/mcpoison/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "mcpoison.svg"
+      exec: mcpoison
+      category: a-03-agentic-mcp-tool-use
+    atlas_tactics: [AML.T0110, AML.T0105]
+    owasp_llm:
+      2026: [LLM03, LLM10]
+      v2: [LLM06, LLM10]
+    docs: layers/a-03/mcpoison.md
+    tags: [attack, offensive, mcp, poc, bespoke]
+
+  - id: agent-dojo
+    layer: ATTACK
+    category: a-03-agentic-mcp-tool-use
+    name: agent-dojo
+    description: "AgentDojo — ETH's dynamic evaluation environment for prompt-injection attacks and defenses on LLM agents (upstream repo agentdojo)."
+    source:
+      vcs_owner: ethz-spylab
+      repo: agentdojo
+      vcs_url: "https://github.com/ethz-spylab/agentdojo"
+    license: "MIT"
+    packaging:
+      status: bespoke
+      derivation: pkgs/agent-dojo/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "agent-dojo.svg"
+      exec: agent-dojo
+      category: a-03-agentic-mcp-tool-use
+    atlas_tactics: [AML.T0051, AML.T0103]
+    owasp_llm:
+      2026: [LLM01, LLM03]
+      v2: [LLM01, LLM06]
+    docs: layers/a-03/agent-dojo.md
+    tags: [attack, offensive, agentic, benchmark, bespoke]
+
+  - id: poisoned-skill-pack
+    layer: ATTACK
+    category: a-03-agentic-mcp-tool-use
+    name: poisoned-skill-pack
+    description: "Poisoned-skill lab pack — deliberately compromised agent skill/tool definitions for red-team drills (exp-gated)."
+    source:
+      vcs_owner: kailash-os
+      repo: poisoned-skill-pack
+      vcs_url: "https://github.com/kailash-os/poisoned-skill-pack"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "poisoned-skill-pack.svg"
+      exec: poisoned-skill-pack
+      category: a-03-agentic-mcp-tool-use
+    atlas_tactics: [AML.T0110, AML.T0104]
+    owasp_llm:
+      2026: [LLM03, LLM01]
+      v2: [LLM06, LLM01]
+    docs: layers/a-03/poisoned-skill-pack.md
+    tags: [attack, offensive, data, lab, bespoke]
+
+  # KA-05.3 (kailash-os#76): A-4 Model Supply Chain & Artefact
+  # Poisoning. Appendix A "MIT etc" corrected at the pin via
+  # legacyPackages.x86_64-linux probe (nixpkgs e7439b6b): modelscan
+  # ships 0.8.8 (Apache-2.0) — NATIVE there, status corrected from the
+  # plan's bespoke; guarddog/picklescan absent at the pin → bespoke.
+  # Upstream licences verified live (2026-10-11): guarddog Apache-2.0
+  # (DataDog), picklescan MIT (mmaitre314), modelscan Apache-2.0
+  # (protectai). The artefact-inspector quartet + torch-load PoC are
+  # planned surface (kailash-os/<id>; torch-load-poc exp-gated per
+  # Appendix A).
+
+  - id: guarddog
+    layer: ATTACK
+    category: a-04-model-supply-chain
+    name: guarddog
+    description: "Guarddog — DataDog's scanner: identifies malicious/typosquatted PyPI and npm packages (malicious-code + secrets rules)."
+    source:
+      vcs_owner: DataDog
+      repo: guarddog
+      vcs_url: "https://github.com/DataDog/guarddog"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/guarddog/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "guarddog.svg"
+      exec: guarddog
+      category: a-04-model-supply-chain
+    atlas_tactics: [AML.T0010, AML.T0011]
+    owasp_llm:
+      2026: [LLM04]
+      v2: [LLM03]
+    docs: layers/a-04/guarddog.md
+    tags: [attack, offensive, supply-chain, scanner, bespoke, update:steady]
+
+  - id: picklescan
+    layer: ATTACK
+    category: a-04-model-supply-chain
+    name: picklescan
+    description: "Picklescan — static security scanner for pickle/PyTorch model files: flags dangerous globals and unsafe opcodes."
+    source:
+      vcs_owner: mmaitre314
+      repo: picklescan
+      vcs_url: "https://github.com/mmaitre314/picklescan"
+    license: "MIT"
+    packaging:
+      status: bespoke
+      derivation: pkgs/picklescan/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "picklescan.svg"
+      exec: picklescan
+      category: a-04-model-supply-chain
+    atlas_tactics: [AML.T0010, AML.T0011]
+    owasp_llm:
+      2026: [LLM04]
+      v2: [LLM03]
+    docs: layers/a-04/picklescan.md
+    tags: [attack, offensive, supply-chain, scanner, bespoke, update:steady]
+
+  - id: modelscan
+    layer: ATTACK
+    category: a-04-model-supply-chain
+    name: modelscan
+    description: "Protect AI modelscan — serialized-model scanner covering pickle, torch, keras and other ML artefact formats."
+    source:
+      vcs_owner: protectai
+      repo: modelscan
+      vcs_url: "https://github.com/protectai/modelscan"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "modelscan.svg"
+      exec: modelscan
+      category: a-04-model-supply-chain
+    atlas_tactics: [AML.T0010, AML.T0011]
+    owasp_llm:
+      2026: [LLM04]
+      v2: [LLM03]
+    docs: layers/a-04/modelscan.md
+    tags: [attack, offensive, supply-chain, scanner, native, update:slow]
+
+  - id: gguf-template-inspector
+    layer: ATTACK
+    category: a-04-model-supply-chain
+    name: gguf-template-inspector
+    description: "GGUF template inspector — surfaces embedded chat templates and metadata for injection vectors inside GGUF weights."
+    source:
+      vcs_owner: kailash-os
+      repo: gguf-template-inspector
+      vcs_url: "https://github.com/kailash-os/gguf-template-inspector"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/gguf-template-inspector/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "gguf-template-inspector.svg"
+      exec: gguf-template-inspector
+      category: a-04-model-supply-chain
+    atlas_tactics: [AML.T0010, AML.T0051]
+    owasp_llm:
+      2026: [LLM04, LLM01]
+      v2: [LLM03, LLM01]
+    docs: layers/a-04/gguf-template-inspector.md
+    tags: [attack, offensive, supply-chain, artefacts, bespoke]
+
+  - id: safetensors-checker
+    layer: ATTACK
+    category: a-04-model-supply-chain
+    name: safetensors-checker
+    description: "SafeTensors checker — malformed-tensor and metadata anomaly checks on safetensors model files."
+    source:
+      vcs_owner: kailash-os
+      repo: safetensors-checker
+      vcs_url: "https://github.com/kailash-os/safetensors-checker"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/safetensors-checker/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "safetensors-checker.svg"
+      exec: safetensors-checker
+      category: a-04-model-supply-chain
+    atlas_tactics: [AML.T0010]
+    owasp_llm:
+      2026: [LLM04]
+      v2: [LLM03]
+    docs: layers/a-04/safetensors-checker.md
+    tags: [attack, offensive, supply-chain, artefacts, bespoke]
+
+  - id: hf-repo-inspector
+    layer: ATTACK
+    category: a-04-model-supply-chain
+    name: hf-repo-inspector
+    description: "HF repository inspector — artefact-level red-team review of Hugging Face repos: mixed formats, suspicious payloads, org signals."
+    source:
+      vcs_owner: kailash-os
+      repo: hf-repo-inspector
+      vcs_url: "https://github.com/kailash-os/hf-repo-inspector"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/hf-repo-inspector/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "hf-repo-inspector.svg"
+      exec: hf-repo-inspector
+      category: a-04-model-supply-chain
+    atlas_tactics: [AML.T0010, AML.T0004]
+    owasp_llm:
+      2026: [LLM04]
+      v2: [LLM03]
+    docs: layers/a-04/hf-repo-inspector.md
+    tags: [attack, offensive, supply-chain, artefacts, bespoke]
+
+  - id: namespace-reuse-check
+    layer: ATTACK
+    category: a-04-model-supply-chain
+    name: namespace-reuse-check
+    description: "Namespace-reuse checker — detects model/package name squatting and abandoned-namespace re-registration risk."
+    source:
+      vcs_owner: kailash-os
+      repo: namespace-reuse-check
+      vcs_url: "https://github.com/kailash-os/namespace-reuse-check"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/namespace-reuse-check/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "namespace-reuse-check.svg"
+      exec: namespace-reuse-check
+      category: a-04-model-supply-chain
+    atlas_tactics: [AML.T0010, AML.T0004]
+    owasp_llm:
+      2026: [LLM04]
+      v2: [LLM03]
+    docs: layers/a-04/namespace-reuse-check.md
+    tags: [attack, offensive, supply-chain, artefacts, bespoke]
+
+  - id: torch-load-poc
+    layer: ATTACK
+    category: a-04-model-supply-chain
+    name: torch-load-poc
+    description: "torch.load PoC — demonstrates arbitrary-code execution via weights_only=False deserialization paths (lab-gated)."
+    source:
+      vcs_owner: kailash-os
+      repo: torch-load-poc
+      vcs_url: "https://github.com/kailash-os/torch-load-poc"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/torch-load-poc/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "torch-load-poc.svg"
+      exec: torch-load-poc
+      category: a-04-model-supply-chain
+    atlas_tactics: [AML.T0010, AML.T0011]
+    owasp_llm:
+      2026: [LLM04]
+      v2: [LLM03]
+    docs: layers/a-04/torch-load-poc.md
+    tags: [attack, offensive, supply-chain, poc, lab, bespoke]
