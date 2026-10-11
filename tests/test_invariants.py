@@ -248,6 +248,32 @@ class SafetyLevel(unittest.TestCase):
         only(ctx.exception.args[0], "invalid safety.level %r" % "careful")
 
 
+class MenuCategoryVocabulary(unittest.TestCase):
+    """KA-05 menu audit (os#139): nixos_menu.category joins the census.
+
+    The menu block's category value is the SAME vocabulary as the primary
+    category — census slugs (categories.yaml ids). A short-form id (a-05)
+    silently drops the row from menu-generation and CLI category filters.
+    """
+
+    def test_menu_category_full_slug_ok(self):
+        t = full_tool()
+        self.assertEqual(findings(FIX_CATS, [t]), [])
+
+    def test_menu_category_short_form_fails(self):
+        t = full_tool()
+        t["nixos_menu"] = {"icon": "art.svg", "exec": "art",
+                           "category": "a-05"}
+        with self.assertRaises(AssertionError) as ctx:
+            findings(FIX_CATS, [t])
+        only(ctx.exception.args[0], "nixos_menu.category")
+
+    def test_menu_category_absent_is_fine(self):
+        t = full_tool()
+        del t["nixos_menu"]
+        self.assertEqual(findings(FIX_CATS, [t]), [])
+
+
 class SecondaryShape(unittest.TestCase):
     def test_secondary_not_a_list(self):
         t = full_tool(secondary_categories="c-01-information-gathering")
