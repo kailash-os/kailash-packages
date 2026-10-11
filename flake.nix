@@ -103,6 +103,33 @@
             python3 $src/tools/wave2-smoke.py --dry-run
             touch $out
           '';
+
+          # KA-19.1 exp-wrap generator checks. RED STUB: exp-wrap-generator-self-test
+          # asserts the stub generator returns the real garak case (it returns an
+          # empty surface — watched RED); exp-wrap-manifest-emit asserts the real
+          # manifest's 26-row exp surface is emitted (stub emits none — watched
+          # RED). Both go GREEN with the real generator commit.
+          exp-wrap-generator-self-test = pkgs.runCommand "exp-wrap-generator-self-test"
+            {
+              nativeBuildInputs = [ (pkgs.python3.withPackages (ps: [ ps.pyyaml ])) ];
+              src = self;
+            } ''
+            python3 $src/tools/gen-exp-wrap.py --self-test
+            touch $out
+          '';
+          exp-wrap-manifest-emit = pkgs.runCommand "exp-wrap-manifest-emit"
+            {
+              src = self;
+              nativeBuildInputs = [ (pkgs.python3.withPackages (ps: [ ps.pyyaml ])) ];
+            } ''
+            JSON="$(python3 $src/tools/gen-exp-wrap.py --manifest-file $src/manifest/tools.yaml)"
+            COUNT="$(python3 -c 'import json,sys; print(len(json.load(sys.stdin)["exp_ids"]))' <<<"$JSON")"
+            echo "exp rows emitted: $COUNT"
+            test "$COUNT" -gt 0 || { echo "gen-exp-wrap emitted NO exp rows from the real manifest — the generator is not wired"; exit 1; }
+            WRAPN="$(python3 -c 'import json,sys; print(len(json.load(sys.stdin)["wrappers"]))' <<<"$JSON")"
+            test "$WRAPN" -eq "$COUNT" || { echo "emitted wrapper count ($WRAPN) != exp_ids count ($COUNT)"; exit 1; }
+            touch $out
+          '';
         };
       };
       flake.overlays.default =

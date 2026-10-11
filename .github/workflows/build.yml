@@ -76,6 +76,18 @@ jobs:
           else
             echo "mirror copy not on kailash-os@master yet — identity check pending (enforces after both PRs merge)"
           fi
+          # KA-19.1 mirror twin (os#94/#95): the exp-wrap generator rides
+          # the same vendored byte-identical pair contract. The OS copy
+          # landed via kailash-os#149 — strict from here on.
+          TMP2="$(mktemp)"
+          if curl -fsSL -o "$TMP2" \
+            "https://raw.githubusercontent.com/kailash-os/kailash-os/master/tools/gen-exp-wrap.py"; then
+            cmp tools/gen-exp-wrap.py "$TMP2" \
+              || { echo "MIRROR DRIFT: tools/gen-exp-wrap.py differs from kailash-os@master"; exit 1; }
+            echo "exp-wrap generator mirror identity: byte-identical with kailash-os@master"
+          else
+            echo "gen-exp-wrap mirror copy not on kailash-os@master yet — pending (enforces after the OS PR merges)"
+          fi
       - name: Install PyYAML (matrix parse needs the §5.2 shape)
         run: pip install --disable-pip-version-check pyyaml
       - name: Matrix adapter self-test (the adapter gates itself)
@@ -114,6 +126,29 @@ jobs:
           persist-credentials: false
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v23
+        with:
+          # Trust the kailash cache as a substituter for THIS job. The
+          # flake's nixConfig.extra-substituters is IGNORED on hosted
+          # runners (run-log proof: "warning: ignoring untrusted flake
+          # configuration setting 'extra-substituters'"), so without
+          # these lines every leg rebuilds from source. The action must
+          # also run BEFORE the build step: its daemon pushes paths via
+          # the post-build hook, so ordering it after the build (the
+          # old arrangement) started the daemon and shut it down with
+          # zero paths pushed (verified in the art aarch64 leg of run
+          # 38131821227).
+          extra-conf: |
+            extra-substituters = https://kailash.cachix.org
+            extra-trusted-public-keys = kailash.cachix.org-1:HnASOtfS7XRjQBrH9umnPljPRjvHeJKDvwZDYXt+sKM=
+      # --- Cachix (kailash, plan §8.3) — BEFORE the build, not after: ---
+      # --- the action registers the substituter (pull side) and the
+      # --- daemon pushes every path built during the job (post-build
+      # --- hook). Ordering note above is run-log evidence, not style.
+      - name: Cachix (kailash) — substituter + push daemon
+        uses: cachix/cachix-action@v17
+        with:
+          name: kailash
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - name: Build .#packages.<system>.<package>
         run: |
           nix build ".#packages.${{ matrix.system }}.${{ matrix.package }}" -L 2>&1 | tee build.log
@@ -149,12 +184,3 @@ jobs:
           python3 tools/wave2-smoke.py \
             --smoke-only --tool "${{ matrix.package }}" --out-path "$OUT" \
             --system "${{ matrix.system }}"
-      # --- Cachix push (kailash, plan §8.3) — enabled: CACHIX_AUTH_TOKEN
-      # --- org secret configured (org-level, both repos share it).
-      - name: Cachix push (kailash)
-        uses: cachix/cachix-action@v17
-        with:
-          name: kailash
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-          # push only what this leg built; the cache fills incrementally
-          # per matrix leg, and pulls make later runs rebuild-free.
