@@ -3106,3 +3106,47 @@ tools:
       v2: [LLM02]
     docs: layers/a-05/cleverhans.md
     tags: [attack, offensive, adversarial-ml, week-after]
+
+  # KA-11.2 (kailash-os#83): promptfoo — the A-2 eval/red-team CLI, node
+  # toolchain (buildNpmPackage pin; MIT verified upstream). FRESHNESS
+  # DECISION (§5.4 population 2, recorded per the issue): nixpkgs carries
+  # promptfoo 0.118.14 at the lock (npm publish 2025-10-09) while upstream
+  # is 0.124.1 (npm 2026-10-08) — ~12 months stale on a §8.5 fast-moving
+  # tool ⇒ BESPOKE buildNpmPackage pin at the upstream main head
+  # (ce5f743f, 2026-10-10; package.json 0.124.1 at the pin); the
+  # stale-native override would chase the year-old recipe surface
+  # (tag fetch + lockfile hash + workspace preFixup re-derived under the
+  # override anyway). Re-evaluated at each release per §8.5. Secondary
+  # tags per the issue: D-2 detection/monitoring (prompt scanning/
+  # observability surface) + D-3 assurance/evals (the evaluation-harness
+  # surface) — A-2 primary, one primary only. Safety: requires-target
+  # (evals query a live provider/model endpoint). ATLAS: AML.T0051 LLM
+  # Prompt Injection (the red-team probe surface; dataset-verified).
+  # OWASP-LLM LLM01 both epochs (§2.4).
+  - id: promptfoo
+    layer: ATTACK
+    category: a-02-prompt-injection-jailbreaks
+    secondary_categories: [d-02-detection-monitoring-observability, d-03-assurance-evals-benchmarks]
+    name: promptfoo
+    description: "promptfoo — LLM eval and red-team CLI: prompt/model/RAG evaluation, regression checks and injection probes."
+    source:
+      vcs_owner: promptfoo
+      repo: promptfoo
+      vcs_url: "https://github.com/promptfoo/promptfoo"
+    license: "MIT"
+    packaging:
+      status: bespoke
+      derivation: pkgs/promptfoo/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "promptfoo.svg"
+      exec: promptfoo
+      category: a-02-prompt-injection-jailbreaks
+    atlas_tactics: [AML.T0051]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-02/promptfoo.md
+    tags: [evals, offensive, llm, node, redteam, update:weekly]

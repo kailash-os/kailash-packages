@@ -62,6 +62,20 @@
     };
     date = "2026-10-09";
   };
+  promptfoo = {
+    pname = "promptfoo";
+    version = "ce5f743f1524c7d3f0308690d2325502a8772901";
+    src = fetchgit {
+      url = "https://github.com/promptfoo/promptfoo";
+      rev = "ce5f743f1524c7d3f0308690d2325502a8772901";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-opvYGetbM9ytCHclFrFTSP0Y2U1cQacB/FVi9IYpoEI=";
+    };
+    date = "2026-10-10";
+  };
   pyrit = {
     pname = "pyrit";
     version = "f916d8ee5df7b2e9859ff2c1ffef596d993db0d2";

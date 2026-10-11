@@ -59,6 +59,26 @@
         },
         "version": "105164ba3f7960954cf69fb81a610fe672197eb0"
     },
+    "promptfoo": {
+        "cargoLock": null,
+        "date": "2026-10-10",
+        "extract": null,
+        "name": "promptfoo",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "ce5f743f1524c7d3f0308690d2325502a8772901",
+            "sha256": "sha256-opvYGetbM9ytCHclFrFTSP0Y2U1cQacB/FVi9IYpoEI=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/promptfoo/promptfoo"
+        },
+        "version": "ce5f743f1524c7d3f0308690d2325502a8772901"
+    },
     "pyrit": {
         "cargoLock": null,
         "date": "2026-10-10",
