@@ -42,14 +42,19 @@ buildNpmPackage (finalAttrs: {
 
   src = sources.promptfoo.src;
 
-  npmDepsHash = "sha256-C0fX8U89emmsTiZDO7u+/hDYCQxSKLXcFar/2tqly08=";
+  # v2 fetcher cache hash — emitted verbatim by the hosted run at
+  # 4b6c358 (`got: sha256-9dlP7n8wEZl8gHXtGZtH4o9GiPAHH+BTSpzYCVgC6ts=`,
+  # build-packages (promptfoo, x86_64-linux), the v1->v2
+  # fixed-output hash mismatch RED; the pinned-build chicken-egg cycle,
+  # real output recorded). The v1 prefetch hash above is kept as the
+  # provenance record of the pinned lockfile.
+  npmDepsHash = "sha256-9dlP7n8wEZl8gHXtGZtH4o9GiPAHH+BTSpzYCVgC6ts=";
 
   # node >= 22's npm requires the v2 registry cache fetcher (npm config
   # fetcher) — hosted CI RED at 4577060: `npm error code ENOTCACHED /
   # cache mode is 'only-if-cached' but no cached response is available`
   # on @openai/codex-sdk under the v1 fetcher; the builder's remedy #1
-  # is this switch. The v2 hash lands with the follow-up commit quoting
-  # the hosting run's own `got: sha256-…` mismatch line.
+  # is this switch.
   npmDepsFetcherVersion = 2;
 
   # don't fetch the playwright browser binary in the build sandbox
