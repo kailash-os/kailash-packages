@@ -78,6 +78,14 @@
           wave2-smoke-script = pkgs.runCommand "wave2-smoke-script"
             {
               nativeBuildInputs = [ pkgs.nix pkgs.python3 ];
+              # the gate's second eval runs INSIDE the sandbox with this
+              # derivation's own nix — enable flakes/nix-command for it
+              # explicitly (hosted flake-check RED: the barebones nix's
+              # experimental features were off)
+              env.NIX_CONFIG = ''
+                experimental-features = nix-command flakes
+                accept-flake-config = true
+              '';
               src = self;
             } ''
             export WAVE2_SMOKE_EXPECT_TOOLS="$(
