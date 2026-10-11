@@ -126,15 +126,29 @@ jobs:
           persist-credentials: false
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v23
-      - name: Build .#packages.<system>.<package>
-        run: |
-          nix build ".#packages.${{ matrix.system }}.${{ matrix.package }}" -L
-      # --- Cachix push (kailash, plan §8.3) — enabled: CACHIX_AUTH_TOKEN
-      # --- org secret configured (org-level, both repos share it).
-      - name: Cachix push (kailash)
+        with:
+          # Trust the kailash cache as a substituter for THIS job. The
+          # flake's nixConfig.extra-substituters is IGNORED on hosted
+          # runners (run-log proof: "warning: ignoring untrusted flake
+          # configuration setting 'extra-substituters'"), so without
+          # these lines every leg rebuilds from source. The action must
+          # also run BEFORE the build step: its daemon pushes paths via
+          # the post-build hook, so ordering it after the build (the
+          # old arrangement) started the daemon and shut it down with
+          # zero paths pushed (verified in the art aarch64 leg of run
+          # 38131821227).
+          extra-conf: |
+            extra-substituters = https://kailash.cachix.org
+            extra-trusted-public-keys = kailash.cachix.org-1:HnASOtfS7XRjQBrH9umnPljPRjvHeJKDvwZDYXt+sKM=
+      # --- Cachix (kailash, plan §8.3) — BEFORE the build, not after: ---
+      # --- the action registers the substituter (pull side) and the
+      # --- daemon pushes every path built during the job (post-build
+      # --- hook). Ordering note above is run-log evidence, not style.
+      - name: Cachix (kailash) — substituter + push daemon
         uses: cachix/cachix-action@v17
         with:
           name: kailash
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-          # push only what this leg built; the cache fills incrementally
-          # per matrix leg, and pulls make later runs rebuild-free.
+      - name: Build .#packages.<system>.<package>
+        run: |
+          nix build ".#packages.${{ matrix.system }}.${{ matrix.package }}" -L
