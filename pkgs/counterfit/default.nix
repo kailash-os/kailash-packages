@@ -199,7 +199,11 @@ python313.pkgs.buildPythonApplication (finalAttrs: {
     # wrappers at module top level.
     p2 = pathlib.Path("counterfit/frameworks/__init__.py")
     s2 = p2.read_text()
-    old2 = "from .art import art\nfrom .augly import augly\nfrom .textattack import textattack\n"
+    # Byte-verified at pin c00edbf5 (raw endpoint, git blob sha
+    # 7a68069ef03c17779b791e902bdd600367ca375b — checksummed evidence in
+    # the pin-update trail): the file ships WITHOUT a trailing newline,
+    # so the anchor must not expect one.
+    old2 = "from .art import art\nfrom .augly import augly\nfrom .textattack import textattack"
     new2 = (
         "from .art import art\n"
         "try:\n"
@@ -209,7 +213,7 @@ python313.pkgs.buildPythonApplication (finalAttrs: {
         "try:\n"
         "    from .textattack import textattack\n"
         "except ImportError:\n"
-        "    textattack = None\n"
+        "    textattack = None"
     )
     if old2 not in s2:
         raise SystemExit("anchored strip 2 moved at this pin: " + str(p2))
