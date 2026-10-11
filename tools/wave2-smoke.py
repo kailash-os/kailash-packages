@@ -99,6 +99,11 @@ SMOKE_TABLE = {
         # pyrit-1.2.0.dev0.dist-info (METADATA Version: 1.2.0.dev0;
         # pyrit/_version.py at f916d8ee agrees)
         "expect_version": "1.2.0.dev0",
+        # dist-info dir verified verbatim from the cached output:
+        # pyrit-1.2.0.dev0.dist-info at
+        # /nix/store/hynpvmc2xs11n7jf1m4cjmw3cm08l046-pyrit-1.2.0.dev0-
+        # unstable-2026-10-10/lib/python3.14/site-packages
+        "dist_name": "pyrit",
         "console_script": "pyrit_scan",
         "build_log_marker": "Check whether the following modules can be imported: pyrit",
     },
@@ -135,6 +140,9 @@ SMOKE_TABLE = {
         # dist-info dir verified against the cached output:
         # counterfit-1.1.0.dist-info
         "dist_name": "counterfit",
+        # TF+torch import chain at CLI boot crosses 300s cold on hosted
+        # runners (two timed-out legs at 300.0s exactly); 600 is honest.
+        "timeout_s": 600,
         # counterfit/__init__.py at c00edbf5
         # counterfit/__init__.py at c00edbf5 carries __version__ = "1.1.0"
         "expect_version": "1.1.0",
@@ -148,6 +156,13 @@ SMOKE_TABLE = {
 
 EXPECTED = sorted(SMOKE_TABLE)
 DOC_DECLARED = ["art", "counterfit", "garak", "promptfoo", "pyrit"]
+
+# Per-tool smoke timeout: SMOKE_TIMEOUT_S is the default; a table entry
+# may override via "timeout_s". counterfit boots a TF+torch import chain
+# (its wrapped preamble lists tensorflow + torch; verified against the
+# cached output) — the CLI --help routinely crosses 300s cold on hosted
+# runners, so it carries 600.
+SMOKE_TIMEOUT_DEFAULT_S = 300
 
 # build log handed over via a FILE (WAVE2_BUILD_LOG_FILE), not an env var:
 # the build-package legs' logs are far beyond the ARG_MAX / argv-env
@@ -266,13 +281,14 @@ def smoke_console(tool, out_path, build_log=""):
             # point HOME at a writable dir as the nix check hook does.
             env["HOME"] = os.environ.get("SMOKE_HOME") or "/tmp"
 
+    timeout_s = entry.get("timeout_s", SMOKE_TIMEOUT_DEFAULT_S)
     try:
         proc = subprocess.run(
             argv, capture_output=True, text=True,
-            timeout=SMOKE_TIMEOUT_S, env=env, cwd="/",
+            timeout=timeout_s, env=env, cwd="/",
         )
     except subprocess.TimeoutExpired:
-        return False, "smoke timed out after %ss" % SMOKE_TIMEOUT_S
+        return False, "smoke timed out after %ss" % timeout_s
 
     lines = proc.stdout.splitlines()
     if SMOKE_TABLE[tool]["kind"] == "import":
