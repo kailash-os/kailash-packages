@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 # tools/gen-exp-wrap.py — exp-wrap wrapper-input generator (KA-19.1, kailash-os#94).
 #
+# MIRROR PAIR: this generator is vendored byte-identically in BOTH repos —
+# kailash-packages/tools/gen-exp-wrap.py and kailash-os/tools/gen-exp-wrap.py.
+# Keep the two byte-identical (cmp in verify); a change lands against both
+# in the same cycle. The packages repo owns the manifest + the emit
+# contract; the OS repo consumes the emitted surface through its parity
+# leg (the vendored copy runs there too, off the same file).
+#
 # Parses manifest/tools.yaml, selects the rows whose `safety.level` is
 # `exp`, and emits the wrapper-generation inputs to stdout as one JSON
 # blob:
