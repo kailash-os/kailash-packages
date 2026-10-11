@@ -95,9 +95,10 @@ SMOKE_TABLE = {
         "kind": "import",
         "module": "pyrit",
         "version_expr": "pyrit.__version__",
-        # pyrit/_version.py at f916d8ee
-        "regex": SEMVER + r"(?:\.[a-zA-Z0-9]+)?$",
-        "expect_group": "1.2.0.dev0",
+        # dist-info verified against the cached output:
+        # pyrit-1.2.0.dev0.dist-info (METADATA Version: 1.2.0.dev0;
+        # pyrit/_version.py at f916d8ee agrees)
+        "expect_version": "1.2.0.dev0",
         "console_script": "pyrit_scan",
         "build_log_marker": "Check whether the following modules can be imported: pyrit",
     },
