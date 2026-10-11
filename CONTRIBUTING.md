@@ -16,18 +16,25 @@ input).
 
 ## Ground rules
 
-1. **Never commit to `master`.** All work happens on a branch, one change per
+1. **Never commit to `main`.** All work happens on a branch, one change per
    branch, merged via pull request. Branch names follow
    `<type>/<short-description>` with kebab-case — e.g. `feat/attack-tools`,
    `fix/nvfetcher-pin`, `docs/category-map`.
 2. **Conventional Commits.** Every commit message follows
    the [specification](https://www.conventionalcommits.org/en/v1.0.0):
    `type(scope): subject`.
-   - Types: `feat`, `fix`, `docs`, `refactor`, `test`, `build`, `ci`, `chore`.
+   - Types: `feat`, `fix`, `docs`, `refactor`, `test`, `build`, `ci`, `chore`,
+     `perf`, `revert`.
    - `scope` is a surface: `manifest` (tools/categories), `pkgs`
      (derivations), `nvfetcher` (source pins), `flake`, `docs`, `ci`.
    - Subject: imperative, lowercase, no trailing period. Body (optional):
      what changed and why; wrap at 72 columns.
+   - PR titles follow the same form; roadmap-slice PRs carry the id in the
+     subject — `type(scope): KA-XX — subject`. Squash merges use the PR title
+     as the commit subject (`squash_merge_commit_title: COMMIT_OR_PR_TITLE`),
+     so the PR title is the commit record. A CI gate checks the form on every
+     PR; bot/dependency PRs (renovate, pre-commit.ci autoupdate) keep their
+     canonical titles.
 3. **Sign everything.** Commits must be GPG- or SSH-signed
    (`git config --global commit.gpgsign true`); releases are
    signed tags — unsigned commits and unsigned tags are
@@ -73,19 +80,21 @@ Manifest and packaging changes are the security surface of the distribution
 
 | Check | What it does |
 |---|---|
-| `flake-check` | hosted runners, one per declared system (x86_64 + aarch64): everything evaluates and the `manifest-wellformed` gate builds (full per-package matrix at KA-15) |
-| Dependency Review | flags vulnerable or licence-incompatible dependency changes |
-| OpenSSF Scorecard | publishes the security-posture score |
+| `flake-check` | hosted runners, one per declared system (x86_64 + aarch64): everything evaluates and the `manifest-wellformed` gate builds |
+| `build` | the manifest→matrix per-package build legs (KA-15 matrix) |
+| `PR title — Conventional Commits + KA id` | PR title checked against the Conventional Commits form |
 
 pre-commit hooks (whitespace, YAML/JSON validity, large-file guards,
 `detect-private-key`, shellcheck) run locally on every commit.
 
 ## Commits and pull requests
 
-- Push your branch and open a PR against `master`; describe the what and the why.
+- Push your branch and open a PR against `main`; describe the what and the why.
 - Link the `KA-XX` issue the change implements; the project board is
   [kailash Roadmap](https://github.com/orgs/kailash-os/projects/1).
-- Releases are signed tags (`git tag -s vX.Y.Z`).
+- This overlay cuts no tags of its own: releases follow the OS repo's
+  calendar scheme
+  ([`docs/guide/releases.md`](https://github.com/kailash-os/kailash-os/blob/master/docs/guide/releases.md)).
 
 ## Reporting bugs
 
