@@ -29,6 +29,7 @@
   callPackage,
   buildNpmPackage,
   nodejs,
+  python3,
 }:
 
 let
@@ -170,6 +171,12 @@ buildNpmPackage (finalAttrs: {
         json.dump(lock, f)
     PYEOF
   '';
+
+  # The npm-deps fixed-output derivation inherits nativeBuildInputs (the
+  # postPatch runs in BOTH the npm-deps and the main build): python3 is
+  # needed there for the resolved-URL injection (hosted CI RED at
+  # a4b30e7: `python3: command not found` in patchPhase — exit 127).
+  nativeBuildInputs = [ python3 ];
 
   # don't fetch the playwright browser binary in the build sandbox
   env.PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
