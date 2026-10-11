@@ -76,6 +76,18 @@ jobs:
           else
             echo "mirror copy not on kailash-os@master yet — identity check pending (enforces after both PRs merge)"
           fi
+          # KA-19.1 mirror twin (os#94/#95): the exp-wrap generator rides
+          # the same vendored byte-identical pair contract. The OS copy
+          # landed via kailash-os#149 — strict from here on.
+          TMP2="$(mktemp)"
+          if curl -fsSL -o "$TMP2" \
+            "https://raw.githubusercontent.com/kailash-os/kailash-os/master/tools/gen-exp-wrap.py"; then
+            cmp tools/gen-exp-wrap.py "$TMP2" \
+              || { echo "MIRROR DRIFT: tools/gen-exp-wrap.py differs from kailash-os@master"; exit 1; }
+            echo "exp-wrap generator mirror identity: byte-identical with kailash-os@master"
+          else
+            echo "gen-exp-wrap mirror copy not on kailash-os@master yet — pending (enforces after the OS PR merges)"
+          fi
       - name: Install PyYAML (matrix parse needs the §5.2 shape)
         run: pip install --disable-pip-version-check pyyaml
       - name: Matrix adapter self-test (the adapter gates itself)
