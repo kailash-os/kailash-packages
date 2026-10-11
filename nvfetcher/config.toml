@@ -69,3 +69,20 @@ src.git = "https://github.com/Azure/counterfit"
 src.branch = "main"
 src.commit = "c00edbf595303a85a4ce0ac9d8d55d505abf4de5"
 fetch.git = "https://github.com/Azure/counterfit"
+
+[promptfoo]
+# KA-11.2 (kailash-os#83): promptfoo/promptfoo — the LLM eval/red-team
+# CLI (A-2, secondary D-2/D-3). MIT, node toolchain. Update-class
+# fast-moving (§8.5): pinned to the main-branch head at pin time, the
+# house git-source pattern (nvfetcher tracks the branch tip; src.tag/
+# src.commit hints do not steer the prefetch — observed this run), rev
+# + SRI byte-verified against the commits API before committing.
+# Upstream releases tagged (npm 0.124.1 published 2026-10-08); the pin
+# sits at the tip a few commits past that tag (2026-10-10), package.json
+# version 0.124.1 at the pin. Freshness decision (§5.4 population 2):
+# nixpkgs promptfoo at the lock is 0.118.14 (npm publish 2025-10-09,
+# ~12 months stale on a weekly-churn tool) ⇒ bespoke buildNpmPackage
+# pin; decision recorded in the manifest entry and PR.
+src.git = "https://github.com/promptfoo/promptfoo"
+src.branch = "main"
+fetch.git = "https://github.com/promptfoo/promptfoo"
