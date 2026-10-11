@@ -266,7 +266,7 @@ def main():
           "unreadable manifest exits 2 with a message",
           "rc=%d stderr=%r" % (p.returncode, p.stderr[:120]))
 
-    # 7. §7.3 per-file manifest bake (KA-14.2): KAILASH_MANIFEST names
+    # §7.3 per-file manifest bake (KA-14.2): KAILASH_MANIFEST names
     # the tools.yaml FILE and KAILASH_CATEGORIES the categories.yaml
     # FILE — two independent paths, not one manifest directory. The
     # derivation bakes both (wrapProgram), so the loader must resolve
@@ -331,6 +331,78 @@ def main():
     finally:
         os.environ.pop("KAILASH_MANIFEST", None)
         os.environ.pop("KAILASH_CATEGORIES", None)
+
+    # 9 (KA-17.2, kailash-os#115): `kailash profile list` — the profile
+    # stub surface, data-driven over the §7.3 per-file KAILASH_PROFILES
+    # bake. The profile list is DATA (a profiles.json file): the OS side
+    # of the contract (kailash-os) generates it and the packaged binary's
+    # wrapProgram bake points KAILASH_PROFILES at the pinned file; the
+    # CLI only reads what the env (or the __file__-relative repo-tree
+    # fallback) names. Every assertion here is computed from the PARSED
+    # profiles.json — never hardcoded row counts — so the check stays
+    # green as the OS profile set grows.
+    profiles_doc = None
+    profiles_path = os.path.join(SRC, "profiles", "profiles.json")
+    if os.path.isfile(profiles_path):
+        with open(profiles_path) as pf:
+            profiles_doc = json.load(pf)
+        check(isinstance(profiles_doc, dict) and profiles_doc.get("profiles"),
+              "committed profiles/profiles.json parses with a profiles list")
+
+    import subprocess as _sp
+
+    # 9a. positive: `profile list` over the env-baked file — exit 0, one
+    # row per entry in the file, rows equal the parsed DATA (name ·
+    # layers · description), --json emits the same rows.
+    if profiles_doc:
+        exp_profiles = profiles_doc["profiles"]
+        try:
+            env_profiles = os.path.join(SRC, "profiles", "profiles.json")
+            os.environ["KAILASH_PROFILES"] = env_profiles
+            code, out = run_cli(["profile", "list"])
+            rows = out.splitlines()
+            check(code == 0, "profile list exit 0", "rc=%d out=%r" % (code, out[:120]))
+            check(len(rows) == len(exp_profiles),
+                  "profile list row count == parsed profiles.json entries",
+                  "%d != %d" % (len(rows), len(exp_profiles)))
+            expect = ["%s\t%s\t%s" % (p["name"], p["layers"], p["description"])
+                      for p in exp_profiles]
+            check(rows == expect, "profile list rows equal parsed profiles.json content",
+                  "first divergence: %s" % next(
+                      ("%s != %s" % (a, b) for a, b in zip(rows, expect) if a != b),
+                      "length %d vs %d" % (len(rows), len(expect))))
+            code, jout = run_cli(["profile", "list", "--json"])
+            check(code == 0 and json.loads(jout) == rows,
+                  "profile list --json emits the same rows as JSON")
+        finally:
+            os.environ.pop("KAILASH_PROFILES", None)
+
+    # 9b. negative (the §7.3 per-file contract, absence case): a temp-dir
+    # env naming a file that does not exist → exit 1, stderr names
+    # KAILASH_PROFILES (the missing bake var is diagnosed, not a generic
+    # no-results). subprocess like the stderr paths above: the message
+    # goes to stderr, which the in-process runner does not capture.
+    absent_dir = _tempfile.mkdtemp(prefix="kailash-absent-profiles-")
+    # the flake src is a read-only store path — a temp dir IS writable,
+    # but the absent file needs no write: it must simply not exist
+    absent_file = os.path.join(absent_dir, "profiles.json")
+    assert not os.path.exists(absent_file)
+    try:
+        os.environ["KAILASH_PROFILES"] = absent_file
+        p = _sp.run(
+            [sys.executable, "-c",
+             "import sys; sys.path.insert(0, %r); from kailash import cli; "
+             "sys.exit(cli.main(['profile', 'list']))" % CLI],
+            env=dict(os.environ), capture_output=True, text=True)
+        check(p.returncode == 1,
+              "profile list with an absent profiles file exits 1",
+              "rc=%d stderr=%r" % (p.returncode, p.stderr[:160]))
+        check("KAILASH_PROFILES" in p.stderr,
+              "absent-profiles message names KAILASH_PROFILES",
+              "stderr=%r" % p.stderr[:160])
+    finally:
+        os.environ.pop("KAILASH_PROFILES", None)
+        _shutil.rmtree(absent_dir, ignore_errors=True)
 
     print()
     if FAILURES:
