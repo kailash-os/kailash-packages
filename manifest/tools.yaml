@@ -2748,6 +2748,7 @@ tools:
   - id: faraday
     layer: CLASSIC
     category: c-09-forensics-ir-reporting
+    secondary_categories: [o-06-documentation-reporting-authoring]
     name: faraday
     description: "Vulnerability-management and collaborative IR platform — service module."
     source:
@@ -2768,6 +2769,7 @@ tools:
   - id: pwndoc-ng
     layer: CLASSIC
     category: c-09-forensics-ir-reporting
+    secondary_categories: [o-06-documentation-reporting-authoring]
     name: "pwndoc-ng"
     description: "Collaborative pentest reporting platform — service module."
     source:
@@ -3150,7 +3152,1773 @@ tools:
       v2: [LLM01]
     docs: layers/a-02/promptfoo.md
     tags: [evals, offensive, llm, node, redteam, update:weekly]
-# DEFENCE rows transcribed per the census (KA-05.5; issue kailash-os#78).
+# OPS rows transcribed per the census (KA-05.6; issue kailash-os#79).
+  - id: mlflow
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: mlflow
+    description: "MLflow — the pairing-thesis lab target: experiment tracking and model registry; ships as services.kailash.mlflow."
+    source:
+      vcs_owner: mlflow
+      repo: mlflow
+      vcs_url: "https://github.com/mlflow/mlflow"
+    license: "Apache-2.0"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mlflow.svg"
+      exec: mlflow
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/mlflow.md
+    tags: [module, ops, tracking, update:slow]
+  - id: dvc
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: dvc
+    description: "Data Version Control — pipeline and dataset versioning for ML workspaces."
+    source:
+      vcs_owner: iterative
+      repo: dvc
+      vcs_url: "https://github.com/iterative/dvc"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "dvc.svg"
+      exec: dvc
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/dvc.md
+    tags: [native, ops, update:slow]
+  - id: git-lfs
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: "git-lfs"
+    description: "Git Large File Storage — versioning large artefacts (weights, datasets)."
+    source:
+      vcs_owner: git-lfs
+      repo: git-lfs
+      vcs_url: "https://github.com/git-lfs/git-lfs"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "git-lfs.svg"
+      exec: git-lfs
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/git-lfs.md
+    tags: [native, ops, update:slow]
+  - id: bentoml
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: bentoml
+    description: "BentoML — model serving and inference-API packaging."
+    source:
+      vcs_owner: bentoml
+      repo: BentoML
+      vcs_url: "https://github.com/bentoml/BentoML"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/bentoml/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "bentoml.svg"
+      exec: bentoml
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/bentoml.md
+    tags: [bespoke, ops, serving]
+  - id: feast
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: feast
+    description: "Feast — the open-source feature store for AI/ML."
+    source:
+      vcs_owner: feast-dev
+      repo: feast
+      vcs_url: "https://github.com/feast-dev/feast"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/feast/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "feast.svg"
+      exec: feast
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/feast.md
+    tags: [bespoke, features, ops]
+  - id: kedro
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: kedro
+    description: "Kedro — production-ready data-science pipeline framework."
+    source:
+      vcs_owner: kedro-org
+      repo: kedro
+      vcs_url: "https://github.com/kedro-org/kedro"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/kedro/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "kedro.svg"
+      exec: kedro
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/kedro.md
+    tags: [bespoke, ops, pipelines]
+  - id: kedro-datasets
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: "kedro-datasets"
+    description: "Kedro datasets — the kedro-plugins catalogue of dataset connectors."
+    source:
+      vcs_owner: kedro-org
+      repo: kedro-plugins
+      vcs_url: "https://github.com/kedro-org/kedro-plugins"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/kedro-datasets/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "kedro-datasets.svg"
+      exec: kedro-datasets
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/kedro-datasets.md
+    tags: [bespoke, ops, pipelines]
+  - id: clearml
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: clearml
+    description: "ClearML — experiment tracking and orchestration; ships as a service module."
+    source:
+      vcs_owner: AllegroAI
+      repo: clearml
+      vcs_url: "https://github.com/AllegroAI/clearml"
+    license: "Apache-2.0"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "clearml.svg"
+      exec: clearml
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/clearml.md
+    tags: [module, ops, tracking, update:slow]
+  - id: wandb-cli
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: "wandb-cli"
+    description: "Weights & Biases CLI — experiment logging and sweeps client."
+    source:
+      vcs_owner: wandb
+      repo: wandb
+      vcs_url: "https://github.com/wandb/wandb"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "wandb-cli.svg"
+      exec: wandb-cli
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/wandb-cli.md
+    tags: [native, ops, tracking, update:slow]
+  - id: airflow
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: airflow
+    description: "Apache Airflow — workflow orchestration; ships as a service module."
+    source:
+      vcs_owner: apache
+      repo: airflow
+      vcs_url: "https://github.com/apache/airflow"
+    license: "Apache-2.0"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "airflow.svg"
+      exec: airflow
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/airflow.md
+    tags: [module, ops, orchestration, update:slow]
+  - id: prefect
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: prefect
+    description: "Prefect — workflow orchestration; ships as a service module."
+    source:
+      vcs_owner: PrefectHQ
+      repo: prefect
+      vcs_url: "https://github.com/PrefectHQ/prefect"
+    license: "Apache-2.0"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "prefect.svg"
+      exec: prefect
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/prefect.md
+    tags: [module, ops, orchestration, update:slow]
+  - id: pandas
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: pandas
+    description: "pandas — DataFrame analysis toolkit (the scientific-Python core)."
+    source:
+      vcs_owner: pandas-dev
+      repo: pandas
+      vcs_url: "https://github.com/pandas-dev/pandas"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "pandas.svg"
+      exec: pandas
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/pandas.md
+    tags: [native, ops, update:slow]
+  - id: polars
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: polars
+    description: "Polars — extremely fast DataFrame query engine written in Rust."
+    source:
+      vcs_owner: pola-rs
+      repo: polars
+      vcs_url: "https://github.com/pola-rs/polars"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "polars.svg"
+      exec: polars
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/polars.md
+    tags: [native, ops, update:slow]
+  - id: scikit-learn
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: "scikit-learn"
+    description: "scikit-learn — classical ML toolkit on numpy/scipy."
+    source:
+      vcs_owner: scikit-learn
+      repo: scikit-learn
+      vcs_url: "https://github.com/scikit-learn/scikit-learn"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "scikit-learn.svg"
+      exec: scikit-learn
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/scikit-learn.md
+    tags: [native, ops, update:slow]
+  - id: numpy
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: numpy
+    description: "NumPy — the fundamental package for scientific computing."
+    source:
+      vcs_owner: numpy
+      repo: numpy
+      vcs_url: "https://github.com/numpy/numpy"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "numpy.svg"
+      exec: numpy
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/numpy.md
+    tags: [native, ops, update:slow]
+  - id: scipy
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: scipy
+    description: "SciPy — scientific computing library (optimization, signal, stats)."
+    source:
+      vcs_owner: scipy
+      repo: scipy
+      vcs_url: "https://github.com/scipy/scipy"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "scipy.svg"
+      exec: scipy
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/scipy.md
+    tags: [native, ops, update:slow]
+  - id: xgboost
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: xgboost
+    description: "XGBoost — distributed gradient-boosted decision trees."
+    source:
+      vcs_owner: dmlc
+      repo: xgboost
+      vcs_url: "https://github.com/dmlc/xgboost"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "xgboost.svg"
+      exec: xgboost
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/xgboost.md
+    tags: [native, ops, update:slow]
+  - id: lightgbm
+    layer: OPS
+    category: o-01-mlops-ml-engineering
+    name: lightgbm
+    description: "LightGBM — fast gradient-boosting framework (GBDT, GBRT)."
+    source:
+      vcs_owner: microsoft
+      repo: LightGBM
+      vcs_url: "https://github.com/microsoft/LightGBM"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "lightgbm.svg"
+      exec: lightgbm
+      category: o-01-mlops-ml-engineering
+    docs: layers/o-01/lightgbm.md
+    tags: [native, ops, update:slow]
+  - id: vllm
+    layer: OPS
+    category: o-02-compute-serving-infrastructure
+    name: vllm
+    description: "vLLM — high-throughput, memory-efficient LLM inference and serving engine (native at the pin; plan Appendix A listed bespoke)."
+    source:
+      vcs_owner: vllm-project
+      repo: vllm
+      vcs_url: "https://github.com/vllm-project/vllm"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "vllm.svg"
+      exec: vllm
+      category: o-02-compute-serving-infrastructure
+    docs: layers/o-02/vllm.md
+    tags: [native, ops, serving, update:slow]
+  - id: tgi
+    layer: OPS
+    category: o-02-compute-serving-infrastructure
+    name: tgi
+    description: "text-generation-inference (Hugging Face TGI) — LLM serving runtime."
+    source:
+      vcs_owner: huggingface
+      repo: text-generation-inference
+      vcs_url: "https://github.com/huggingface/text-generation-inference"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/tgi/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "tgi.svg"
+      exec: tgi
+      category: o-02-compute-serving-infrastructure
+    docs: layers/o-02/tgi.md
+    tags: [bespoke, ops, serving]
+  - id: torchserve
+    layer: OPS
+    category: o-02-compute-serving-infrastructure
+    name: torchserve
+    description: "TorchServe — PyTorch model serving."
+    source:
+      vcs_owner: pytorch
+      repo: serve
+      vcs_url: "https://github.com/pytorch/serve"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/torchserve/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "torchserve.svg"
+      exec: torchserve
+      category: o-02-compute-serving-infrastructure
+    docs: layers/o-02/torchserve.md
+    tags: [bespoke, ops, serving]
+  - id: triton-inference-server
+    layer: OPS
+    category: o-02-compute-serving-infrastructure
+    name: "triton-inference-server"
+    description: "NVIDIA Triton Inference Server — docker-wrapper module for optimized inferencing."
+    source:
+      vcs_owner: triton-inference-server
+      repo: server
+      vcs_url: "https://github.com/triton-inference-server/server"
+    license: "BSD-3-Clause"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "triton-inference-server.svg"
+      exec: triton-inference-server
+      category: o-02-compute-serving-infrastructure
+    docs: layers/o-02/triton-inference-server.md
+    tags: [module, ops, serving, update:slow]
+  - id: kserve
+    layer: OPS
+    category: o-02-compute-serving-infrastructure
+    name: kserve
+    description: "KServe — model serving on Kubernetes."
+    source:
+      vcs_owner: kserve
+      repo: kserve
+      vcs_url: "https://github.com/kserve/kserve"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/kserve/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "kserve.svg"
+      exec: kserve
+      category: o-02-compute-serving-infrastructure
+    docs: layers/o-02/kserve.md
+    tags: [bespoke, ops, serving]
+  - id: ray
+    layer: OPS
+    category: o-02-compute-serving-infrastructure
+    name: ray
+    description: "Ray — distributed AI compute engine; ships as a service module."
+    source:
+      vcs_owner: ray-project
+      repo: ray
+      vcs_url: "https://github.com/ray-project/ray"
+    license: "Apache-2.0"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "ray.svg"
+      exec: ray
+      category: o-02-compute-serving-infrastructure
+    docs: layers/o-02/ray.md
+    tags: [compute, module, ops, update:slow]
+  - id: k3s
+    layer: OPS
+    category: o-02-compute-serving-infrastructure
+    name: k3s
+    description: "k3s — lightweight Kubernetes."
+    source:
+      vcs_owner: k3s-io
+      repo: k3s
+      vcs_url: "https://github.com/k3s-io/k3s"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "k3s.svg"
+      exec: k3s
+      category: o-02-compute-serving-infrastructure
+    docs: layers/o-02/k3s.md
+    tags: [kubernetes, native, ops, update:slow]
+  - id: minikube
+    layer: OPS
+    category: o-02-compute-serving-infrastructure
+    name: minikube
+    description: "minikube — local Kubernetes."
+    source:
+      vcs_owner: kubernetes
+      repo: minikube
+      vcs_url: "https://github.com/kubernetes/minikube"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "minikube.svg"
+      exec: minikube
+      category: o-02-compute-serving-infrastructure
+    docs: layers/o-02/minikube.md
+    tags: [kubernetes, native, ops, update:slow]
+  - id: kind
+    layer: OPS
+    category: o-02-compute-serving-infrastructure
+    name: kind
+    description: "kind — Kubernetes IN Docker, local clusters for testing."
+    source:
+      vcs_owner: kubernetes-sigs
+      repo: kind
+      vcs_url: "https://github.com/kubernetes-sigs/kind"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "kind.svg"
+      exec: kind
+      category: o-02-compute-serving-infrastructure
+    docs: layers/o-02/kind.md
+    tags: [kubernetes, native, ops, update:slow]
+  - id: podman
+    layer: OPS
+    category: o-02-compute-serving-infrastructure
+    name: podman
+    description: "Podman — OCI container and pod management."
+    source:
+      vcs_owner: containers
+      repo: podman
+      vcs_url: "https://github.com/containers/podman"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "podman.svg"
+      exec: podman
+      category: o-02-compute-serving-infrastructure
+    docs: layers/o-02/podman.md
+    tags: [containers, native, ops, update:slow]
+  - id: nvidia-container-toolkit
+    layer: OPS
+    category: o-02-compute-serving-infrastructure
+    name: "nvidia-container-toolkit"
+    description: "NVIDIA Container Toolkit — build and run GPU containers (licence Apache-2.0 per upstream metadata)."
+    source:
+      vcs_owner: NVIDIA
+      repo: nvidia-container-toolkit
+      vcs_url: "https://github.com/NVIDIA/nvidia-container-toolkit"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "nvidia-container-toolkit.svg"
+      exec: nvidia-container-toolkit
+      category: o-02-compute-serving-infrastructure
+    docs: layers/o-02/nvidia-container-toolkit.md
+    tags: [gpu, native, ops, update:slow]
+  - id: chromadb
+    layer: OPS
+    category: o-03-vector-stores-retrieval
+    name: chromadb
+    description: "Chroma — AI-native embedding database (python package + server)."
+    source:
+      vcs_owner: chroma-core
+      repo: chroma
+      vcs_url: "https://github.com/chroma-core/chroma"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "chromadb.svg"
+      exec: chromadb
+      category: o-03-vector-stores-retrieval
+    docs: layers/o-03/chromadb.md
+    tags: [native, ops, update:slow, vector]
+  - id: qdrant
+    layer: OPS
+    category: o-03-vector-stores-retrieval
+    name: qdrant
+    description: "Qdrant — vector database and vector search engine."
+    source:
+      vcs_owner: qdrant
+      repo: qdrant
+      vcs_url: "https://github.com/qdrant/qdrant"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "qdrant.svg"
+      exec: qdrant
+      category: o-03-vector-stores-retrieval
+    docs: layers/o-03/qdrant.md
+    tags: [native, ops, update:steady, vector]
+  - id: faiss
+    layer: OPS
+    category: o-03-vector-stores-retrieval
+    name: faiss
+    description: "FAISS — efficient similarity search and clustering of dense vectors."
+    source:
+      vcs_owner: facebookresearch
+      repo: faiss
+      vcs_url: "https://github.com/facebookresearch/faiss"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "faiss.svg"
+      exec: faiss
+      category: o-03-vector-stores-retrieval
+    docs: layers/o-03/faiss.md
+    tags: [native, ops, update:slow, vector]
+  - id: txtai
+    layer: OPS
+    category: o-03-vector-stores-retrieval
+    name: txtai
+    description: "txtai — all-in-one embeddings database for semantic search and LLM orchestration."
+    source:
+      vcs_owner: neuml
+      repo: txtai
+      vcs_url: "https://github.com/neuml/txtai"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "txtai.svg"
+      exec: txtai
+      category: o-03-vector-stores-retrieval
+    docs: layers/o-03/txtai.md
+    tags: [native, ops, update:slow, vector]
+  - id: jina-embeddings-cli
+    layer: OPS
+    category: o-03-vector-stores-retrieval
+    name: "jina-embeddings-cli"
+    description: "jina CLI — search/embed/rank over Jina APIs as Unix commands."
+    source:
+      vcs_owner: jina-ai
+      repo: cli
+      vcs_url: "https://github.com/jina-ai/cli"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/jina-embeddings-cli/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "jina-embeddings-cli.svg"
+      exec: jina-embeddings-cli
+      category: o-03-vector-stores-retrieval
+    docs: layers/o-03/jina-embeddings-cli.md
+    tags: [bespoke, ops, vector]
+  - id: weaviate
+    layer: OPS
+    category: o-03-vector-stores-retrieval
+    name: weaviate
+    description: "Weaviate — open-source vector database; ships as a service module (wl/ dir carries the Weaviate community licence)."
+    source:
+      vcs_owner: weaviate
+      repo: weaviate
+      vcs_url: "https://github.com/weaviate/weaviate"
+    license: "BSD-3-Clause OR LicenseRef-Weaviate-Community"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "weaviate.svg"
+      exec: weaviate
+      category: o-03-vector-stores-retrieval
+    docs: layers/o-03/weaviate.md
+    tags: [module, ops, update:slow, vector]
+  - id: pgvector
+    layer: OPS
+    category: o-03-vector-stores-retrieval
+    name: pgvector
+    description: "pgvector — open-source vector similarity search for Postgres; ships as a service module (PostgreSQL licence)."
+    source:
+      vcs_owner: pgvector
+      repo: pgvector
+      vcs_url: "https://github.com/pgvector/pgvector"
+    license: PostgreSQL
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "pgvector.svg"
+      exec: pgvector
+      category: o-03-vector-stores-retrieval
+    docs: layers/o-03/pgvector.md
+    tags: [module, ops, update:slow, vector]
+  - id: elasticsearch
+    layer: OPS
+    category: o-03-vector-stores-retrieval
+    name: elasticsearch
+    description: "Elasticsearch — distributed search engine; ships as a service module (AGPL-3.0 / SSPL / Elastic License 2.0 triple licence at the pin)."
+    source:
+      vcs_owner: elastic
+      repo: elasticsearch
+      vcs_url: "https://github.com/elastic/elasticsearch"
+    license: "AGPL-3.0-only OR LicenseRef-SSPL-1.0 OR LicenseRef-ELv2"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "elasticsearch.svg"
+      exec: elasticsearch
+      category: o-03-vector-stores-retrieval
+    docs: layers/o-03/elasticsearch.md
+    tags: [module, ops, search, update:slow]
+  - id: milvus
+    layer: OPS
+    category: o-03-vector-stores-retrieval
+    name: milvus
+    description: "Milvus — cloud-native vector database; docker-wrapper module."
+    source:
+      vcs_owner: milvus-io
+      repo: milvus
+      vcs_url: "https://github.com/milvus-io/milvus"
+    license: "Apache-2.0"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "milvus.svg"
+      exec: milvus
+      category: o-03-vector-stores-retrieval
+    docs: layers/o-03/milvus.md
+    tags: [module, ops, update:slow, vector]
+  - id: ollama
+    layer: OPS
+    category: o-04-local-llm-inference-labs
+    secondary_categories: [o-02-compute-serving-infrastructure]
+    name: ollama
+    description: "Ollama — run LLMs locally (primary home; documented tiny test model)."
+    source:
+      vcs_owner: ollama
+      repo: ollama
+      vcs_url: "https://github.com/ollama/ollama"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "ollama.svg"
+      exec: ollama
+      category: o-04-local-llm-inference-labs
+    docs: layers/o-04/ollama.md
+    tags: [llm, native, ops, update:steady]
+  - id: llama.cpp
+    layer: OPS
+    category: o-04-local-llm-inference-labs
+    secondary_categories: [o-02-compute-serving-infrastructure]
+    name: llama.cpp
+    description: "llama.cpp — LLM inference in C/C++ (CPU/GPU quantized inference)."
+    source:
+      vcs_owner: ggml-org
+      repo: llama.cpp
+      vcs_url: "https://github.com/ggml-org/llama.cpp"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "llama.cpp.svg"
+      exec: llama.cpp
+      category: o-04-local-llm-inference-labs
+    docs: layers/o-04/llama.cpp.md
+    tags: [llm, native, ops, update:steady]
+  - id: text-generation-webui
+    layer: OPS
+    category: o-04-local-llm-inference-labs
+    name: "text-generation-webui"
+    description: "text-generation-webui — open-source desktop app for local LLMs."
+    source:
+      vcs_owner: oobabooga
+      repo: text-generation-webui
+      vcs_url: "https://github.com/oobabooga/text-generation-webui"
+    license: "AGPL-3.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/text-generation-webui/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "text-generation-webui.svg"
+      exec: text-generation-webui
+      category: o-04-local-llm-inference-labs
+    docs: layers/o-04/text-generation-webui.md
+    tags: [bespoke, llm, ops]
+  - id: open-webui
+    layer: OPS
+    category: o-04-local-llm-inference-labs
+    name: "open-webui"
+    description: "Open WebUI — self-hosted chat UI for local LLMs (branding-clause licence; unfree-class in nixpkgs)."
+    source:
+      vcs_owner: open-webui
+      repo: open-webui
+      vcs_url: "https://github.com/open-webui/open-webui"
+    license: "LicenseRef-OpenWebUI"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "open-webui.svg"
+      exec: open-webui
+      category: o-04-local-llm-inference-labs
+    docs: layers/o-04/open-webui.md
+    tags: [llm, native, ops, update:slow]
+  - id: gguf-quantiser
+    layer: OPS
+    category: o-04-local-llm-inference-labs
+    name: "gguf-quantiser"
+    description: "GGUF quantiser — planned first-party CLI wrapping llama.cpp quantize workflows (Wave-5 deliverable)."
+    source:
+      vcs_owner: kailash-os
+      repo: gguf-quantiser
+      vcs_url: "https://github.com/kailash-os/gguf-quantiser"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/gguf-quantiser/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "gguf-quantiser.svg"
+      exec: gguf-quantiser
+      category: o-04-local-llm-inference-labs
+    docs: layers/o-04/gguf-quantiser.md
+    tags: [bespoke, ops, quantisation]
+  - id: langchain
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: langchain
+    description: "LangChain — the agent engineering platform (SDK core)."
+    source:
+      vcs_owner: langchain-ai
+      repo: langchain
+      vcs_url: "https://github.com/langchain-ai/langchain"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "langchain.svg"
+      exec: langchain
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/langchain.md
+    tags: [native, ops, sdk, update:slow]
+  - id: langgraph
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: langgraph
+    description: "LangGraph — build resilient agents (LangChain graph runtime)."
+    source:
+      vcs_owner: langchain-ai
+      repo: langgraph
+      vcs_url: "https://github.com/langchain-ai/langgraph"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "langgraph.svg"
+      exec: langgraph
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/langgraph.md
+    tags: [native, ops, sdk, update:slow]
+  - id: llama-index
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: "llama-index"
+    description: "LlamaIndex — document processing and RAG framework."
+    source:
+      vcs_owner: run-llama
+      repo: llama_index
+      vcs_url: "https://github.com/run-llama/llama_index"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "llama-index.svg"
+      exec: llama-index
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/llama-index.md
+    tags: [native, ops, sdk, update:slow]
+  - id: openai-python
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: "openai-python"
+    description: OpenAI Python SDK.
+    source:
+      vcs_owner: openai
+      repo: openai-python
+      vcs_url: "https://github.com/openai/openai-python"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "openai-python.svg"
+      exec: openai-python
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/openai-python.md
+    tags: [native, ops, sdk, update:slow]
+  - id: anthropic-python
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: "anthropic-python"
+    description: Anthropic Python SDK.
+    source:
+      vcs_owner: anthropics
+      repo: anthropic-sdk-python
+      vcs_url: "https://github.com/anthropics/anthropic-sdk-python"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "anthropic-python.svg"
+      exec: anthropic-python
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/anthropic-python.md
+    tags: [native, ops, sdk, update:slow]
+  - id: google-genai
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: "google-genai"
+    description: Google Gen AI Python SDK.
+    source:
+      vcs_owner: googleapis
+      repo: python-genai
+      vcs_url: "https://github.com/googleapis/python-genai"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "google-genai.svg"
+      exec: google-genai
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/google-genai.md
+    tags: [native, ops, sdk, update:slow]
+  - id: autogen
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: autogen
+    description: "AutoGen — programming framework for agentic AI (v0.4+; repo licence CC-BY-4.0 per metadata + LICENCE read)."
+    source:
+      vcs_owner: microsoft
+      repo: autogen
+      vcs_url: "https://github.com/microsoft/autogen"
+    license: "CC-BY-4.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/autogen/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "autogen.svg"
+      exec: autogen
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/autogen.md
+    tags: [bespoke, ops, sdk]
+  - id: crewai
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: crewai
+    description: "CrewAI — role-playing autonomous agent orchestration framework."
+    source:
+      vcs_owner: crewAIInc
+      repo: crewAI
+      vcs_url: "https://github.com/crewAIInc/crewAI"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "crewai.svg"
+      exec: crewai
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/crewai.md
+    tags: [native, ops, sdk, update:slow]
+  - id: pytorch
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: pytorch
+    description: "PyTorch — tensors and dynamic neural networks (CPU default; cuda variant via overlay)."
+    source:
+      vcs_owner: pytorch
+      repo: pytorch
+      vcs_url: "https://github.com/pytorch/pytorch"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "pytorch.svg"
+      exec: pytorch
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/pytorch.md
+    tags: [framework, native, ops, update:slow]
+  - id: torchvision
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: torchvision
+    description: "TorchVision — vision models/transforms for PyTorch."
+    source:
+      vcs_owner: pytorch
+      repo: vision
+      vcs_url: "https://github.com/pytorch/vision"
+    license: "BSD-3-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "torchvision.svg"
+      exec: torchvision
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/torchvision.md
+    tags: [framework, native, ops, update:slow]
+  - id: torchaudio
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: torchaudio
+    description: "TorchAudio — audio ML for PyTorch."
+    source:
+      vcs_owner: pytorch
+      repo: audio
+      vcs_url: "https://github.com/pytorch/audio"
+    license: "BSD-2-Clause"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "torchaudio.svg"
+      exec: torchaudio
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/torchaudio.md
+    tags: [framework, native, ops, update:slow]
+  - id: tensorflow
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: tensorflow
+    description: "TensorFlow — end-to-end ML platform."
+    source:
+      vcs_owner: tensorflow
+      repo: tensorflow
+      vcs_url: "https://github.com/tensorflow/tensorflow"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "tensorflow.svg"
+      exec: tensorflow
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/tensorflow.md
+    tags: [framework, native, ops, update:slow]
+  - id: jax
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: jax
+    description: "JAX — composable transformations of Python+NumPy programs."
+    source:
+      vcs_owner: google
+      repo: jax
+      vcs_url: "https://github.com/google/jax"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "jax.svg"
+      exec: jax
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/jax.md
+    tags: [framework, native, ops, update:slow]
+  - id: onnxruntime
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: onnxruntime
+    description: "ONNX Runtime — cross-platform ML inference."
+    source:
+      vcs_owner: microsoft
+      repo: onnxruntime
+      vcs_url: "https://github.com/microsoft/onnxruntime"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "onnxruntime.svg"
+      exec: onnxruntime
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/onnxruntime.md
+    tags: [native, ops, runtime, update:slow]
+  - id: transformers
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: transformers
+    description: "Hugging Face Transformers — the model-definition framework."
+    source:
+      vcs_owner: huggingface
+      repo: transformers
+      vcs_url: "https://github.com/huggingface/transformers"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "transformers.svg"
+      exec: transformers
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/transformers.md
+    tags: [hub, native, ops, update:slow]
+  - id: datasets
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: datasets
+    description: "Hugging Face Datasets — ready-to-use datasets library."
+    source:
+      vcs_owner: huggingface
+      repo: datasets
+      vcs_url: "https://github.com/huggingface/datasets"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "datasets.svg"
+      exec: datasets
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/datasets.md
+    tags: [hub, native, ops, update:slow]
+  - id: peft
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: peft
+    description: "Hugging Face PEFT — parameter-efficient fine-tuning."
+    source:
+      vcs_owner: huggingface
+      repo: peft
+      vcs_url: "https://github.com/huggingface/peft"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "peft.svg"
+      exec: peft
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/peft.md
+    tags: [hub, native, ops, update:slow]
+  - id: trl
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: trl
+    description: "Hugging Face TRL — RL training for transformers."
+    source:
+      vcs_owner: huggingface
+      repo: trl
+      vcs_url: "https://github.com/huggingface/trl"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "trl.svg"
+      exec: trl
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/trl.md
+    tags: [hub, native, ops, update:slow]
+  - id: vscode
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: vscode
+    description: "Visual Studio Code (source MIT; nixpkgs build unfree-class)."
+    source:
+      vcs_owner: microsoft
+      repo: vscode
+      vcs_url: "https://github.com/microsoft/vscode"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "vscode.svg"
+      exec: vscode
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/vscode.md
+    tags: [ide, native, ops, update:slow]
+  - id: code-server
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: "code-server"
+    description: VS Code in the browser.
+    source:
+      vcs_owner: coder
+      repo: code-server
+      vcs_url: "https://github.com/coder/code-server"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "code-server.svg"
+      exec: code-server
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/code-server.md
+    tags: [ide, native, ops, update:slow]
+  - id: neovim
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: neovim
+    description: "Neovim — Vim-fork focused on extensibility."
+    source:
+      vcs_owner: neovim
+      repo: neovim
+      vcs_url: "https://github.com/neovim/neovim"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "neovim.svg"
+      exec: neovim
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/neovim.md
+    tags: [editor, native, ops, update:slow]
+  - id: python-lsp-server
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: "python-lsp-server"
+    description: "python-lsp-server — LSP for Python (SpyderMaintained fork)."
+    source:
+      vcs_owner: python-lsp
+      repo: python-lsp-server
+      vcs_url: "https://github.com/python-lsp/python-lsp-server"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "python-lsp-server.svg"
+      exec: python-lsp-server
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/python-lsp-server.md
+    tags: [lsp, native, ops, update:slow]
+  - id: uv
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: uv
+    description: "uv — extremely fast Python package/project manager (MIT/Apache dual)."
+    source:
+      vcs_owner: astral-sh
+      repo: uv
+      vcs_url: "https://github.com/astral-sh/uv"
+    license: "MIT OR Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "uv.svg"
+      exec: uv
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/uv.md
+    tags: [native, ops, tooling, update:slow]
+  - id: ruff
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: ruff
+    description: "Ruff — fast Python linter and formatter."
+    source:
+      vcs_owner: astral-sh
+      repo: ruff
+      vcs_url: "https://github.com/astral-sh/ruff"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "ruff.svg"
+      exec: ruff
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/ruff.md
+    tags: [native, ops, tooling, update:slow]
+  - id: mypy
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: mypy
+    description: "mypy — optional static typing for Python."
+    source:
+      vcs_owner: python
+      repo: mypy
+      vcs_url: "https://github.com/python/mypy"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mypy.svg"
+      exec: mypy
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/mypy.md
+    tags: [native, ops, tooling, update:slow]
+  - id: python313
+    layer: OPS
+    category: o-05-ai-engineering-sdks-dev-env
+    name: python313
+    description: "CPython 3.13 (PSF-2.0 licence per upstream)."
+    source:
+      vcs_owner: python
+      repo: cpython
+      vcs_url: "https://github.com/python/cpython"
+    license: "PSF-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "python313.svg"
+      exec: python313
+      category: o-05-ai-engineering-sdks-dev-env
+    docs: layers/o-05/python313.md
+    tags: [native, ops, runtime, update:slow]
+  - id: quarto
+    layer: OPS
+    category: o-06-documentation-reporting-authoring
+    secondary_categories: [o-05-ai-engineering-sdks-dev-env]
+    name: quarto
+    description: "Quarto — open-source scientific and technical publishing system."
+    source:
+      vcs_owner: quarto-dev
+      repo: quarto-cli
+      vcs_url: "https://github.com/quarto-dev/quarto-cli"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "quarto.svg"
+      exec: quarto
+      category: o-06-documentation-reporting-authoring
+    docs: layers/o-06/quarto.md
+    tags: [native, ops, update:slow]
+  - id: pandoc
+    layer: OPS
+    category: o-06-documentation-reporting-authoring
+    name: pandoc
+    description: "Pandoc — universal markup converter."
+    source:
+      vcs_owner: jgm
+      repo: pandoc
+      vcs_url: "https://github.com/jgm/pandoc"
+    license: "GPL-2.0-or-later"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "pandoc.svg"
+      exec: pandoc
+      category: o-06-documentation-reporting-authoring
+    docs: layers/o-06/pandoc.md
+    tags: [native, ops, update:slow]
+  - id: typst
+    layer: OPS
+    category: o-06-documentation-reporting-authoring
+    name: typst
+    description: "Typst — markup-based typesetting system."
+    source:
+      vcs_owner: typst
+      repo: typst
+      vcs_url: "https://github.com/typst/typst"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "typst.svg"
+      exec: typst
+      category: o-06-documentation-reporting-authoring
+    docs: layers/o-06/typst.md
+    tags: [native, ops, update:slow]
+  - id: mdbook
+    layer: OPS
+    category: o-06-documentation-reporting-authoring
+    name: mdbook
+    description: "mdBook — create books from markdown files (the OS docs surface)."
+    source:
+      vcs_owner: rust-lang
+      repo: mdBook
+      vcs_url: "https://github.com/rust-lang/mdBook"
+    license: "MPL-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mdbook.svg"
+      exec: mdbook
+      category: o-06-documentation-reporting-authoring
+    docs: layers/o-06/mdbook.md
+    tags: [native, ops, update:slow]
+  - id: drawio
+    layer: OPS
+    category: o-06-documentation-reporting-authoring
+    name: drawio
+    description: "draw.io — JavaScript client-side diagramming editor."
+    source:
+      vcs_owner: jgraph
+      repo: drawio
+      vcs_url: "https://github.com/jgraph/drawio"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "drawio.svg"
+      exec: drawio
+      category: o-06-documentation-reporting-authoring
+    docs: layers/o-06/drawio.md
+    tags: [native, ops, update:slow]
+  - id: excalidraw
+    layer: OPS
+    category: o-06-documentation-reporting-authoring
+    name: excalidraw
+    description: "Excalidraw — virtual whiteboard for hand-drawn-style diagrams."
+    source:
+      vcs_owner: excalidraw
+      repo: excalidraw
+      vcs_url: "https://github.com/excalidraw/excalidraw"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/excalidraw/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "excalidraw.svg"
+      exec: excalidraw
+      category: o-06-documentation-reporting-authoring
+    docs: layers/o-06/excalidraw.md
+    tags: [bespoke, ops]
+  - id: mermaid-cli
+    layer: OPS
+    category: o-06-documentation-reporting-authoring
+    name: "mermaid-cli"
+    description: "mermaid-cli — command-line rendering for the Mermaid diagram language."
+    source:
+      vcs_owner: mermaid-js
+      repo: mermaid-cli
+      vcs_url: "https://github.com/mermaid-js/mermaid-cli"
+    license: MIT
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mermaid-cli.svg"
+      exec: mermaid-cli
+      category: o-06-documentation-reporting-authoring
+    docs: layers/o-06/mermaid-cli.md
+    tags: [native, ops, update:slow]
+  - id: obsidian
+    layer: OPS
+    category: o-06-documentation-reporting-authoring
+    name: obsidian
+    description: "Obsidian — personal knowledge base (licence proprietary-class; nixpkgs unfree)."
+    source:
+      vcs_owner: obsidianmd
+      repo: obsidian-releases
+      vcs_url: "https://github.com/obsidianmd/obsidian-releases"
+    license: "LicenseRef-Proprietary"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "obsidian.svg"
+      exec: obsidian
+      category: o-06-documentation-reporting-authoring
+    docs: layers/o-06/obsidian.md
+    tags: [native, ops, update:slow]
+  - id: texlive-full
+    layer: OPS
+    category: o-06-documentation-reporting-authoring
+    name: "texlive-full"
+    description: "TeX Live scheme-full — opt-in data pack; bundle carries a licence mix (plan Appendix A: GPL-class)."
+    source:
+      vcs_owner: TeX-Live
+      repo: texlive-source
+      vcs_url: "https://github.com/TeX-Live/texlive-source"
+    license: "GPL-3.0-or-later"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "texlive-full.svg"
+      exec: texlive-full
+      category: o-06-documentation-reporting-authoring
+    docs: layers/o-06/texlive-full.md
+    tags: [data, ops, update:slow]
+  - id: dradis
+    layer: OPS
+    category: o-06-documentation-reporting-authoring
+    name: dradis
+    description: "Dradis Framework CE — collaboration and reporting for IT security teams; ships as a service module."
+    source:
+      vcs_owner: dradis
+      repo: dradisframework-ce
+      vcs_url: "https://github.com/dradis/dradisframework-ce"
+    license: "GPL-2.0-only"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "dradis.svg"
+      exec: dradis
+      category: o-06-documentation-reporting-authoring
+    docs: layers/o-06/dradis.md
+    tags: [module, ops, update:slow]
+  - id: hexstrike-ai
+    layer: OPS
+    category: o-07-agent-mcp-operability
+    name: "hexstrike-ai"
+    description: "HexStrike AI — MCP server letting AI agents autonomously run 100+ security tools for offensive security operations."
+    source:
+      vcs_owner: 0x4m4
+      repo: hexstrike-ai
+      vcs_url: "https://github.com/0x4m4/hexstrike-ai"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/hexstrike-ai/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "hexstrike-ai.svg"
+      exec: hexstrike-ai
+      category: o-07-agent-mcp-operability
+    docs: layers/o-07/hexstrike-ai.md
+    tags: [bespoke, mcp, ops]
+  - id: mcp-kali-server
+    layer: OPS
+    category: o-07-agent-mcp-operability
+    name: "mcp-kali-server"
+    description: "MCP Kali Server — Kali toolchain exposed over MCP for agent operators (third-party deliverable)."
+    source:
+      vcs_owner: Wh0am123
+      repo: MCP-Kali-Server
+      vcs_url: "https://github.com/Wh0am123/MCP-Kali-Server"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/mcp-kali-server/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "mcp-kali-server.svg"
+      exec: mcp-kali-server
+      category: o-07-agent-mcp-operability
+    docs: layers/o-07/mcp-kali-server.md
+    tags: [bespoke, mcp, ops]
+  - id: malicious-mcp-poc
+    layer: OPS
+    category: o-07-agent-mcp-operability
+    secondary_categories: [a-03-agentic-mcp-tool-use]
+    name: "malicious-mcp-poc"
+    description: "Malicious MCP server proof-of-concept pack — lab artefacts for the A-3 scanner suite (opt-in lab pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: malicious-mcp-poc
+      vcs_url: "https://github.com/kailash-os/malicious-mcp-poc"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "malicious-mcp-poc.svg"
+      exec: malicious-mcp-poc
+      category: o-07-agent-mcp-operability
+    docs: layers/o-07/malicious-mcp-poc.md
+    tags: [data, lab, ops, update:slow]
+  - id: insecure-mcp-lab
+    layer: OPS
+    category: o-07-agent-mcp-operability
+    secondary_categories: [a-03-agentic-mcp-tool-use]
+    name: "insecure-mcp-lab"
+    description: "Insecure MCP lab — deliberately vulnerable MCP endpoints for scanner verification (opt-in lab pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: insecure-mcp-lab
+      vcs_url: "https://github.com/kailash-os/insecure-mcp-lab"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "insecure-mcp-lab.svg"
+      exec: insecure-mcp-lab
+      category: o-07-agent-mcp-operability
+    docs: layers/o-07/insecure-mcp-lab.md
+    tags: [data, lab, ops, update:slow]
+  - id: kailash-mcp
+    layer: OPS
+    category: o-07-agent-mcp-operability
+    name: "kailash-mcp"
+    description: "kailash-mcp — the distro's own MCP server, generated from the manifest; the CI dogfood target."
+    source:
+      vcs_owner: kailash-os
+      repo: kailash-mcp
+      vcs_url: "https://github.com/kailash-os/kailash-mcp"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/kailash-mcp/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "kailash-mcp.svg"
+      exec: kailash-mcp
+      category: o-07-agent-mcp-operability
+    docs: layers/o-07/kailash-mcp.md
+    tags: [bespoke, first-party, ops]
+  - id: kailash-container
+    layer: OPS
+    category: o-07-agent-mcp-operability
+    name: "kailash-container"
+    description: "kailash-container — container image deliverable bundling the distro toolset."
+    source:
+      vcs_owner: kailash-os
+      repo: kailash-container
+      vcs_url: "https://github.com/kailash-os/kailash-container"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/kailash-container/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "kailash-container.svg"
+      exec: kailash-container
+      category: o-07-agent-mcp-operability
+    docs: layers/o-07/kailash-container.md
+    tags: [bespoke, first-party, ops]
+  - id: headless-agent
+    layer: OPS
+    category: o-07-agent-mcp-operability
+    name: "headless-agent"
+    description: "headless-agent — headless agent image deliverable (grants-scoped)."
+    source:
+      vcs_owner: kailash-os
+      repo: headless-agent
+      vcs_url: "https://github.com/kailash-os/headless-agent"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/headless-agent/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "headless-agent.svg"
+      exec: headless-agent
+      category: o-07-agent-mcp-operability
+    docs: layers/o-07/headless-agent.md
+    tags: [bespoke, first-party, ops]
+  - id: mcp-inspector
+    layer: OPS
+    category: o-07-agent-mcp-operability
+    name: "mcp-inspector"
+    description: "MCP Inspector — visual testing tool for MCP servers (dogfood duty in CI; licence MIT→Apache-2.0 transition)."
+    source:
+      vcs_owner: modelcontextprotocol
+      repo: inspector
+      vcs_url: "https://github.com/modelcontextprotocol/inspector"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/mcp-inspector/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mcp-inspector.svg"
+      exec: mcp-inspector
+      category: o-07-agent-mcp-operability
+    docs: layers/o-07/mcp-inspector.md
+    tags: [bespoke, dogfood, ops, update:fast]
+# DEFENCE rows merged from kailash-os#78 delivery (kp#36, squash 70863ea0) —
+# appended verbatim from current main so the union is canonical.
+
   - id: nemo-guardrails
     layer: DEFENCE
     category: d-01-runtime-defence
@@ -3172,6 +4940,7 @@ tools:
       category: d-01-runtime-defence
     docs: layers/d-01/nemo-guardrails.md
     tags: [bespoke, defence, guardrail]
+
   - id: llm-guard
     layer: DEFENCE
     category: d-01-runtime-defence
@@ -3193,6 +4962,7 @@ tools:
       category: d-01-runtime-defence
     docs: layers/d-01/llm-guard.md
     tags: [bespoke, defence, guardrail]
+
   - id: guardrails-ai
     layer: DEFENCE
     category: d-01-runtime-defence
@@ -3214,6 +4984,7 @@ tools:
       category: d-01-runtime-defence
     docs: layers/d-01/guardrails-ai.md
     tags: [bespoke, defence, guardrail]
+
   - id: rebuff
     layer: DEFENCE
     category: d-01-runtime-defence
@@ -3235,6 +5006,7 @@ tools:
       category: d-01-runtime-defence
     docs: layers/d-01/rebuff.md
     tags: [bespoke, defence, guardrail, prompt-injection]
+
   - id: gaskunk
     layer: DEFENCE
     category: d-01-runtime-defence
@@ -3256,6 +5028,7 @@ tools:
       category: d-01-runtime-defence
     docs: layers/d-01/gaskunk.md
     tags: [bespoke, defence, guardrail]
+
   - id: llm-firewall
     layer: DEFENCE
     category: d-01-runtime-defence
@@ -3277,6 +5050,7 @@ tools:
       category: d-01-runtime-defence
     docs: layers/d-01/llm-firewall.md
     tags: [bespoke, defence, guardrail]
+
   - id: whisper-gate
     layer: DEFENCE
     category: d-01-runtime-defence
@@ -3298,6 +5072,7 @@ tools:
       category: d-01-runtime-defence
     docs: layers/d-01/whisper-gate.md
     tags: [bespoke, defence, guardrail]
+
   - id: langfuse
     layer: DEFENCE
     category: d-02-detection-monitoring-observability
@@ -3318,6 +5093,7 @@ tools:
       category: d-02-detection-monitoring-observability
     docs: layers/d-02/langfuse.md
     tags: [defence, module, observability, update:slow]
+
   - id: phoenix
     layer: DEFENCE
     category: d-02-detection-monitoring-observability
@@ -3339,6 +5115,7 @@ tools:
       category: d-02-detection-monitoring-observability
     docs: layers/d-02/phoenix.md
     tags: [bespoke, defence, observability]
+
   - id: whylogs
     layer: DEFENCE
     category: d-02-detection-monitoring-observability
@@ -3361,6 +5138,7 @@ tools:
       category: d-02-detection-monitoring-observability
     docs: layers/d-02/whylogs.md
     tags: [bespoke, defence, observability]
+
   - id: evidently
     layer: DEFENCE
     category: d-02-detection-monitoring-observability
@@ -3383,6 +5161,7 @@ tools:
       category: d-02-detection-monitoring-observability
     docs: layers/d-02/evidently.md
     tags: [bespoke, defence, observability]
+
   - id: otel-ai
     layer: DEFENCE
     category: d-02-detection-monitoring-observability
@@ -3404,6 +5183,7 @@ tools:
       category: d-02-detection-monitoring-observability
     docs: layers/d-02/otel-ai.md
     tags: [bespoke, defence, observability]
+
   - id: prompt-injection-detector-bert
     layer: DEFENCE
     category: d-02-detection-monitoring-observability
@@ -3425,6 +5205,7 @@ tools:
       category: d-02-detection-monitoring-observability
     docs: layers/d-02/prompt-injection-detector-bert.md
     tags: [bespoke, defence, prompt-injection]
+
   - id: canary-token-generator
     layer: DEFENCE
     category: d-02-detection-monitoring-observability
@@ -3446,6 +5227,7 @@ tools:
       category: d-02-detection-monitoring-observability
     docs: layers/d-02/canary-token-generator.md
     tags: [bespoke, defence, prompt-injection]
+
   - id: giskard
     layer: DEFENCE
     category: d-02-detection-monitoring-observability
@@ -3467,6 +5249,7 @@ tools:
       category: d-02-detection-monitoring-observability
     docs: layers/d-02/giskard.md
     tags: [bespoke, defence, testing]
+
   - id: lm-eval-harness
     layer: DEFENCE
     category: d-03-assurance-evals-benchmarks
@@ -3488,6 +5271,7 @@ tools:
       category: d-03-assurance-evals-benchmarks
     docs: layers/d-03/lm-eval-harness.md
     tags: [bespoke, defence, evals, update:steady]
+
   - id: deepeval
     layer: DEFENCE
     category: d-03-assurance-evals-benchmarks
@@ -3509,6 +5293,7 @@ tools:
       category: d-03-assurance-evals-benchmarks
     docs: layers/d-03/deepeval.md
     tags: [bespoke, defence, evals, update:steady]
+
   - id: robustbench
     layer: DEFENCE
     category: d-03-assurance-evals-benchmarks
@@ -3530,6 +5315,7 @@ tools:
       category: d-03-assurance-evals-benchmarks
     docs: layers/d-03/robustbench.md
     tags: [bespoke, defence, evals]
+
   - id: huggingface-evaluate
     layer: DEFENCE
     category: d-03-assurance-evals-benchmarks
@@ -3551,6 +5337,7 @@ tools:
       category: d-03-assurance-evals-benchmarks
     docs: layers/d-03/huggingface-evaluate.md
     tags: [defence, evals, native, update:slow]
+
   - id: fairlearn
     layer: DEFENCE
     category: d-03-assurance-evals-benchmarks
@@ -3572,6 +5359,7 @@ tools:
       category: d-03-assurance-evals-benchmarks
     docs: layers/d-03/fairlearn.md
     tags: [bespoke, defence, evals, update:steady]
+
   - id: aif360
     layer: DEFENCE
     category: d-03-assurance-evals-benchmarks
@@ -3593,6 +5381,7 @@ tools:
       category: d-03-assurance-evals-benchmarks
     docs: layers/d-03/aif360.md
     tags: [bespoke, defence, evals]
+
   - id: cosign
     layer: DEFENCE
     category: d-04-provenance-signing-trust
@@ -3613,6 +5402,7 @@ tools:
       category: d-04-provenance-signing-trust
     docs: layers/d-04/cosign.md
     tags: [defence, native, signing, update:slow]
+
   - id: syft
     layer: DEFENCE
     category: d-04-provenance-signing-trust
@@ -3633,6 +5423,7 @@ tools:
       category: d-04-provenance-signing-trust
     docs: layers/d-04/syft.md
     tags: [defence, native, sbom, update:slow]
+
   - id: grype
     layer: DEFENCE
     category: d-04-provenance-signing-trust
@@ -3653,6 +5444,7 @@ tools:
       category: d-04-provenance-signing-trust
     docs: layers/d-04/grype.md
     tags: [defence, native, scanner, update:slow]
+
   - id: trivy
     layer: DEFENCE
     category: d-04-provenance-signing-trust
@@ -3673,6 +5465,7 @@ tools:
       category: d-04-provenance-signing-trust
     docs: layers/d-04/trivy.md
     tags: [defence, native, scanner, update:slow]
+
   - id: cyclonedx-cli
     layer: DEFENCE
     category: d-04-provenance-signing-trust
@@ -3693,6 +5486,7 @@ tools:
       category: d-04-provenance-signing-trust
     docs: layers/d-04/cyclonedx-cli.md
     tags: [defence, native, sbom, update:slow]
+
   - id: cdxgen
     layer: DEFENCE
     category: d-04-provenance-signing-trust
@@ -3713,6 +5507,7 @@ tools:
       category: d-04-provenance-signing-trust
     docs: layers/d-04/cdxgen.md
     tags: [defence, native, sbom, update:slow]
+
   - id: sigstore-tools
     layer: DEFENCE
     category: d-04-provenance-signing-trust
@@ -3734,6 +5529,7 @@ tools:
       category: d-04-provenance-signing-trust
     docs: layers/d-04/sigstore-tools.md
     tags: [bespoke, defence, signing]
+
   - id: modelsign
     layer: DEFENCE
     category: d-04-provenance-signing-trust
@@ -3755,6 +5551,7 @@ tools:
       category: d-04-provenance-signing-trust
     docs: layers/d-04/modelsign.md
     tags: [bespoke, defence, signing]
+
   - id: hf-repo-auditor
     layer: DEFENCE
     category: d-04-provenance-signing-trust
@@ -3776,6 +5573,7 @@ tools:
       category: d-04-provenance-signing-trust
     docs: layers/d-04/hf-repo-auditor.md
     tags: [bespoke, defence, scanner]
+
   - id: model-card-toolkit
     layer: DEFENCE
     category: d-04-provenance-signing-trust
@@ -3797,6 +5595,7 @@ tools:
       category: d-04-provenance-signing-trust
     docs: layers/d-04/model-card-toolkit.md
     tags: [bespoke, defence, documention]
+
   - id: genai-threat-modelling-templates
     layer: DEFENCE
     category: d-05-threat-modelling
@@ -3817,6 +5616,7 @@ tools:
       category: d-05-threat-modelling
     docs: layers/d-05/genai-threat-modelling-templates.md
     tags: [data, defence, threat-modelling, update:slow]
+
   - id: atlas-visualiser
     layer: DEFENCE
     category: d-05-threat-modelling
@@ -3838,6 +5638,7 @@ tools:
       category: d-05-threat-modelling
     docs: layers/d-05/atlas-visualiser.md
     tags: [bespoke, defence, threat-modelling]
+
   - id: stride-ai-worksheet
     layer: DEFENCE
     category: d-05-threat-modelling
@@ -3858,6 +5659,7 @@ tools:
       category: d-05-threat-modelling
     docs: layers/d-05/stride-ai-worksheet.md
     tags: [data, defence, threat-modelling, update:slow]
+
   - id: maestro
     layer: DEFENCE
     category: d-05-threat-modelling
@@ -3879,6 +5681,7 @@ tools:
       category: d-05-threat-modelling
     docs: layers/d-05/maestro.md
     tags: [bespoke, defence, threat-modelling]
+
   - id: atlas-case-study-explorer
     layer: DEFENCE
     category: d-05-threat-modelling
@@ -3899,6 +5702,7 @@ tools:
       category: d-05-threat-modelling
     docs: layers/d-05/atlas-case-study-explorer.md
     tags: [data, defence, threat-modelling, update:slow]
+
   - id: ai-incident-playbook-packs
     layer: DEFENCE
     category: d-05-threat-modelling
@@ -3920,6 +5724,7 @@ tools:
       category: d-05-threat-modelling
     docs: layers/d-05/ai-incident-playbook-packs.md
     tags: [data, defence, response, update:slow]
+
   - id: ai-act-compliance-checker
     layer: DEFENCE
     category: d-06-governance-regulation-mapping
@@ -3941,6 +5746,7 @@ tools:
       category: d-06-governance-regulation-mapping
     docs: layers/d-06/ai-act-compliance-checker.md
     tags: [bespoke, defence, governance]
+
   - id: nist-ai-rmf-toolkit
     layer: DEFENCE
     category: d-06-governance-regulation-mapping
@@ -3961,6 +5767,7 @@ tools:
       category: d-06-governance-regulation-mapping
     docs: layers/d-06/nist-ai-rmf-toolkit.md
     tags: [data, defence, governance, update:slow]
+
   - id: iso-42001-templates
     layer: DEFENCE
     category: d-06-governance-regulation-mapping
@@ -3981,6 +5788,7 @@ tools:
       category: d-06-governance-regulation-mapping
     docs: layers/d-06/iso-42001-templates.md
     tags: [data, defence, governance, update:slow]
+
   - id: genai-vendor-review-form
     layer: DEFENCE
     category: d-06-governance-regulation-mapping
@@ -4001,6 +5809,7 @@ tools:
       category: d-06-governance-regulation-mapping
     docs: layers/d-06/genai-vendor-review-form.md
     tags: [data, defence, governance, update:slow]
+
   - id: aisvs-1.0-toolkit
     layer: DEFENCE
     category: d-07-standards-verification
@@ -4022,6 +5831,7 @@ tools:
       category: d-07-standards-verification
     docs: layers/d-07/aisvs-1.0-toolkit.md
     tags: [data, defence, update:slow]
+
   - id: mlsvs-toolkit
     layer: DEFENCE
     category: d-07-standards-verification
@@ -4042,6 +5852,7 @@ tools:
       category: d-07-standards-verification
     docs: layers/d-07/mlsvs-toolkit.md
     tags: [data, defence, update:slow]
+
   - id: llm-top10-toolkit
     layer: DEFENCE
     category: d-07-standards-verification
@@ -4062,6 +5873,7 @@ tools:
       category: d-07-standards-verification
     docs: layers/d-07/llm-top10-toolkit.md
     tags: [data, defence, update:slow]
+
   - id: kailash-verifier
     layer: DEFENCE
     category: d-07-standards-verification
