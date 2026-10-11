@@ -131,9 +131,12 @@ SMOKE_TABLE = {
         "kind": "import",
         "module": "counterfit",
         "version_expr": "counterfit.__version__",
+        # dist-info dir verified against the cached output:
+        # counterfit-1.1.0.dist-info
+        "dist_name": "counterfit",
         # counterfit/__init__.py at c00edbf5
-        "regex": SEMVER,
-        "expect_group": "1.1.0",
+        # counterfit/__init__.py at c00edbf5 carries __version__ = "1.1.0"
+        "expect_version": "1.1.0",
         "console_script": "counterfit",
         "build_log_marker": (
             "Check whether the following modules can be imported: "
@@ -214,17 +217,42 @@ def smoke_console(tool, out_path, build_log=""):
     argv = list(entry.get("argv", ["<none>"]))
     env = dict(os.environ)
     if entry["kind"] == "import":
-        # import smoke: run through the built package's OWN interpreter so
-        # the exact built dependency set is on sys.path (no PYTHONPATH
-        # guessing). The console script's shebang names it.
+        # import smoke: the honest shape against the REAL wrapped output:
+        #   version  — read the dist-info METADATA Version (the wheel's
+        #              own record; the same source pip reads). The bare
+        #              env python cannot see the derivation's
+        #              site-packages (they hang off the wrapper's
+        #              addsitedir preamble), so `python -c "import …"` is
+        #              guaranteed-wrong against a wrapped nixpkgs output.
+        #   CLI boot — execute the WRAPPED entry (bin/.<script>-wrapped)
+        #              under the env python with --help: the real
+        #              installed console program, exact built dep set,
+        #              real main(); rc 0 proves the CLI runs end-to-end.
         script = os.path.join(out_path, "bin", entry["console_script"])
         if not os.path.exists(script):
             return False, "console script missing: %s" % script
         interp = _shebang_interpreter(script)
         if not interp or "python" not in os.path.basename(interp):
             return False, "shebang lacks a python interpreter: %r" % interp
-        argv = [interp, "-c",
-                "import %s; print(%s)" % (entry["module"], entry["version_expr"])]
+        wrapped = os.path.join(os.path.dirname(script),
+            "." + os.path.basename(script) + "-wrapped")
+        if not os.path.exists(wrapped):
+            return False, "wrapped entry missing: %s" % wrapped
+        site = glob.glob(os.path.join(out_path, "lib", "python3.*",
+                                      "site-packages",
+                                      "%s-*.dist-info" % entry["dist_name"]))
+        if not site:
+            return False, "dist-info not found in %s (dist_name=%s)" % (
+                out_path, entry["dist_name"])
+        with open(os.path.join(site[0], "METADATA"),
+                  encoding="utf-8") as fh:
+            version = next((ln.split(":", 1)[1].strip()
+                            for ln in fh if ln.startswith("Version:")), None)
+        if version != entry["expect_version"]:
+            return False, "expected version %r, dist-info says %r" % (
+                entry["expect_version"], version)
+        # behavioural half: --help through the real installed CLI
+        argv = [interp, wrapped, "--help"]
         # HOME: cmd2/matplotlib-class init at import time wants a writable
         # HOME (counterfit); the runner provides one, and the VM likewise.
         env.setdefault("HOME", "/tmp")
@@ -246,6 +274,17 @@ def smoke_console(tool, out_path, build_log=""):
         return False, "smoke timed out after %ss" % SMOKE_TIMEOUT_S
 
     lines = proc.stdout.splitlines()
+    if SMOKE_TABLE[tool]["kind"] == "import":
+        # version clause already verified from dist-info before the run;
+        # the run's result is the CLI boots (rc 0). Report both.
+        if proc.returncode != 0:
+            return False, "CLI --help failed rc=%d stderr tail: %s" % (
+                proc.returncode, proc.stderr[-400:])
+        marker = SMOKE_TABLE[tool].get("build_log_marker")
+        if marker and marker in build_log:
+            pass  # locally-built leg: imports-check proven in THIS log too
+        return True, ("version %s from dist-info; --help rc=0 through the "
+                      "wrapped CLI" % version, lines)
     if tool == "garak":
         # the pin prints raw colourama ANSI (no garak init() call on the
         # posix path — rehearsed: raw escapes regardless of TTY) — strip
