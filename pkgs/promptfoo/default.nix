@@ -29,7 +29,7 @@
   callPackage,
   buildNpmPackage,
   fetchNpmDeps,
-  python3,
+  jq,
 }:
 
 let
@@ -43,13 +43,21 @@ buildNpmPackage (finalAttrs: {
 
   src = sources.promptfoo.src;
 
-  # v2 fetcher cache hash — emitted verbatim by the hosted run at
-  # 4b6c358 (`got: sha256-9dlP7n8wEZl8gHXtGZtH4o9GiPAHH+BTSpzYCVgC6ts=`,
-  # build-packages (promptfoo, x86_64-linux), the v1->v2
-  # fixed-output hash mismatch RED; the pinned-build chicken-egg cycle,
-  # real output recorded). The v1 prefetch hash above is kept as the
-  # provenance record of the pinned lockfile.
-  npmDepsHash = "sha256-9dlP7n8wEZl8gHXtGZtH4o9GiPAHH+BTSpzYCVgC6ts=";
+  # npm-deps cache hash — the v2 prefetch hash of the INJECTED cache
+  # (the lock-inject program bakes the 18 resolved URLs + the oxide
+  # sub-deps' integrity + their packuments into the cache, which is the
+  # fix itself). Provenance: real FOD build on the authoring host
+  # (aarch64-darwin) against the flake's own nixpkgs input with the
+  # shared program wired verbatim — the documented RED→hash cycle ran
+  # locally end-to-end, `got:
+  # sha256-sJCHf1tMMuUYSJx+LR5q0w1vI2vjTLQCDaCgehHuWCs=` from the
+  # hash-mismatch RED (the cache content is the npm cacache store —
+  # content-addressed, platform-independent). Precedent for the
+  # procedure: the pre-injection cache hash at 4b6c358
+  # (sha256-9dlP7n8wEZl8gHXtGZtH4o9GiPAHH+BTSpzYCVgC6ts=, hosted
+  # v1→v2 RED, kept in the trail for provenance — the pre-injection
+  # cache cannot satisfy the post-injection src lockfile).
+  npmDepsHash = "sha256-sJCHf1tMMuUYSJx+LR5q0w1vI2vjTLQCDaCgehHuWCs=";
 
   # node >= 22's npm requires the v2 registry cache fetcher (npm config
   # fetcher) — hosted CI RED at 4577060: `npm error code ENOTCACHED /
@@ -71,137 +79,60 @@ buildNpmPackage (finalAttrs: {
   # live registry metadata before committing (12/12 match — no
   # invented data; the workspace entries `site`/`src/app` stay
   # un-resolved, the builder links them).
+  #
+  # The injection is ONE shared jq program (./lock-inject.jq) applied to
+  # BOTH derivations, so the two package-lock.json variants stay
+  # byte-identical by construction:
+  #   - the npm-deps cache FOD (the lock baked INTO its artifact is what
+  #     npmConfigHook's postPatch validation diffs the src lockfile
+  #     against, hosted RED at 0aa1166 `1c1,44585`; python-free per the
+  #     exit-127 lesson at a4b30e7/d367dcb, jq rides fetchNpmDeps's
+  #     forwarded nativeBuildInputs),
+  #   - the main build (where npm ci runs against the cache — the hook
+  #     runs npm ci itself inside postPatchHooks, so the injected lock
+  #     must exist BEFORE the hook executes).
+  # With both locks carrying the canonical resolved URLs + integrity,
+  # prefetch-npm-deps (v2) bakes the packuments into the cache and the
+  # offline npm ci finds every entry. npmDepsHash is the v2 prefetch
+  # hash of the INJECTED-lock cache — cycled per the documented RED→hash
+  # procedure when the program or pin changes.
   postPatch = ''
-    python3 - <<'PYEOF'
-    import json
-
-    with open("package-lock.json") as f:
-        lock = json.load(f)
-
-    reg = "https://registry.npmjs.org/"
-    # (resolved URL, integrity) — every integrity byte-verified against the
-    # live registry metadata AND the pinned lockfile's own integrity fields
-    # (12/12 exact match) before committing.
-    entries = {
-        "node_modules/@openai/agents": (
-            reg + "@openai/agents/-/agents-0.14.3.tgz",
-            "sha512-mhAPpDz+CeEoViMsYxPcHEMUonPQnGIgP2yCch/SXhXQkhb/53ojO2bUIXW3NSD5lIDyyV6sTIkO+O5WWJrVDA==",
-        ),
-        "node_modules/@openai/agents-core": (
-            reg + "@openai/agents-core/-/agents-core-0.14.3.tgz",
-            "sha512-5tJnFL4Ei34GtArVatM9TUtILDYUXJ2/H0+9jIU8B7y5eINjrQtajmeaudFHmxA4/t7blRgG1SuKQfoA0FPy7A==",
-        ),
-        "node_modules/@openai/agents-openai": (
-            reg + "@openai/agents-openai/-/agents-openai-0.14.3.tgz",
-            "sha512-ctJhe/scinyUGtv+MCkkHH+QEza96UmeeUPGNKT3ZFWlz1OCj+xC6YxvwX0WBaZQz0BYAgl6m0aIRnfTgBMO9A==",
-        ),
-        "node_modules/@openai/agents-realtime": (
-            reg + "@openai/agents-realtime/-/agents-realtime-0.14.3.tgz",
-            "sha512-eeoc49ti7Pi+GPrivUE7M6PGOQAI6jK3UG82aZtwhi6IHj0uHxzNEK33NQODKag1W40ZJm/R0JWxMWS+lQrjDQ==",
-        ),
-        "node_modules/@openai/codex": (
-            reg + "@openai/codex/-/codex-0.156.1.tgz",
-            "sha512-nI1iVl/n2SO2lSvlwEsJx63zdSI4C4Me2gR7AG0OWMJiGSakz2tY2hx43E39Zq5aEoeB5bZjJXzp5Sqhog6vyA==",
-        ),
-        "node_modules/@openai/codex-sdk": (
-            reg + "@openai/codex-sdk/-/codex-sdk-0.156.1.tgz",
-            "sha512-t1GNPYrSIjHGfBKZ+9pbjOS/by0tMwVe+27fHsMO3RHl9QLIc7dB8XYR954iZ6HpF4EAjZs0melT0mPXF03jVg==",
-        ),
-        "node_modules/@openai/codex-darwin-arm64": (
-            reg + "@openai/codex/-/codex-0.156.1-darwin-arm64.tgz",
-            "sha512-Jg6wbdV+wmMZczhwE74GSxOYEZlViKXn6KyCw/yfrz3PAKFD14xljuPopmdhWC1+8IKU2WdN5fdmXNPt2q4HPA==",
-        ),
-        "node_modules/@openai/codex-darwin-x64": (
-            reg + "@openai/codex/-/codex-0.156.1-darwin-x64.tgz",
-            "sha512-BVjqNOoltWrnNUrgMRepvDIIBmd4XY+ikAE4pYVHlrwiizNlEWQuCQOTrFMJKp54LFRG8jDTjLZyYQ1QrliuOg==",
-        ),
-        "node_modules/@openai/codex-linux-arm64": (
-            reg + "@openai/codex/-/codex-0.156.1-linux-arm64.tgz",
-            "sha512-sTEHk31C12dqzJdjZ2u9KLFCXKL04KyCM+QheSjdQI8uzmVJS7aEF2/qAqFxXwk/jwMzC9u7IihfoIlAGR6YsA==",
-        ),
-        "node_modules/@openai/codex-linux-x64": (
-            reg + "@openai/codex/-/codex-0.156.1-linux-x64.tgz",
-            "sha512-2ePo0wgOcnONKsuzp8vBjOmNY+IdsKaouaDDIdiKq9HOWNuV/GI22OeXft2A/1GaoL71ictO0/pLAsCEnQ6wew==",
-        ),
-        "node_modules/@openai/codex-win32-arm64": (
-            reg + "@openai/codex/-/codex-0.156.1-win32-arm64.tgz",
-            "sha512-e5DsyOHlKWulTBz/neIczpcYLQDqtaLtBj2lgncOgeQw5mlAQVZHlGvKsoKVcEPUKLb8opIMJBxXi6cz3JJ4hg==",
-        ),
-        "node_modules/@openai/codex-win32-x64": (
-            reg + "@openai/codex/-/codex-0.156.1-win32-x64.tgz",
-            "sha512-MJyLxbBs2zzp5kbaR/99Zwe7SmbrwUkveTcT+ayYlO48V0nYh0eU+h2lalBwvC7VJ/ya/bXnUtISJfJKhGCD/g==",
-        ),
-        "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/core": (
-            reg + "@emnapi/core/-/core-1.11.1.tgz",
-            "sha512-RSvbQmHzdKzNsLYa/wHrbc3KN4sYLKAdPZxqiM2HATqv/SBk2/ENSHpvXGaLOMcsAyz0poEGqkmmKYG3OWiJEQ==",
-        ),
-        "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/runtime": (
-            reg + "@emnapi/runtime/-/runtime-1.11.1.tgz",
-            "sha512-vgj7R3y3Wgx24IQaGPA/R6YFXLHVMOZ0uVEyIQPaWs+rd1AzfEMXlAC22FYwO1XkKR6NPsq7mUandH8oIRdZFw==",
-        ),
-        "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/wasi-threads": (
-            reg + "@emnapi/wasi-threads/-/wasi-threads-1.2.2.tgz",
-            "sha512-c95qOXkHdydNKhscBTebqEC1CVAZpyqOfVfBzQ1qgzyl3gfeldUjIggDbIZgDKsHLgnsM+igH7TJ/eAasaVuMA==",
-        ),
-        "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@napi-rs/wasm-runtime": (
-            reg + "@napi-rs/wasm-runtime/-/wasm-runtime-1.1.4.tgz",
-            "sha512-3NQNNgA1YSlJb/kMH1ildASP9HW7/7kYnRI2szWJaofaS1hWmbGI4H+d3+22aGzXXN9IJ+n+GiFVcGipJP18ow==",
-        ),
-        "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@tybys/wasm-util": (
-            reg + "@tybys/wasm-util/-/wasm-util-0.10.2.tgz",
-            "sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==",
-        ),
-        "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/tslib": (
-            reg + "tslib/-/tslib-2.8.1.tgz",
-            "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==",
-        ),
-    }
-
-    for key, (url, integrity) in entries.items():
-        e = lock["packages"].get(key)
-        assert e is not None, "lock entry gone at this pin: " + key
-        assert "resolved" not in e and "link" not in e, "upstream changed: " + key
-        locked = e.get("integrity")
-        if locked is None:
-            # the 6 @tailwindcss/oxide-wasm32-wasi sub-deps ship NO integrity
-            # field at all (verified: hosted RED at 20d023f caught the drift
-            # assert); write the registry-verified value — npm needs it for
-            # cache-only installs.
-            e["integrity"] = integrity
-        else:
-            assert locked == integrity, (
-                "integrity drift vs lock for %s: %r != %r" % (key, locked, integrity)
-            )
-        e["resolved"] = url
-
-    with open("package-lock.json", "w") as f:
-        json.dump(lock, f)
-    PYEOF
+    # Shared injection program (byte-identical on both sides — see the
+    # comment above): deterministic, python-free, anchored asserts fail
+    # the build loudly if the lock's shape moves at a new pin.
+    jq -e -c --from-file ${./lock-inject.jq} package-lock.json > .package-lock.json.tmp
+    mv .package-lock.json.tmp package-lock.json
   '';
 
   # The npm-deps fixed-output derivation does NOT inherit the top-level
   # nativeBuildInputs (fetchNpmDeps composes its own stdenvNoCC drv —
   # hosted CI REDs at a4b30e7/d367dcb: `python3: command not found` in
-  # its patchPhase, exit 127). The CACHE needs no patching:
-  # prefetch-npm-deps resolves the registry URLs itself and integrity-
-  # checks every tarball (that cache is what the recorded hash pins —
-  # `got: sha256-9dlP7n8wEZl8gHXtGZtH4o9GiPAHH+BTSpzYCVgC6ts=` at
-  # 4b6c358). The resolved-URL injection is only needed where
-  # `npm install` runs — the MAIN derivation, which carries python3 via
-  # nativeBuildInputs — so npmDeps is overridden with a no-op postPatch:
-  # the cache builds python-free and stays byte-identical to the
-  # recorded hash.
+  # its patchPhase, exit 127). The cache gets the SAME jq injection as
+  # the main build via fetchNpmDeps's forwarded postPatch +
+  # nativeBuildInputs (verified at the flake's nixpkgs rev): the lock
+  # baked into the cache artifact then matches the src lockfile
+  # byte-for-byte for npmConfigHook's validation, and prefetch-npm-deps
+  # (v2) bakes the packuments for the injected resolved URLs into the
+  # cache — what npm ci's offline mode needs for exactly those entries.
+  # The recorded npmDepsHash is the v2 prefetch hash of this injected
+  # cache; the change from the pre-injection cache is LEGITIMATE (that
+  # is the fix) and its hash is cycled per the documented RED→hash
+  # procedure on the next hosted run.
   npmDeps = fetchNpmDeps {
     inherit (finalAttrs) src;
     name = "${finalAttrs.pname}-${finalAttrs.version}-npm-deps";
     hash = finalAttrs.npmDepsHash;
     fetcherVersion = 2;
-    postPatch = "";
+    nativeBuildInputs = [ jq ];
+    postPatch = ''
+      jq -e -c --from-file ${./lock-inject.jq} package-lock.json > .package-lock.json.tmp
+      mv .package-lock.json.tmp package-lock.json
+    '';
   };
 
-  # python3 for the postPatch resolved-URL injection IN THIS derivation
-  # (the main build — where `npm install` runs against the cache).
-  nativeBuildInputs = [ python3 ];
+  # jq for the postPatch lockfile injection in THIS derivation too (same
+  # shared program — the main build's npm ci needs the resolved URLs).
+  nativeBuildInputs = [ jq ];
 
   # don't fetch the playwright browser binary in the build sandbox
   env.PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
