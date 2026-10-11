@@ -117,15 +117,18 @@ gains its row. Rules with teeth:
 
 Follow [`CONTRIBUTING.md`](CONTRIBUTING.md); leaf branch cut from **current
 `origin/main`**, one logical change per PR, watched RED before GREEN, all
-commits GPG-signed. Title carries the task id (`KA-XXn — summary [child of
-KA-XX]`); the body links the child issue (`Closes #NN`) and notes the parent
-gate stays open, and states **what** changed, **why**, and **how verified**.
+commits GPG-signed. Titles follow Conventional Commits, roadmap slices
+carrying the task id in the subject — `type(scope): KA-XXn — summary` (e.g.
+`feat(pkgs): KA-12.1 — ART: pin + Shape-1 derivation`); a CI title gate
+checks the form. The body links the child issue (`Closes #NN`) and notes the
+parent gate stays open, and states **what** changed, **why**, and **how
+verified**.
 
 ## Labels
 
 | Label | Meaning |
 | --- | --- |
-| `KA-XXn — <summary>` (in the TITLE, not a label) | issue/PR identity |
+| `KA-XXn — <summary>` (ISSUE titles carry it in the title, not a label; PR titles carry it in the conventional subject) | issue/PR identity |
 | `area:manifest|packaging|nix|layer-classic|layer-attack|layer-defence|layer-ops|testing|repo|docs|github` | component (the current catalog) |
 | `type:task` | a leaf-sized roadmap slice (RED→GREEN→merge) — the only `type:*` label in the catalog today |
 | `target:v0.1|v0.2|backlog` | milestone |
