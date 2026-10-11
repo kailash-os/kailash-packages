@@ -44,6 +44,14 @@ buildNpmPackage (finalAttrs: {
 
   npmDepsHash = "sha256-C0fX8U89emmsTiZDO7u+/hDYCQxSKLXcFar/2tqly08=";
 
+  # node >= 22's npm requires the v2 registry cache fetcher (npm config
+  # fetcher) — hosted CI RED at 4577060: `npm error code ENOTCACHED /
+  # cache mode is 'only-if-cached' but no cached response is available`
+  # on @openai/codex-sdk under the v1 fetcher; the builder's remedy #1
+  # is this switch. The v2 hash lands with the follow-up commit quoting
+  # the hosting run's own `got: sha256-…` mismatch line.
+  npmDepsFetcherVersion = 2;
+
   # don't fetch the playwright browser binary in the build sandbox
   env.PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1";
 
