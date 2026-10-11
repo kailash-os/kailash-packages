@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "comment": "KA-17.2 (kailash-os#115): sample profiles.json for `kailash profile list`. The OS-side generator (kailash-os follow-through) emits this same shape into the packaged binary's baked KAILASH_PROFILES path. Rows are the current kailash-os flake profiles; field order here is cosmetic — the CLI reads by name.",
+  "profiles": [
+    {
+      "name": "minimal",
+      "layers": "CORE",
+      "description": "CORE substrate floor, zero categories",
+      "osRepo": "nixosConfigurations.kailash-minimal"
+    },
+    {
+      "name": "minimal-hardened",
+      "layers": "CORE",
+      "description": "CORE substrate + §8.3 hardening posture, labMode pinned off",
+      "osRepo": "nixosConfigurations.kailash-minimal-hardened"
+    },
+    {
+      "name": "redteam-ai",
+      "layers": "CORE+ATTACK+O-4",
+      "description": "Layer ATTACK full + local inference, the pairing-thesis workstation",
+      "osRepo": "nixosConfigurations.kailash-redteam-ai"
+    }
+  ]
+}

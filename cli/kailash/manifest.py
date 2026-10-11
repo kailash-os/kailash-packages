@@ -18,7 +18,18 @@ subtree together.
 Data accessors only: this module parses and hands rows back. The manifest
 invariants stay single-homed in tests/validate_manifest.py (AGENTS.md
 single-home rule) — the CLI never re-implements them.
+
+profiles.json (KA-17.2, kailash-os#115): the same per-file contract, third
+var — KAILASH_PROFILES names a PROFILES.JSON file (the OS-side generator's
+output, baked into the packaged binary's env like the two manifest files;
+the OS follow-through lands the wrapProgram side). Unset, the file resolves
+__file__-relative beside the package (<pkg>/../../../profiles/profiles.json
+— the repo tree keeps a committed SAMPLE profiles/ so the self-test has
+data; installed/flake-source trees built from the OS side carry the
+generated file at the same layout or rely on the env). Absent everywhere →
+`kailash profile list` exits 1 with a message naming KAILASH_PROFILES.
 """
+import json
 import os
 
 try:
@@ -30,8 +41,10 @@ __all__ = [
     "ManifestError",
     "categories_path",
     "tools_path",
+    "profiles_path",
     "load_categories",
     "load_tools",
+    "load_profiles",
 ]
 
 # tools.yaml packaging.status vocabulary (§5.2) — the `kailash list
@@ -71,6 +84,64 @@ def tools_path():
         return override
     here = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(here, os.pardir, os.pardir, "manifest", "tools.yaml")
+
+
+def profiles_path():
+    """profiles.json — the FILE KAILASH_PROFILES names (§7.3, KA-17.2).
+
+    The per-file contract again, third var: an override value is the
+    profiles.json file itself (the packaged binary bakes the store path
+    the OS side pins). Unset, the file resolves __file__-relative
+    (<pkg>/../../profiles/profiles.json — two levels up to the tree
+    root, the same count the manifest fallback uses for manifest/;
+    the committed sample lives there, and the OS-side generator lands
+    its output at the same layout).
+
+    Returns the path ONLY when the file actually exists: an env
+    override naming an absent file (or an unset env without a fallback
+    file) yields None — the caller (cmd_profile) turns None into the
+    exit-1 diagnosis naming KAILASH_PROFILES, and load_profiles folds
+    it into the empty list.
+    """
+    override = os.environ.get("KAILASH_PROFILES")
+    if override:
+        return override if os.path.isfile(override) else None
+    here = os.path.dirname(os.path.abspath(__file__))
+    candidate = os.path.join(
+        here, os.pardir, os.pardir, "profiles", "profiles.json")
+    return candidate if os.path.isfile(candidate) else None
+
+
+def load_profiles():
+    """Profile rows from profiles.json (KA-17.2, kailash-os#115).
+
+    Expected shape: {"profiles": [{"name", "layers", "description",
+    ...}, ...]} — the OS-side generator's contract; unknown extra
+    fields per entry are the generator's business and read through.
+
+    Raises ManifestError when the resolved file is unreadable or not
+    parseable (exit-2 path, like the manifests). ABSENCE is not an
+    error here: when no file resolves (no env override and no fallback
+    file, or an override naming an absent file), returns [] and the
+    command layer turns that into the exit-1 message naming
+    KAILASH_PROFILES.
+    """
+    path = profiles_path()
+    if path is None:
+        return []
+    try:
+        with open(path) as f:
+            doc = json.load(f)
+    except OSError:
+        raise ManifestError("profiles file not readable: %s" % path)
+    except ValueError as exc:
+        raise ManifestError(
+            "profiles file not parseable: %s: %s" % (path, exc))
+    if not isinstance(doc, dict) or not isinstance(doc.get("profiles"), list):
+        raise ManifestError(
+            "profiles file malformed: %s carries no top-level 'profiles' list"
+            % path)
+    return doc["profiles"]
 
 
 def _load(path, key):

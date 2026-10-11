@@ -15,8 +15,8 @@ cli/
 ├── check-kailash-cli.py    # checks.kailash-cli-self-test exercise (data-driven assertions)
 └── kailash/
     ├── __init__.py
-    ├── manifest.py         # loader: load_categories()/load_tools() + paths
-    └── cli.py              # argparse: list/search/info (+ manifest check)
+    ├── manifest.py         # loader: load_categories()/load_tools()/load_profiles() + paths
+    └── cli.py              # argparse: list/search/info/profile list (+ manifest check)
 ```
 
 ## Loader resolution (`manifest.py`)
@@ -53,8 +53,17 @@ never re-implements them.
   store path validates the baked bytes). Exit 0 with the validator's OK
   line on a well-formed manifest, 1 with the FAIL line on gate failure,
   2 when `tests/` is not beside the package (installed wheels carry
-  `cli/` only). This is KA-14's "`kailash manifest validate` runs the CI
-  gate locally" clause (KA-14.3, kailash-os#137).
+  `cli/` only). This is KA-14's "`kailash manifest validate` runs the
+  CI gate locally" clause (KA-14.3, kailash-os#137).
+- `kailash profile list [--json]` — the KA-17.2 (kailash-os#115) profile
+  stub: one row per OS profile, `<name>\t<layers-summary>\t<description>`,
+  read from a profiles.json file named by the §7.3-adjacent per-file env
+  var `KAILASH_PROFILES` (the packaged binary's wrapProgram bake; the
+  OS-side generator produces the file — ko#115 follow-through). Unset,
+  the file resolves beside the package (`profiles/profiles.json` — the
+  repo tree carries a committed sample); no file anywhere exits 1 with
+  a message naming `KAILASH_PROFILES`. More profile verbs (enable/…)
+  land with the profile-apply items.
 
 Exit codes: **0** ok · **1** no results · **2** usage error or
 unreadable/unparsable manifest (argparse exits 2 on its own). `--json`

@@ -150,6 +150,53 @@ def cmd_info(args):
                  code=1)
 
 
+def cmd_profile(args):
+    """kailash profile list [--json] — the KA-17.2 profile stub surface.
+
+    DATA-DRIVEN: the profile list comes from a profiles.json file the
+    §7.3 per-file env contract names — KAILASH_PROFILES (the packaged
+    binary's wrapProgram bake points at the OS-pinned file; ko#115's
+    OS-side follow-through generates it). Unset, the file resolves
+    __file__-relative beside the package (the repo tree carries the
+    committed sample at profiles/profiles.json). Neither exists →
+    exit 1 with a message naming the missing KAILASH_PROFILES env, so
+    an unbaked deployment diagnoses itself instead of printing a bare
+    no-results.
+
+    Stub OUTPUT shape per row (TAB-separated): <name>
+    <layers-summary> <description> — exactly the parsed file's fields;
+    --json emits the same rows as a JSON string list (the §7.4
+    posture). Only `list` exists under `profile` for now; enable/
+    shell-style profile verbs land with the profile-apply items.
+    """
+    try:
+        rows_src = manifest.load_profiles()
+    except manifest.ManifestError as exc:
+        return _fail(str(exc))
+
+    if not rows_src:
+        # Absence diagnosis (§7.3 bake contract): whether the override
+        # names a missing file or no var is set and the fallback does
+        # not exist, the message names KAILASH_PROFILES — an unbaked
+        # deployment diagnoses itself instead of printing a bare
+        # no-results. (A set var whose file EXISTS but carries zero
+        # entries is a data state, not absence: bare "no results".)
+        if manifest.profiles_path() is None or not os.environ.get(
+                "KAILASH_PROFILES"):
+            return _fail(
+                "no profiles found: KAILASH_PROFILES is not set or names an "
+                "absent file, and no profiles/profiles.json exists beside "
+                "the package (the OS-side bake generates it; see ko#115)",
+                code=1)
+        return _fail("no results", code=1)
+
+    rows = ["%s\t%s\t%s" % (
+        p.get("name"), p.get("layers"), p.get("description"))
+        for p in rows_src]
+    _emit(rows, args.json)
+    return 0
+
+
 # ---- parser ------------------------------------------------------------
 
 
@@ -283,6 +330,20 @@ def build_parser():
                      default=argparse.SUPPRESS,
                      help="emit machine-readable JSON (§7.4 posture)")
     inf.set_defaults(func=cmd_info)
+
+    prof = sub.add_parser(
+        "profile",
+        help="profile subcommands (KA-17.2 stub: list)")
+    profsub = prof.add_subparsers(dest="profile_command", required=True)
+    plist = profsub.add_parser(
+        "list",
+        help="enumerate the OS profiles from the baked profiles.json "
+             "(KAILASH_PROFILES file; repo-tree sample as fallback)")
+    plist.add_argument("--json", action=_JsonParent, nargs=0,
+                       default=argparse.SUPPRESS,
+                       help="emit machine-readable JSON (§7.4 posture)")
+    plist.set_defaults(func=cmd_profile)
+    prof.set_defaults(func=None)
 
     man = sub.add_parser("manifest", help="manifest subcommands")
     mansub = man.add_subparsers(dest="manifest_command", required=True)
