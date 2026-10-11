@@ -117,10 +117,12 @@ jobs:
       - name: Build .#packages.<system>.<package>
         run: |
           nix build ".#packages.${{ matrix.system }}.${{ matrix.package }}" -L
-      # --- Cachix push — PENDING SECRET (uncomment when CACHIX_AUTH_TOKEN
-      # --- is added to the repo's actions secrets; cache name `kailash`).
-      # - name: Cachix push (kailash)
-      #   uses: cachix/cachix-action@v17
-      #   with:
-      #     name: kailash
-      #     authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      # --- Cachix push (kailash, plan §8.3) — enabled: CACHIX_AUTH_TOKEN
+      # --- org secret configured (org-level, both repos share it).
+      - name: Cachix push (kailash)
+        uses: cachix/cachix-action@v17
+        with:
+          name: kailash
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          # push only what this leg built; the cache fills incrementally
+          # per matrix leg, and pulls make later runs rebuild-free.
