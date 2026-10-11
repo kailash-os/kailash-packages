@@ -162,9 +162,16 @@ buildNpmPackage (finalAttrs: {
         assert e is not None, "lock entry gone at this pin: " + key
         assert "resolved" not in e and "link" not in e, "upstream changed: " + key
         locked = e.get("integrity")
-        assert locked == integrity, (
-            "integrity drift vs lock for %s: %r != %r" % (key, locked, integrity)
-        )
+        if locked is None:
+            # the 6 @tailwindcss/oxide-wasm32-wasi sub-deps ship NO integrity
+            # field at all (verified: hosted RED at 20d023f caught the drift
+            # assert); write the registry-verified value — npm needs it for
+            # cache-only installs.
+            e["integrity"] = integrity
+        else:
+            assert locked == integrity, (
+                "integrity drift vs lock for %s: %r != %r" % (key, locked, integrity)
+            )
         e["resolved"] = url
 
     with open("package-lock.json", "w") as f:
