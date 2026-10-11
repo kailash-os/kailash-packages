@@ -3150,3 +3150,936 @@ tools:
       v2: [LLM01]
     docs: layers/a-02/promptfoo.md
     tags: [evals, offensive, llm, node, redteam, update:weekly]
+# DEFENCE rows transcribed per the census (KA-05.5; issue kailash-os#78).
+  - id: nemo-guardrails
+    layer: DEFENCE
+    category: d-01-runtime-defence
+    name: "nemo-guardrails"
+    description: "NVIDIA NeMo Guardrails — programmable guardrails (topics, rails, jailbreak defence) for LLM conversational apps."
+    source:
+      vcs_owner: NVIDIA-NeMo
+      repo: Guardrails
+      vcs_url: "https://github.com/NVIDIA-NeMo/Guardrails"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/nemo-guardrails/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "nemo-guardrails.svg"
+      exec: nemo-guardrails
+      category: d-01-runtime-defence
+    docs: layers/d-01/nemo-guardrails.md
+    tags: [bespoke, defence, guardrail]
+  - id: llm-guard
+    layer: DEFENCE
+    category: d-01-runtime-defence
+    name: "llm-guard"
+    description: "LLM Guard — input/output scanning pipeline for prompts and completions (PII, toxicity, prompt-injection scanners)."
+    source:
+      vcs_owner: protectai
+      repo: llm-guard
+      vcs_url: "https://github.com/protectai/llm-guard"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/llm-guard/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "llm-guard.svg"
+      exec: llm-guard
+      category: d-01-runtime-defence
+    docs: layers/d-01/llm-guard.md
+    tags: [bespoke, defence, guardrail]
+  - id: guardrails-ai
+    layer: DEFENCE
+    category: d-01-runtime-defence
+    name: "guardrails-ai"
+    description: "Guardrails AI — validators that enforce structure, type and quality guarantees on LLM outputs."
+    source:
+      vcs_owner: guardrails-ai
+      repo: guardrails
+      vcs_url: "https://github.com/guardrails-ai/guardrails"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/guardrails-ai/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "guardrails-ai.svg"
+      exec: guardrails-ai
+      category: d-01-runtime-defence
+    docs: layers/d-01/guardrails-ai.md
+    tags: [bespoke, defence, guardrail]
+  - id: rebuff
+    layer: DEFENCE
+    category: d-01-runtime-defence
+    name: rebuff
+    description: "Rebuff — prompt-injection detector with a canary-token leakage check and multi-stage defence."
+    source:
+      vcs_owner: protectai
+      repo: rebuff
+      vcs_url: "https://github.com/protectai/rebuff"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/rebuff/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "rebuff.svg"
+      exec: rebuff
+      category: d-01-runtime-defence
+    docs: layers/d-01/rebuff.md
+    tags: [bespoke, defence, guardrail, prompt-injection]
+  - id: gaskunk
+    layer: DEFENCE
+    category: d-01-runtime-defence
+    name: gaskunk
+    description: "Gaskunk — runtime LLM output-gating guard (planned first-party pack, KA-06.x derivation target)."
+    source:
+      vcs_owner: kailash-os
+      repo: gaskunk
+      vcs_url: "https://github.com/kailash-os/gaskunk"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/gaskunk/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "gaskunk.svg"
+      exec: gaskunk
+      category: d-01-runtime-defence
+    docs: layers/d-01/gaskunk.md
+    tags: [bespoke, defence, guardrail]
+  - id: llm-firewall
+    layer: DEFENCE
+    category: d-01-runtime-defence
+    name: "llm-firewall"
+    description: "LLM Firewall — policy firewall in front of LLM endpoints (planned first-party pack, Wave-5 derivation target)."
+    source:
+      vcs_owner: kailash-os
+      repo: llm-firewall
+      vcs_url: "https://github.com/kailash-os/llm-firewall"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/llm-firewall/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "llm-firewall.svg"
+      exec: llm-firewall
+      category: d-01-runtime-defence
+    docs: layers/d-01/llm-firewall.md
+    tags: [bespoke, defence, guardrail]
+  - id: whisper-gate
+    layer: DEFENCE
+    category: d-01-runtime-defence
+    name: "whisper-gate"
+    description: "Whisper Gate — audio-input LLM-surface gate (planned first-party pack, Wave-5 derivation target)."
+    source:
+      vcs_owner: kailash-os
+      repo: whisper-gate
+      vcs_url: "https://github.com/kailash-os/whisper-gate"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/whisper-gate/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "whisper-gate.svg"
+      exec: whisper-gate
+      category: d-01-runtime-defence
+    docs: layers/d-01/whisper-gate.md
+    tags: [bespoke, defence, guardrail]
+  - id: langfuse
+    layer: DEFENCE
+    category: d-02-detection-monitoring-observability
+    name: langfuse
+    description: "Langfuse — LLM observability and eval platform: traces, scoring, prompt management (EE dirs restricted; core MIT)."
+    source:
+      vcs_owner: langfuse
+      repo: langfuse
+      vcs_url: "https://github.com/langfuse/langfuse"
+    license: "MIT-expat"
+    packaging:
+      status: module
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "langfuse.svg"
+      exec: langfuse
+      category: d-02-detection-monitoring-observability
+    docs: layers/d-02/langfuse.md
+    tags: [defence, module, observability, update:slow]
+  - id: phoenix
+    layer: DEFENCE
+    category: d-02-detection-monitoring-observability
+    name: phoenix
+    description: "Arize Phoenix — AI observability and evaluation: traces, embeddings, evals."
+    source:
+      vcs_owner: Arize-ai
+      repo: phoenix
+      vcs_url: "https://github.com/Arize-ai/phoenix"
+    license: "LicenseRef-ELv2"
+    packaging:
+      status: bespoke
+      derivation: pkgs/phoenix/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "phoenix.svg"
+      exec: phoenix
+      category: d-02-detection-monitoring-observability
+    docs: layers/d-02/phoenix.md
+    tags: [bespoke, defence, observability]
+  - id: whylogs
+    layer: DEFENCE
+    category: d-02-detection-monitoring-observability
+    secondary_categories: [o-01-mlops-ml-engineering]
+    name: whylogs
+    description: "WhyLabs whylogs — privacy-preserving data and ML/LLM logging profiles for drift and quality monitoring."
+    source:
+      vcs_owner: whylabs
+      repo: whylogs
+      vcs_url: "https://github.com/whylabs/whylogs"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/whylogs/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "whylogs.svg"
+      exec: whylogs
+      category: d-02-detection-monitoring-observability
+    docs: layers/d-02/whylogs.md
+    tags: [bespoke, defence, observability]
+  - id: evidently
+    layer: DEFENCE
+    category: d-02-detection-monitoring-observability
+    secondary_categories: [o-01-mlops-ml-engineering]
+    name: evidently
+    description: "Evidently — ML and LLM observability framework: evals, tests and monitoring reports."
+    source:
+      vcs_owner: evidentlyai
+      repo: evidently
+      vcs_url: "https://github.com/evidentlyai/evidently"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/evidently/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "evidently.svg"
+      exec: evidently
+      category: d-02-detection-monitoring-observability
+    docs: layers/d-02/evidently.md
+    tags: [bespoke, defence, observability]
+  - id: otel-ai
+    layer: DEFENCE
+    category: d-02-detection-monitoring-observability
+    name: "otel-ai"
+    description: "OpenLLMetry — OpenTelemetry instrumentation for LLM applications (traceloop; plumbs AI traces into OTel backends)."
+    source:
+      vcs_owner: traceloop
+      repo: openllmetry
+      vcs_url: "https://github.com/traceloop/openllmetry"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/otel-ai/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "otel-ai.svg"
+      exec: otel-ai
+      category: d-02-detection-monitoring-observability
+    docs: layers/d-02/otel-ai.md
+    tags: [bespoke, defence, observability]
+  - id: prompt-injection-detector-bert
+    layer: DEFENCE
+    category: d-02-detection-monitoring-observability
+    name: "prompt-injection-detector-bert"
+    description: "Prompt-injection classifier pack — DeBERTa-class detector weights + loader for LLM-input gating (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: prompt-injection-detector-bert
+      vcs_url: "https://github.com/kailash-os/prompt-injection-detector-bert"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/prompt-injection-detector-bert/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "prompt-injection-detector-bert.svg"
+      exec: prompt-injection-detector-bert
+      category: d-02-detection-monitoring-observability
+    docs: layers/d-02/prompt-injection-detector-bert.md
+    tags: [bespoke, defence, prompt-injection]
+  - id: canary-token-generator
+    layer: DEFENCE
+    category: d-02-detection-monitoring-observability
+    name: "canary-token-generator"
+    description: "Canary-token generator — plants verifiable canary strings in prompts, system cards and datasets for leakage tracing (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: canary-token-generator
+      vcs_url: "https://github.com/kailash-os/canary-token-generator"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/canary-token-generator/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "canary-token-generator.svg"
+      exec: canary-token-generator
+      category: d-02-detection-monitoring-observability
+    docs: layers/d-02/canary-token-generator.md
+    tags: [bespoke, defence, prompt-injection]
+  - id: giskard
+    layer: DEFENCE
+    category: d-02-detection-monitoring-observability
+    name: giskard
+    description: "Giskard — open-source evaluation and testing library for LLM agents (scan, tests, red-reporting)."
+    source:
+      vcs_owner: Giskard-AI
+      repo: giskard
+      vcs_url: "https://github.com/Giskard-AI/giskard"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/giskard/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "giskard.svg"
+      exec: giskard
+      category: d-02-detection-monitoring-observability
+    docs: layers/d-02/giskard.md
+    tags: [bespoke, defence, testing]
+  - id: lm-eval-harness
+    layer: DEFENCE
+    category: d-03-assurance-evals-benchmarks
+    name: "lm-eval-harness"
+    description: "EleutherAI Language Model Evaluation Harness — standard few-shot benchmark runner (lm-eval)."
+    source:
+      vcs_owner: EleutherAI
+      repo: lm-evaluation-harness
+      vcs_url: "https://github.com/EleutherAI/lm-evaluation-harness"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/lm-eval-harness/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "lm-eval-harness.svg"
+      exec: lm-eval-harness
+      category: d-03-assurance-evals-benchmarks
+    docs: layers/d-03/lm-eval-harness.md
+    tags: [bespoke, defence, evals, update:steady]
+  - id: deepeval
+    layer: DEFENCE
+    category: d-03-assurance-evals-benchmarks
+    name: deepeval
+    description: "DeepEval — LLM evaluation framework with unit-test-style metrics (G-Eval, faithfulness, bias)."
+    source:
+      vcs_owner: confident-ai
+      repo: deepeval
+      vcs_url: "https://github.com/confident-ai/deepeval"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/deepeval/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "deepeval.svg"
+      exec: deepeval
+      category: d-03-assurance-evals-benchmarks
+    docs: layers/d-03/deepeval.md
+    tags: [bespoke, defence, evals, update:steady]
+  - id: robustbench
+    layer: DEFENCE
+    category: d-03-assurance-evals-benchmarks
+    name: robustbench
+    description: "RobustBench — standardized adversarial-robustness benchmark suite (model zoo + attacks); MIT code, per-model weight licences vary."
+    source:
+      vcs_owner: RobustBench
+      repo: robustbench
+      vcs_url: "https://github.com/RobustBench/robustbench"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/robustbench/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "robustbench.svg"
+      exec: robustbench
+      category: d-03-assurance-evals-benchmarks
+    docs: layers/d-03/robustbench.md
+    tags: [bespoke, defence, evals]
+  - id: huggingface-evaluate
+    layer: DEFENCE
+    category: d-03-assurance-evals-benchmarks
+    secondary_categories: [o-05-ai-engineering-sdks-dev-env]
+    name: evaluate
+    description: "HuggingFace Evaluate — library for easily evaluating ML models and datasets (the hub `evaluate` package)."
+    source:
+      vcs_owner: huggingface
+      repo: evaluate
+      vcs_url: "https://github.com/huggingface/evaluate"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "huggingface-evaluate.svg"
+      exec: huggingface-evaluate
+      category: d-03-assurance-evals-benchmarks
+    docs: layers/d-03/huggingface-evaluate.md
+    tags: [defence, evals, native, update:slow]
+  - id: fairlearn
+    layer: DEFENCE
+    category: d-03-assurance-evals-benchmarks
+    name: fairlearn
+    description: "Fairlearn — fairness metrics and mitigation algorithms for ML models."
+    source:
+      vcs_owner: fairlearn
+      repo: fairlearn
+      vcs_url: "https://github.com/fairlearn/fairlearn"
+    license: MIT
+    packaging:
+      status: bespoke
+      derivation: pkgs/fairlearn/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "fairlearn.svg"
+      exec: fairlearn
+      category: d-03-assurance-evals-benchmarks
+    docs: layers/d-03/fairlearn.md
+    tags: [bespoke, defence, evals, update:steady]
+  - id: aif360
+    layer: DEFENCE
+    category: d-03-assurance-evals-benchmarks
+    name: aif360
+    description: "AI Fairness 360 (AIF360) — comprehensive fairness-metrics and bias-mitigation toolkit."
+    source:
+      vcs_owner: Trusted-AI
+      repo: AIF360
+      vcs_url: "https://github.com/Trusted-AI/AIF360"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/aif360/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "aif360.svg"
+      exec: aif360
+      category: d-03-assurance-evals-benchmarks
+    docs: layers/d-03/aif360.md
+    tags: [bespoke, defence, evals]
+  - id: cosign
+    layer: DEFENCE
+    category: d-04-provenance-signing-trust
+    name: cosign
+    description: "Sigstore cosign — container and binary signing and transparency."
+    source:
+      vcs_owner: sigstore
+      repo: cosign
+      vcs_url: "https://github.com/sigstore/cosign"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "cosign.svg"
+      exec: cosign
+      category: d-04-provenance-signing-trust
+    docs: layers/d-04/cosign.md
+    tags: [defence, native, signing, update:slow]
+  - id: syft
+    layer: DEFENCE
+    category: d-04-provenance-signing-trust
+    name: syft
+    description: "Anchore Syft — SBOM generation CLI for container images and filesystems."
+    source:
+      vcs_owner: anchore
+      repo: syft
+      vcs_url: "https://github.com/anchore/syft"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "syft.svg"
+      exec: syft
+      category: d-04-provenance-signing-trust
+    docs: layers/d-04/syft.md
+    tags: [defence, native, sbom, update:slow]
+  - id: grype
+    layer: DEFENCE
+    category: d-04-provenance-signing-trust
+    name: grype
+    description: "Anchore Grype — vulnerability scanner for container images and filesystems."
+    source:
+      vcs_owner: anchore
+      repo: grype
+      vcs_url: "https://github.com/anchore/grype"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "grype.svg"
+      exec: grype
+      category: d-04-provenance-signing-trust
+    docs: layers/d-04/grype.md
+    tags: [defence, native, scanner, update:slow]
+  - id: trivy
+    layer: DEFENCE
+    category: d-04-provenance-signing-trust
+    name: trivy
+    description: "Aqua Trivy — all-in-one vulnerability/secret/misconfiguration/SBOM scanner."
+    source:
+      vcs_owner: aquasecurity
+      repo: trivy
+      vcs_url: "https://github.com/aquasecurity/trivy"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "trivy.svg"
+      exec: trivy
+      category: d-04-provenance-signing-trust
+    docs: layers/d-04/trivy.md
+    tags: [defence, native, scanner, update:slow]
+  - id: cyclonedx-cli
+    layer: DEFENCE
+    category: d-04-provenance-signing-trust
+    name: "cyclonedx-cli"
+    description: "CycloneDX CLI — SBOM validation, merging, diffs and format conversions."
+    source:
+      vcs_owner: CycloneDX
+      repo: cyclonedx-cli
+      vcs_url: "https://github.com/CycloneDX/cyclonedx-cli"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "cyclonedx-cli.svg"
+      exec: cyclonedx-cli
+      category: d-04-provenance-signing-trust
+    docs: layers/d-04/cyclonedx-cli.md
+    tags: [defence, native, sbom, update:slow]
+  - id: cdxgen
+    layer: DEFENCE
+    category: d-04-provenance-signing-trust
+    name: cdxgen
+    description: "CycloneDX cdxgen — creates CycloneDX SBOMs for source trees and images across languages."
+    source:
+      vcs_owner: CycloneDX
+      repo: cdxgen
+      vcs_url: "https://github.com/CycloneDX/cdxgen"
+    license: "Apache-2.0"
+    packaging:
+      status: native
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "cdxgen.svg"
+      exec: cdxgen
+      category: d-04-provenance-signing-trust
+    docs: layers/d-04/cdxgen.md
+    tags: [defence, native, sbom, update:slow]
+  - id: sigstore-tools
+    layer: DEFENCE
+    category: d-04-provenance-signing-trust
+    name: "sigstore-tools"
+    description: "Sigstore helper CLI pack — Rekor/fulcio transparency-log queries and bundle verification recipes (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: sigstore-tools
+      vcs_url: "https://github.com/kailash-os/sigstore-tools"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/sigstore-tools/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "sigstore-tools.svg"
+      exec: sigstore-tools
+      category: d-04-provenance-signing-trust
+    docs: layers/d-04/sigstore-tools.md
+    tags: [bespoke, defence, signing]
+  - id: modelsign
+    layer: DEFENCE
+    category: d-04-provenance-signing-trust
+    name: modelsign
+    description: "Model signing CLI wrapping sigstore/model-signing — sign and verify model artefacts with Sigstore bundles."
+    source:
+      vcs_owner: sigstore
+      repo: model-signing
+      vcs_url: "https://github.com/sigstore/model-signing"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/modelsign/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "modelsign.svg"
+      exec: modelsign
+      category: d-04-provenance-signing-trust
+    docs: layers/d-04/modelsign.md
+    tags: [bespoke, defence, signing]
+  - id: hf-repo-auditor
+    layer: DEFENCE
+    category: d-04-provenance-signing-trust
+    name: "hf-repo-auditor"
+    description: "Hugging Face repository auditor — scans Hub repos for unsafe pickle/zip-slip artefacts and licence drift (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: hf-repo-auditor
+      vcs_url: "https://github.com/kailash-os/hf-repo-auditor"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/hf-repo-auditor/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "hf-repo-auditor.svg"
+      exec: hf-repo-auditor
+      category: d-04-provenance-signing-trust
+    docs: layers/d-04/hf-repo-auditor.md
+    tags: [bespoke, defence, scanner]
+  - id: model-card-toolkit
+    layer: DEFENCE
+    category: d-04-provenance-signing-trust
+    name: "model-card-toolkit"
+    description: "TensorFlow Model Card Toolkit — automates generation of model documentation cards."
+    source:
+      vcs_owner: tensorflow
+      repo: model-card-toolkit
+      vcs_url: "https://github.com/tensorflow/model-card-toolkit"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/model-card-toolkit/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "model-card-toolkit.svg"
+      exec: model-card-toolkit
+      category: d-04-provenance-signing-trust
+    docs: layers/d-04/model-card-toolkit.md
+    tags: [bespoke, defence, documention]
+  - id: genai-threat-modelling-templates
+    layer: DEFENCE
+    category: d-05-threat-modelling
+    name: "genai-threat-modelling-templates"
+    description: "GenAI threat-modelling template pack — per-component worksheets for LLM/agent systems (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: genai-threat-modelling-templates
+      vcs_url: "https://github.com/kailash-os/genai-threat-modelling-templates"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "genai-threat-modelling-templates.svg"
+      exec: genai-threat-modelling-templates
+      category: d-05-threat-modelling
+    docs: layers/d-05/genai-threat-modelling-templates.md
+    tags: [data, defence, threat-modelling, update:slow]
+  - id: atlas-visualiser
+    layer: DEFENCE
+    category: d-05-threat-modelling
+    name: "atlas-visualiser"
+    description: "MITRE ATLAS visualiser — renders ATLAS tactic/technique coverage over a target system map (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: atlas-visualiser
+      vcs_url: "https://github.com/kailash-os/atlas-visualiser"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/atlas-visualiser/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "atlas-visualiser.svg"
+      exec: atlas-visualiser
+      category: d-05-threat-modelling
+    docs: layers/d-05/atlas-visualiser.md
+    tags: [bespoke, defence, threat-modelling]
+  - id: stride-ai-worksheet
+    layer: DEFENCE
+    category: d-05-threat-modelling
+    name: "stride-ai-worksheet"
+    description: "STRIDE-for-AI worksheet pack — per-trust-boundary threat elicitation sheets for AI systems (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: stride-ai-worksheet
+      vcs_url: "https://github.com/kailash-os/stride-ai-worksheet"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "stride-ai-worksheet.svg"
+      exec: stride-ai-worksheet
+      category: d-05-threat-modelling
+    docs: layers/d-05/stride-ai-worksheet.md
+    tags: [data, defence, threat-modelling, update:slow]
+  - id: maestro
+    layer: DEFENCE
+    category: d-05-threat-modelling
+    name: maestro
+    description: "MAESTRO threat-modelling CLI — agent-system threat elicitation keyed to the OWASP MAESTRO framework."
+    source:
+      vcs_owner: agentic-threat-modeling
+      repo: MAESTRO
+      vcs_url: "https://github.com/agentic-threat-modeling/MAESTRO"
+    license: "CC-BY-SA-4.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/maestro/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "maestro.svg"
+      exec: maestro
+      category: d-05-threat-modelling
+    docs: layers/d-05/maestro.md
+    tags: [bespoke, defence, threat-modelling]
+  - id: atlas-case-study-explorer
+    layer: DEFENCE
+    category: d-05-threat-modelling
+    name: "atlas-case-study-explorer"
+    description: "ATLAS case-study explorer — browsable real-world AI-incident case studies (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: atlas-case-study-explorer
+      vcs_url: "https://github.com/kailash-os/atlas-case-study-explorer"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "atlas-case-study-explorer.svg"
+      exec: atlas-case-study-explorer
+      category: d-05-threat-modelling
+    docs: layers/d-05/atlas-case-study-explorer.md
+    tags: [data, defence, threat-modelling, update:slow]
+  - id: ai-incident-playbook-packs
+    layer: DEFENCE
+    category: d-05-threat-modelling
+    secondary_categories: [c-09-forensics-ir-reporting]
+    name: "ai-incident-playbook-packs"
+    description: "AI incident-response playbook packs — detection/triage/rollback runbooks for AI incidents (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: ai-incident-playbook-packs
+      vcs_url: "https://github.com/kailash-os/ai-incident-playbook-packs"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "ai-incident-playbook-packs.svg"
+      exec: ai-incident-playbook-packs
+      category: d-05-threat-modelling
+    docs: layers/d-05/ai-incident-playbook-packs.md
+    tags: [data, defence, response, update:slow]
+  - id: ai-act-compliance-checker
+    layer: DEFENCE
+    category: d-06-governance-regulation-mapping
+    name: "ai-act-compliance-checker"
+    description: "EU AI Act compliance checker — obligation inventory and gap scoring for AI deployments (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: ai-act-compliance-checker
+      vcs_url: "https://github.com/kailash-os/ai-act-compliance-checker"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/ai-act-compliance-checker/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "ai-act-compliance-checker.svg"
+      exec: ai-act-compliance-checker
+      category: d-06-governance-regulation-mapping
+    docs: layers/d-06/ai-act-compliance-checker.md
+    tags: [bespoke, defence, governance]
+  - id: nist-ai-rmf-toolkit
+    layer: DEFENCE
+    category: d-06-governance-regulation-mapping
+    name: "nist-ai-rmf-toolkit"
+    description: "NIST AI RMF toolkit — Profile templates and mapping worksheets per the AI Risk Management Framework (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: nist-ai-rmf-toolkit
+      vcs_url: "https://github.com/kailash-os/nist-ai-rmf-toolkit"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "nist-ai-rmf-toolkit.svg"
+      exec: nist-ai-rmf-toolkit
+      category: d-06-governance-regulation-mapping
+    docs: layers/d-06/nist-ai-rmf-toolkit.md
+    tags: [data, defence, governance, update:slow]
+  - id: iso-42001-templates
+    layer: DEFENCE
+    category: d-06-governance-regulation-mapping
+    name: "iso-42001-templates"
+    description: "ISO/IEC 42001 template pack — AIMS control templates and evidence checklists (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: iso-42001-templates
+      vcs_url: "https://github.com/kailash-os/iso-42001-templates"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "iso-42001-templates.svg"
+      exec: iso-42001-templates
+      category: d-06-governance-regulation-mapping
+    docs: layers/d-06/iso-42001-templates.md
+    tags: [data, defence, governance, update:slow]
+  - id: genai-vendor-review-form
+    layer: DEFENCE
+    category: d-06-governance-regulation-mapping
+    name: "genai-vendor-review-form"
+    description: "GenAI vendor review form — provider risk questionnaire and scoring sheet (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: genai-vendor-review-form
+      vcs_url: "https://github.com/kailash-os/genai-vendor-review-form"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "genai-vendor-review-form.svg"
+      exec: genai-vendor-review-form
+      category: d-06-governance-regulation-mapping
+    docs: layers/d-06/genai-vendor-review-form.md
+    tags: [data, defence, governance, update:slow]
+  - id: aisvs-1.0-toolkit
+    layer: DEFENCE
+    category: d-07-standards-verification
+    secondary_categories: [c-10-runtime-appsec-ai]
+    name: "aisvs-1.0-toolkit"
+    description: "OWASP AISVS 1.0 toolkit — verification checklists and level-mapping data driving the D-7 verifier (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: aisvs-1.0-toolkit
+      vcs_url: "https://github.com/kailash-os/aisvs-1.0-toolkit"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "aisvs-1.0-toolkit.svg"
+      exec: aisvs-1.0-toolkit
+      category: d-07-standards-verification
+    docs: layers/d-07/aisvs-1.0-toolkit.md
+    tags: [data, defence, update:slow]
+  - id: mlsvs-toolkit
+    layer: DEFENCE
+    category: d-07-standards-verification
+    name: "mlsvs-toolkit"
+    description: "OWASP MLSVS toolkit — machine-learning system verification checklists (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: mlsvs-toolkit
+      vcs_url: "https://github.com/kailash-os/mlsvs-toolkit"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "mlsvs-toolkit.svg"
+      exec: mlsvs-toolkit
+      category: d-07-standards-verification
+    docs: layers/d-07/mlsvs-toolkit.md
+    tags: [data, defence, update:slow]
+  - id: llm-top10-toolkit
+    layer: DEFENCE
+    category: d-07-standards-verification
+    name: "llm-top10-toolkit"
+    description: "OWASP LLM Top 10 toolkit — risk-mapping data for both Top-10 epochs (2026 + v2:2025) driving the verifier (planned first-party pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: llm-top10-toolkit
+      vcs_url: "https://github.com/kailash-os/llm-top10-toolkit"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "llm-top10-toolkit.svg"
+      exec: llm-top10-toolkit
+      category: d-07-standards-verification
+    docs: layers/d-07/llm-top10-toolkit.md
+    tags: [data, defence, update:slow]
+  - id: kailash-verifier
+    layer: DEFENCE
+    category: d-07-standards-verification
+    name: "kailash-verifier"
+    description: "Kailash verifier CLI — `kailash verifier --standard aisvs --level N`: renders per-tool standards evidence from the manifest (§3.8; planned first-party deliverable)."
+    source:
+      vcs_owner: kailash-os
+      repo: kailash-verifier
+      vcs_url: "https://github.com/kailash-os/kailash-verifier"
+    license: "BSD-3-Clause"
+    packaging:
+      status: bespoke
+      derivation: pkgs/kailash-verifier/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "kailash-verifier.svg"
+      exec: kailash-verifier
+      category: d-07-standards-verification
+    docs: layers/d-07/kailash-verifier.md
+    tags: [bespoke, defence]
