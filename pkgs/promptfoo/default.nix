@@ -28,7 +28,7 @@
   lib,
   callPackage,
   buildNpmPackage,
-  nodejs,
+  fetchNpmDeps,
   python3,
 }:
 
@@ -172,10 +172,28 @@ buildNpmPackage (finalAttrs: {
     PYEOF
   '';
 
-  # The npm-deps fixed-output derivation inherits nativeBuildInputs (the
-  # postPatch runs in BOTH the npm-deps and the main build): python3 is
-  # needed there for the resolved-URL injection (hosted CI RED at
-  # a4b30e7: `python3: command not found` in patchPhase — exit 127).
+  # The npm-deps fixed-output derivation does NOT inherit the top-level
+  # nativeBuildInputs (fetchNpmDeps composes its own stdenvNoCC drv —
+  # hosted CI REDs at a4b30e7/d367dcb: `python3: command not found` in
+  # its patchPhase, exit 127). The CACHE needs no patching:
+  # prefetch-npm-deps resolves the registry URLs itself and integrity-
+  # checks every tarball (that cache is what the recorded hash pins —
+  # `got: sha256-9dlP7n8wEZl8gHXtGZtH4o9GiPAHH+BTSpzYCVgC6ts=` at
+  # 4b6c358). The resolved-URL injection is only needed where
+  # `npm install` runs — the MAIN derivation, which carries python3 via
+  # nativeBuildInputs — so npmDeps is overridden with a no-op postPatch:
+  # the cache builds python-free and stays byte-identical to the
+  # recorded hash.
+  npmDeps = fetchNpmDeps {
+    inherit (finalAttrs) src;
+    name = "${finalAttrs.pname}-${finalAttrs.version}-npm-deps";
+    hash = finalAttrs.npmDepsHash;
+    fetcherVersion = 2;
+    postPatch = "";
+  };
+
+  # python3 for the postPatch resolved-URL injection IN THIS derivation
+  # (the main build — where `npm install` runs against the cache).
   nativeBuildInputs = [ python3 ];
 
   # don't fetch the playwright browser binary in the build sandbox
