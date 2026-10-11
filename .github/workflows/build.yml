@@ -141,7 +141,11 @@ jobs:
               ".#packages.${{ matrix.system }}.${{ matrix.package }}.outPath"
           )"
           echo "smoke target: ${{ matrix.package }} @ $OUT"
-          WAVE2_BUILD_LOG="$(cat build.log)" \
+          # hand the build log over by FILE, never env/argv — the leg logs
+          # blow past the exec arg/argv-env ceiling (hosted run
+          # 38133352268 job 114452106295: "Argument list too long", 126)
+          mv build.log build-smoke.log
+          WAVE2_BUILD_LOG_FILE="$PWD/build-smoke.log" \
           python3 tools/wave2-smoke.py \
             --smoke-only --tool "${{ matrix.package }}" --out-path "$OUT" \
             --system "${{ matrix.system }}"

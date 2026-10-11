@@ -61,16 +61,20 @@
           # that per-tool smoke; this gate proves its command table — the
           # tool set must equal the packages output THIS flake eval
           # computes (WAVE2_SMOKE_EXPECT_TOOLS from builtins.attrNames of
-          # the wave-2 subset) and each tool's smoke command/assertions
+          # the wave-2 subset), and each tool's smoke command/assertions
           # must match the acceptance shapes. The real smokes run on the
           # build-packages legs (see .github/workflows/build.yml — the
-          # per-tool smoke step after the nix build; needs a linux
-          # builder) and in the ko vm-tests job once Wave 5's KA-06.3
-          # lands the VM harness (PENDING-VM markers on the lane PR).
-          # Cachix posture: the legs PULL from cache.kailash.cachix.org
-          # when warm (extra-substituters above + the cachix-action push
-          # step in build.yml) — the hosted smokes exercise the cached
-          # derivation outputs, not a local rebuild.
+          # per-tool smoke step after the nix build). The ko vm-tests job
+          # re-runs the same script per tool in the OS repo's VM once
+          # Wave 5's KA-06.3 lands the VM harness (PENDING-VM markers on
+          # the lane PR).
+          #
+          # NOTE on the sandboxed eval: the gate runs with pkgs.nix (the
+          # flakes-enabled nix the flake-check runner uses), NOT the
+          # barebones nix from nativeBuildInputs whose experimental
+          # features were off in the first hosted attempt. --impure allows
+          # getFlake on the checkout; the expr is anchored so a missing
+          # bespoke derivation fails the gate (tool set != table).
           wave2-smoke-script = pkgs.runCommand "wave2-smoke-script"
             {
               nativeBuildInputs = [ pkgs.nix pkgs.python3 ];
@@ -87,8 +91,7 @@
                                         || n == "art" || n == "counterfit")
                       (builtins.attrNames f.packages.x86_64-linux))))'
             )"
-            nixStoreRoot="$(nix eval --raw --impure --expr 'builtins.storeDir')"
-            echo "flake-resolved tool set: $WAVE2_SMOKE_EXPECT_TOOLS (store: $nixStoreRoot)"
+            echo "flake-resolved tool set: $WAVE2_SMOKE_EXPECT_TOOLS"
             python3 $src/tools/wave2-smoke.py --dry-run
             touch $out
           '';

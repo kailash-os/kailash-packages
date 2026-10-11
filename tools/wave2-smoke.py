@@ -142,6 +142,20 @@ SMOKE_TABLE = {
 EXPECTED = sorted(SMOKE_TABLE)
 DOC_DECLARED = ["art", "counterfit", "garak", "promptfoo", "pyrit"]
 
+# build log handed over via a FILE (WAVE2_BUILD_LOG_FILE), not an env var:
+# the build-package legs' logs are far beyond the ARG_MAX / argv-env
+# ceiling ("Argument list too long", 126 on the first hosted smoke run)
+# and the build log is evidence, not data to pass by argv.
+BUILD_LOG_FILE_DEFAULT = os.environ.get("WAVE2_BUILD_LOG_FILE", "")
+
+
+def load_build_log(path=None):
+    p = path or BUILD_LOG_FILE_DEFAULT
+    if not p or not os.path.exists(p):
+        return ""
+    with open(p, encoding="utf-8", errors="replace") as fh:
+        return fh.read()
+
 
 def _shebang_interpreter(console_script_path):
     """The env python the built console script runs under (its shebang)."""
@@ -407,7 +421,7 @@ def main(argv=None):
         if not os.path.isdir(out_path):
             ap.error("--out-path %r is not a directory" % out_path)
         ok = run_smoke(args.tool[0], args.system, out_path=out_path,
-                       build_log=os.environ.get("WAVE2_BUILD_LOG", ""))
+                       build_log=load_build_log())
         return 0 if ok else 1
 
     tools = args.tool or EXPECTED
