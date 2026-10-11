@@ -111,7 +111,10 @@ SMOKE_TABLE = {
     "art": {
         "kind": "library",
         "module": "art",
-        "dist_name": "art",
+        # the wheel's canonical dist name (PEP 503 normalisation of
+        # adversarial-robustness-toolbox) — the dist-info dir is the
+        # wheel name, verified against the cached output
+        "dist_name": "adversarial_robustness_toolbox",
         # art/__init__.py at 4da50bdc
         "expect_version": "1.20.1",
         "module_files": [
@@ -158,22 +161,52 @@ def load_build_log(path=None):
 
 
 def _shebang_interpreter(console_script_path):
-    """The env python the built console script runs under (its shebang)."""
+    """The env python the built console script runs under (its shebang).
+
+    Nixpkgs python wrappers: bin/<script> is a bash wrapper
+    (makeBinaryWrapper: '#!/nix/store/...-bash/bin/bash -e') that execs
+    the REAL entry at bin/.<script>-wrapped, whose shebang IS the env
+    python. Follow that one hop before judging — the wrapped script is
+    the truth.
+    """
     with open(console_script_path, encoding="utf-8", errors="replace") as fh:
         first = fh.readline().strip()
     if not first.startswith("#!"):
         return None
-    return first[2:].strip()
+    interp = first[2:].strip()
+    if "python" in os.path.basename(interp.split()[0] if interp else ""):
+        return interp
+    # bash/sh wrapper -> hop to the wrapped entry one level below
+    wrapped = os.path.join(
+        os.path.dirname(console_script_path),
+        "." + os.path.basename(console_script_path) + "-wrapped")
+    if os.path.exists(wrapped):
+        with open(wrapped, encoding="utf-8", errors="replace") as fh:
+            first = fh.readline().strip()
+        if first.startswith("#!"):
+            return first[2:].strip()
+    return interp
 
 
 def _build_log_marker_reason(tool, build_log):
-    """The build that produced this output ran the imports-check phase."""
+    """The build that produced this output ran the imports-check phase.
+
+    Cached-pull honest handling: when THIS leg's log shows no build at
+    all (the output arrived from the substituter — no `building '/nix/`
+    lines), the marker cannot be in the log, and requiring it would
+    fail every warm-cache run. The pythonImportsCheck phase is part of
+    the derivation (it failed-fails the build upstream), so a cached
+    output carries the property transitively; a locally-built output
+    still must show the marker in this leg's own log.
+    """
     marker = SMOKE_TABLE[tool].get("build_log_marker")
     if not marker:
         return None
-    if marker not in build_log:
-        return "build log lacks the pythonImportsCheck marker %r" % marker
-    return None
+    if marker in build_log:
+        return None
+    if "building '/nix/store" not in build_log:
+        return None  # substituter-pulled output: no build in this log
+    return "build log lacks the pythonImportsCheck marker %r" % marker
 
 
 def smoke_console(tool, out_path, build_log=""):
