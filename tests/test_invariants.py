@@ -66,7 +66,7 @@ def full_tool(**over):
         "license": "Apache-2.0",
         "packaging": {"status": "bespoke", "derivation": "pkgs/garak/default.nix"},
         "safety": {"level": "requires-target"},
-        "nixos_menu": {"icon": "garak.svg", "exec": "garak", "category": "a-02"},
+        "nixos_menu": {"icon": "garak.svg", "exec": "garak", "category": "a-02-prompt-injection-jailbreaks"},
         "atlas_tactics": ["AML.T0051"],
         "owasp_llm": {"2026": "LLM01", "v2": "LLM01"},
         "docs": "layers/a-02/garak.md",
