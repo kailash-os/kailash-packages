@@ -6680,3 +6680,673 @@ tools:
       v2: [LLM03]
     docs: layers/a-04/torch-load-poc.md
     tags: [attack, offensive, supply-chain, poc, lab, bespoke]
+# Layer ATTACK rows A-5…A-8 (KA-05.4; kailash-os#77).
+
+  - id: model-extraction-attack
+    layer: ATTACK
+    category: a-05-model-extraction-inversion
+    name: model-extraction-attack
+    description: "Model-extraction harness — drives query-efficient extraction campaigns against hosted model APIs (Steal-ML class)."
+    source:
+      vcs_owner: kailash-os
+      repo: model-extraction-attack
+      vcs_url: "https://github.com/kailash-os/model-extraction-attack"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/model-extraction-attack/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "model-extraction-attack.svg"
+      exec: model-extraction-attack
+      category: a-05-model-extraction-inversion
+    atlas_tactics: [AML.T0044, AML.T0040]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02]
+    docs: layers/a-05/model-extraction-attack.md
+    tags: [attack, offensive, extraction, bespoke]
+
+  - id: knockoffnets
+    layer: ATTACK
+    category: a-05-model-extraction-inversion
+    name: knockoffnets
+    description: "Knockoff Nets — black-box model functionality stealing via transfer-set queries on a substitute data budget."
+    source:
+      vcs_owner: tribhuvanesh
+      repo: knockoffnets
+      vcs_url: "https://github.com/tribhuvanesh/knockoffnets"
+    license: "LGPL-3.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/knockoffnets/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "knockoffnets.svg"
+      exec: knockoffnets
+      category: a-05-model-extraction-inversion
+    atlas_tactics: [AML.T0044, AML.T0040]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02]
+    docs: layers/a-05/knockoffnets.md
+    tags: [attack, offensive, extraction, bespoke]
+
+  - id: tf-privacy
+    layer: ATTACK
+    category: a-05-model-extraction-inversion
+    name: tf-privacy
+    description: "TensorFlow Privacy — DP-SGD training plus membership-inference/capture attack utilities (the MIA reference implementations)."
+    source:
+      vcs_owner: tensorflow
+      repo: privacy
+      vcs_url: "https://github.com/tensorflow/privacy"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/tf-privacy/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "tf-privacy.svg"
+      exec: tf-privacy
+      category: a-05-model-extraction-inversion
+    atlas_tactics: [AML.T0024, AML.T0040]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02]
+    docs: layers/a-05/tf-privacy.md
+    tags: [attack, offensive, mia, privacy, bespoke]
+
+  - id: privacy-meter
+    layer: ATTACK
+    category: a-05-model-extraction-inversion
+    name: privacy-meter
+    description: "Privacy Meter — audits data privacy in statistical/ML models with membership-inference leakage metrics."
+    source:
+      vcs_owner: privacytrustlab
+      repo: ml_privacy_meter
+      vcs_url: "https://github.com/privacytrustlab/ml_privacy_meter"
+    license: "MIT"
+    packaging:
+      status: bespoke
+      derivation: pkgs/privacy-meter/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "privacy-meter.svg"
+      exec: privacy-meter
+      category: a-05-model-extraction-inversion
+    atlas_tactics: [AML.T0024, AML.T0040]
+    owasp_llm:
+      2026: [LLM02]
+      v2: [LLM02]
+    docs: layers/a-05/privacy-meter.md
+    tags: [attack, offensive, mia, privacy, bespoke]
+
+  # KA-05.4 (kailash-os#77): A-6 Multi-modal & Physical-AI Attacks —
+  # semantic attacks past the text box; no RF/radio tooling (§3.7). All
+  # five rows planned surface (kailash-os/<id>; live upstream probes
+  # 2026-10-11 confirmed no canonical repo matches the plan's tool
+  # names — the adversarial-patch search surfaced only paper-code with
+  # no licence file, so the pack aggregates and records
+  # LicenseRef-Unknown). Appendix A's "target/exp" split applied per
+  # tool: requires-target where a live VLM/camera pipeline is driven;
+  # exp where execution is a lab experiment (adversarial-clothing,
+  # audio-voice-clone-injector). Ids: T0041 Physical Environment Access
+  # (TA0000 camera/sensor channel), T0043 Craft Adversarial Data
+  # (TA0001 staging, incl. its backdoor-trigger sub-technique base),
+  # T0088 Generate Deepfakes (TA0001) — dataset-verified; cross-modal
+  # injection folds into LLM01 per the 2026 preface (census notes).
+
+  - id: vlm-image-injector
+    layer: ATTACK
+    category: a-06-multimodal-physical-ai
+    name: vlm-image-injector
+    description: "VLM image injector — crafts image-channel payloads that steer vision-language model outputs (cross-modal prompt injection)."
+    source:
+      vcs_owner: kailash-os
+      repo: vlm-image-injector
+      vcs_url: "https://github.com/kailash-os/vlm-image-injector"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/vlm-image-injector/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "vlm-image-injector.svg"
+      exec: vlm-image-injector
+      category: a-06-multimodal-physical-ai
+    atlas_tactics: [AML.T0043, AML.T0051]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-06/vlm-image-injector.md
+    tags: [attack, offensive, multimodal, bespoke]
+
+  - id: adversarial-patches-collection
+    layer: ATTACK
+    category: a-06-multimodal-physical-ai
+    name: adversarial-patches-collection
+    description: "Adversarial-patch data pack — curated public patch corpora and generator recipes for visual-attack drills (aggregates e.g. jhayes14/adversarial-patch)."
+    source:
+      vcs_owner: kailash-os
+      repo: adversarial-patches-collection
+      vcs_url: "https://github.com/kailash-os/adversarial-patches-collection"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "adversarial-patches-collection.svg"
+      exec: adversarial-patches-collection
+      category: a-06-multimodal-physical-ai
+    atlas_tactics: [AML.T0043]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-06/adversarial-patches-collection.md
+    tags: [attack, offensive, data, multimodal, update:slow]
+
+  - id: adversarial-clothing
+    layer: ATTACK
+    category: a-06-multimodal-physical-ai
+    name: adversarial-clothing
+    description: "Adversarial-clothing generator — printable physical-world attack patterns for person-detection/VLM pipelines (lab experiments)."
+    source:
+      vcs_owner: kailash-os
+      repo: adversarial-clothing
+      vcs_url: "https://github.com/kailash-os/adversarial-clothing"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/adversarial-clothing/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "adversarial-clothing.svg"
+      exec: adversarial-clothing
+      category: a-06-multimodal-physical-ai
+    atlas_tactics: [AML.T0043, AML.T0041]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-06/adversarial-clothing.md
+    tags: [attack, offensive, multimodal, lab, bespoke]
+
+  - id: audio-voice-clone-injector
+    layer: ATTACK
+    category: a-06-multimodal-physical-ai
+    name: audio-voice-clone-injector
+    description: "Audio voice-clone injector — voice-clone injection into voice pipelines and audio-LM prompt injection (pairs with C-7's DSP pack)."
+    source:
+      vcs_owner: kailash-os
+      repo: audio-voice-clone-injector
+      vcs_url: "https://github.com/kailash-os/audio-voice-clone-injector"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/audio-voice-clone-injector/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "audio-voice-clone-injector.svg"
+      exec: audio-voice-clone-injector
+      category: a-06-multimodal-physical-ai
+    atlas_tactics: [AML.T0088, AML.T0043]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-06/audio-voice-clone-injector.md
+    tags: [attack, offensive, audio, lab, bespoke]
+
+  - id: camera-adversarial-toolkit
+    layer: ATTACK
+    category: a-06-multimodal-physical-ai
+    name: camera-adversarial-toolkit
+    description: "Camera adversarial toolkit — physical-channel attack evaluation against camera-fed AI systems (T0041 Physical Environment Access)."
+    source:
+      vcs_owner: kailash-os
+      repo: camera-adversarial-toolkit
+      vcs_url: "https://github.com/kailash-os/camera-adversarial-toolkit"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/camera-adversarial-toolkit/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "camera-adversarial-toolkit.svg"
+      exec: camera-adversarial-toolkit
+      category: a-06-multimodal-physical-ai
+    atlas_tactics: [AML.T0041, AML.T0043]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-06/camera-adversarial-toolkit.md
+    tags: [attack, offensive, multimodal, bespoke]
+
+  # KA-05.4 (kailash-os#77): A-7 AI System Exploitation — the §6.5
+  # pairing thesis: every tool here pairs with its O-1/O-2/O-3 lab
+  # target in the same pinned environment. All nine rows are planned
+  # surface (kailash-os/<id>, exp-gated per Appendix A; no canonical
+  # upstream repos match the plan's tool names). Atlas id semantics at
+  # technique level, dataset-verified: T0049 Exploit Public-Facing
+  # Application (the exposed-service Initial Access class from the
+  # census notes; ShadowRay keyed to the ATLAS case study CS0023) +
+  # T0050 Command and Scripting Interpreter (Execution); vector-db-ripper
+  # carries T0057 LLM Data Leakage (the Exfiltration class for
+  # unauthenticated embedding stores). OWASP classes per the census:
+  # LLM02 sensitive-data exposure via the misconfigured platform +
+  # LLM10 Unbounded Consumption, both epochs.
+
+  - id: mlflow-bypass
+    layer: ATTACK
+    category: a-07-ai-system-exploitation
+    name: mlflow-bypass
+    description: "MLflow platform exploit — auth-bypass/RCE probes against MLflow tracking servers (pairs with the O-1 lab target)."
+    source:
+      vcs_owner: kailash-os
+      repo: mlflow-bypass
+      vcs_url: "https://github.com/kailash-os/mlflow-bypass"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/mlflow-bypass/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "mlflow-bypass.svg"
+      exec: mlflow-bypass
+      category: a-07-ai-system-exploitation
+    atlas_tactics: [AML.T0049, AML.T0050]
+    owasp_llm:
+      2026: [LLM02, LLM10]
+      v2: [LLM02, LLM10]
+    docs: layers/a-07/mlflow-bypass.md
+    tags: [attack, offensive, platform, exp, bespoke]
+
+  - id: triton-pwn
+    layer: ATTACK
+    category: a-07-ai-system-exploitation
+    name: triton-pwn
+    description: "Triton Inference Server exploit — unauthenticated API misuse and RCE probes (pairs with the O-2 docker-wrapper target)."
+    source:
+      vcs_owner: kailash-os
+      repo: triton-pwn
+      vcs_url: "https://github.com/kailash-os/triton-pwn"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/triton-pwn/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "triton-pwn.svg"
+      exec: triton-pwn
+      category: a-07-ai-system-exploitation
+    atlas_tactics: [AML.T0049, AML.T0050]
+    owasp_llm:
+      2026: [LLM02, LLM10]
+      v2: [LLM02, LLM10]
+    docs: layers/a-07/triton-pwn.md
+    tags: [attack, offensive, platform, exp, bespoke]
+
+  - id: torchserve-pwn
+    layer: ATTACK
+    category: a-07-ai-system-exploitation
+    name: torchserve-pwn
+    description: "TorchServe exploit — handler deserialization and management-API attack probes against TorchServe deployments."
+    source:
+      vcs_owner: kailash-os
+      repo: torchserve-pwn
+      vcs_url: "https://github.com/kailash-os/torchserve-pwn"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/torchserve-pwn/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "torchserve-pwn.svg"
+      exec: torchserve-pwn
+      category: a-07-ai-system-exploitation
+    atlas_tactics: [AML.T0049, AML.T0050]
+    owasp_llm:
+      2026: [LLM02, LLM10]
+      v2: [LLM02, LLM10]
+    docs: layers/a-07/torchserve-pwn.md
+    tags: [attack, offensive, platform, exp, bespoke]
+
+  - id: ollama-pwn
+    layer: ATTACK
+    category: a-07-ai-system-exploitation
+    name: ollama-pwn
+    description: "Ollama exploit — exposed-API and model-management attack probes against Ollama servers (0.0.0.0 default-bind class)."
+    source:
+      vcs_owner: kailash-os
+      repo: ollama-pwn
+      vcs_url: "https://github.com/kailash-os/ollama-pwn"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/ollama-pwn/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "ollama-pwn.svg"
+      exec: ollama-pwn
+      category: a-07-ai-system-exploitation
+    atlas_tactics: [AML.T0049, AML.T0050]
+    owasp_llm:
+      2026: [LLM02, LLM10]
+      v2: [LLM02, LLM10]
+    docs: layers/a-07/ollama-pwn.md
+    tags: [attack, offensive, platform, exp, bespoke]
+
+  - id: vllm-pwn
+    layer: ATTACK
+    category: a-07-ai-system-exploitation
+    name: vllm-pwn
+    description: "vLLM exploit — inference-server API attack probes: deserialization, distributed-executor and auth surfaces."
+    source:
+      vcs_owner: kailash-os
+      repo: vllm-pwn
+      vcs_url: "https://github.com/kailash-os/vllm-pwn"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/vllm-pwn/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "vllm-pwn.svg"
+      exec: vllm-pwn
+      category: a-07-ai-system-exploitation
+    atlas_tactics: [AML.T0049, AML.T0050]
+    owasp_llm:
+      2026: [LLM02, LLM10]
+      v2: [LLM02, LLM10]
+    docs: layers/a-07/vllm-pwn.md
+    tags: [attack, offensive, platform, exp, bespoke]
+
+  - id: kserve-exploit
+    layer: ATTACK
+    category: a-07-ai-system-exploitation
+    name: kserve-exploit
+    description: "KServe exploit — serving-runtime and knative-surface attack probes against KServe model deployments."
+    source:
+      vcs_owner: kailash-os
+      repo: kserve-exploit
+      vcs_url: "https://github.com/kailash-os/kserve-exploit"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/kserve-exploit/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "kserve-exploit.svg"
+      exec: kserve-exploit
+      category: a-07-ai-system-exploitation
+    atlas_tactics: [AML.T0049, AML.T0050]
+    owasp_llm:
+      2026: [LLM02, LLM10]
+      v2: [LLM02, LLM10]
+    docs: layers/a-07/kserve-exploit.md
+    tags: [attack, offensive, platform, exp, bespoke]
+
+  - id: shadow-ray
+    layer: ATTACK
+    category: a-07-ai-system-exploitation
+    name: shadow-ray
+    description: "ShadowRay exploit — the ATLAS case study CS0023 Ray-cluster takeover class: job-API RCE on unauthenticated Ray dashboards."
+    source:
+      vcs_owner: kailash-os
+      repo: shadow-ray
+      vcs_url: "https://github.com/kailash-os/shadow-ray"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/shadow-ray/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "shadow-ray.svg"
+      exec: shadow-ray
+      category: a-07-ai-system-exploitation
+    atlas_tactics: [AML.T0049, AML.T0050]
+    owasp_llm:
+      2026: [LLM02, LLM10]
+      v2: [LLM02, LLM10]
+    docs: layers/a-07/shadow-ray.md
+    tags: [attack, offensive, platform, exp, atlas-case-study, bespoke]
+
+  - id: vector-db-ripper
+    layer: ATTACK
+    category: a-07-ai-system-exploitation
+    name: vector-db-ripper
+    description: "Vector-store ripper — unauthenticated dump/exfiltration probes against vector databases (chroma/qdrant/weaviate classes)."
+    source:
+      vcs_owner: kailash-os
+      repo: vector-db-ripper
+      vcs_url: "https://github.com/kailash-os/vector-db-ripper"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/vector-db-ripper/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "vector-db-ripper.svg"
+      exec: vector-db-ripper
+      category: a-07-ai-system-exploitation
+    atlas_tactics: [AML.T0057, AML.T0049]
+    owasp_llm:
+      2026: [LLM02, LLM10]
+      v2: [LLM02, LLM10]
+    docs: layers/a-07/vector-db-ripper.md
+    tags: [attack, offensive, platform, exp, bespoke]
+
+  - id: ai-gateway-bypass
+    layer: ATTACK
+    category: a-07-ai-system-exploitation
+    name: ai-gateway-bypass
+    description: "AI-gateway bypass — auth/quota/routing bypass probes against LLM gateways and proxies."
+    source:
+      vcs_owner: kailash-os
+      repo: ai-gateway-bypass
+      vcs_url: "https://github.com/kailash-os/ai-gateway-bypass"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/ai-gateway-bypass/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "ai-gateway-bypass.svg"
+      exec: ai-gateway-bypass
+      category: a-07-ai-system-exploitation
+    atlas_tactics: [AML.T0049, AML.T0050]
+    owasp_llm:
+      2026: [LLM02, LLM10]
+      v2: [LLM02, LLM10]
+    docs: layers/a-07/ai-gateway-bypass.md
+    tags: [attack, offensive, platform, exp, bespoke]
+
+  # KA-05.4 (kailash-os#77): A-8 Data Poisoning & Dataset Attacks —
+  # upstream-of-model attack tooling, lab-gated per Appendix A (trojai
+  # toolkit + split-view-replay the free/research exceptions). trojai
+  # keyed to trojai/trojai (Apache-2.0, verified live 2026-10-11); the
+  # other five rows are planned surface (kailash-os/<id>). Ids:
+  # T0020 Poison Training Data (2026.07 dataset placement: Persistence)
+  # + T0018 Manipulate AI Model / T0019 Publish Poisoned Datasets /
+  # T0043 (trigger-staging base) / T0024 (exfil class) —
+  # dataset-verified; LLM05 2026 = Data and Model Poisoning, v2:2025 =
+  # LLM04 (census notes, both epochs).
+
+  - id: poison-dataset-builder
+    layer: ATTACK
+    category: a-08-data-poisoning
+    name: poison-dataset-builder
+    description: "Dataset-poisoning builder — crafts poisoned training corpora (trigger-embedded samples) for attack simulations (lab-gated)."
+    source:
+      vcs_owner: kailash-os
+      repo: poison-dataset-builder
+      vcs_url: "https://github.com/kailash-os/poison-dataset-builder"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/poison-dataset-builder/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "poison-dataset-builder.svg"
+      exec: poison-dataset-builder
+      category: a-08-data-poisoning
+    atlas_tactics: [AML.T0020, AML.T0018]
+    owasp_llm:
+      2026: [LLM05]
+      v2: [LLM04]
+    docs: layers/a-08/poison-dataset-builder.md
+    tags: [attack, offensive, poisoning, lab, bespoke]
+
+  - id: trojai-toolkit
+    layer: ATTACK
+    category: a-08-data-poisoning
+    name: trojai-toolkit
+    description: "TrojAI toolkit — NIST-rounded synthetic trojaned-dataset and trojaned-model generation for backdoor research."
+    source:
+      vcs_owner: trojai
+      repo: trojai
+      vcs_url: "https://github.com/trojai/trojai"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/trojai-toolkit/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "trojai-toolkit.svg"
+      exec: trojai-toolkit
+      category: a-08-data-poisoning
+    atlas_tactics: [AML.T0020, AML.T0018]
+    owasp_llm:
+      2026: [LLM05]
+      v2: [LLM04]
+    docs: layers/a-08/trojai-toolkit.md
+    tags: [attack, offensive, poisoning, research, bespoke]
+
+  - id: trojan-lm-toolkit
+    layer: ATTACK
+    category: a-08-data-poisoning
+    name: trojan-lm-toolkit
+    description: "Trojan-LM toolkit — backdoor-embedding experiments against language-model training/fine-tuning corpora (lab-gated)."
+    source:
+      vcs_owner: kailash-os
+      repo: trojan-lm-toolkit
+      vcs_url: "https://github.com/kailash-os/trojan-lm-toolkit"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/trojan-lm-toolkit/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "trojan-lm-toolkit.svg"
+      exec: trojan-lm-toolkit
+      category: a-08-data-poisoning
+    atlas_tactics: [AML.T0020, AML.T0018]
+    owasp_llm:
+      2026: [LLM05]
+      v2: [LLM04]
+    docs: layers/a-08/trojan-lm-toolkit.md
+    tags: [attack, offensive, poisoning, lab, bespoke]
+
+  - id: prompt-backdoor-tool
+    layer: ATTACK
+    category: a-08-data-poisoning
+    name: prompt-backdoor-tool
+    description: "Prompt-backdoor tool — trigger-insertion experiments in prompt/instruction corpora (the T0043.004 class at base technique)."
+    source:
+      vcs_owner: kailash-os
+      repo: prompt-backdoor-tool
+      vcs_url: "https://github.com/kailash-os/prompt-backdoor-tool"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/prompt-backdoor-tool/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "prompt-backdoor-tool.svg"
+      exec: prompt-backdoor-tool
+      category: a-08-data-poisoning
+    atlas_tactics: [AML.T0020, AML.T0043]
+    owasp_llm:
+      2026: [LLM05]
+      v2: [LLM04]
+    docs: layers/a-08/prompt-backdoor-tool.md
+    tags: [attack, offensive, poisoning, lab, bespoke]
+
+  - id: data-exfil-via-poison
+    layer: ATTACK
+    category: a-08-data-poisoning
+    name: data-exfil-via-poison
+    description: "Exfiltration-via-poisoning — model-behavior poisoning that leaks data at inference time (lab-gated)."
+    source:
+      vcs_owner: kailash-os
+      repo: data-exfil-via-poison
+      vcs_url: "https://github.com/kailash-os/data-exfil-via-poison"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/data-exfil-via-poison/default.nix
+    safety:
+      level: exp
+    nixos_menu:
+      icon: "data-exfil-via-poison.svg"
+      exec: data-exfil-via-poison
+      category: a-08-data-poisoning
+    atlas_tactics: [AML.T0020, AML.T0024]
+    owasp_llm:
+      2026: [LLM05]
+      v2: [LLM04]
+    docs: layers/a-08/data-exfil-via-poison.md
+    tags: [attack, offensive, poisoning, lab, bespoke]
+
+  - id: split-view-replay
+    layer: ATTACK
+    category: a-08-data-poisoning
+    name: split-view-replay
+    description: "Split-view replay — dataset split-integrity attacks: train/eval contamination and poisoning-via-replay drills."
+    source:
+      vcs_owner: kailash-os
+      repo: split-view-replay
+      vcs_url: "https://github.com/kailash-os/split-view-replay"
+    license: "LicenseRef-Unknown"
+    packaging:
+      status: bespoke
+      derivation: pkgs/split-view-replay/default.nix
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "split-view-replay.svg"
+      exec: split-view-replay
+      category: a-08-data-poisoning
+    atlas_tactics: [AML.T0020, AML.T0019]
+    owasp_llm:
+      2026: [LLM05]
+      v2: [LLM04]
+    docs: layers/a-08/split-view-replay.md
+    tags: [attack, offensive, poisoning, research, bespoke]

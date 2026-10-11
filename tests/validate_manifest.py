@@ -496,7 +496,11 @@ def main() -> int:
     # invariant (ATTACK KA-04.2, DEFENCE KA-04.3, OPS KA-04.4); this
     # reconcile enforces the landed per-layer totals exactly: the
     # BUILD→OPS rename keeps OPS at 91 (os#121 naming umbrella).
-    LAYER_TOTALS = {"CLASSIC": 141, "ATTACK": 59, "DEFENCE": 46, "OPS": 91}
+    # §3.6 census pins ATTACK 59; post-KA-05.3, mcp-inspector's PRIMARY is o-07
+    # (landed first on main via kp#38 — §3.1 one-tool-one-primary), with a-03 as a
+    # secondary tag on that row. ATTACK primaries are therefore 58; the 59th census
+    # slot is counted under OPS. Delta recorded on kp#39/kp#40 bodies + os#76.
+    LAYER_TOTALS = {"CLASSIC": 141, "ATTACK": 58, "DEFENCE": 46, "OPS": 91}
     for layer, got in sorted(per_layer.items()):
         want = LAYER_TOTALS[layer]
         if got != want:

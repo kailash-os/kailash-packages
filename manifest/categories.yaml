@@ -220,7 +220,7 @@ categories:
     name: Agentic, MCP & Tool-Use Attacks
     purpose: Attack the agentic control plane — tool-use/MCP scanners, agent fuzzers, poisoned-tool probes.
     coverage: Very Low
-    tools: 10
+    tools: 9
     atlas_tactics: [AML.TA0005, AML.TA0006, AML.TA0008, AML.TA0013, AML.TA0015]
     owasp_llm:
       "2026": [LLM01, LLM03, LLM08, LLM10]
