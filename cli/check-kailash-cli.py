@@ -187,9 +187,61 @@ def main():
     # a check here (the checker is the flake's cli gate). Positive: the
     # real manifest validates (exit 0, the manifest-wellformed OK line
     # printed). Negative: a synthetic broken-manifest fixture (a tools
-    # row with no safety.level) is refused (exit non-zero). RED anchor:
-    # this block is the watched-RED placeholder for the KA-14.3 slice.
-    check(False, "checker anchor: KA-14.3", "placeholder")
+    # row with no safety.level) is refused (exit non-zero) — the fixture
+    # reaches the CLI through the §7.3 per-file env contract
+    # (KAILASH_MANIFEST names the broken tools.yaml FILE), the same seam
+    # the wrapped binary's bake uses, so the CLI validates exactly the
+    # manifest it resolves.
+    code, out = run_cli(["manifest", "validate"])
+    check(code == 0, "manifest validate exit 0 on the real manifest",
+          "rc=%d out=%r" % (code, out[:200]))
+    check("manifest-wellformed: OK" in out,
+          "manifest validate prints the validator's OK line",
+          "out=%r" % out[:200])
+
+    import shutil as _shutil
+    import tempfile as _tempfile
+
+    fixture_dir = _tempfile.mkdtemp(prefix="kailash-broken-manifest-")
+    try:
+        _shutil.copytree(os.path.join(SRC, "manifest"), fixture_dir,
+                         dirs_exist_ok=True)
+        tools_path = os.path.join(fixture_dir, "tools.yaml")
+        with open(tools_path) as fh:
+            doc = yaml.safe_load(fh)
+        if not doc.get("tools"):
+            # header-only stub state: there is no row to break — the
+            # negative case cannot run; fail loudly rather than IndexError
+            check(False, "manifest validate negative case",
+                  "tools table is empty (stub state): no row to break")
+        else:
+            doc["tools"][0].pop("safety", None)
+            with open(tools_path, "w") as fh:
+                yaml.safe_dump(doc, fh, sort_keys=False)
+            prev_tools = os.environ.get("KAILASH_MANIFEST")
+            prev_cats = os.environ.get("KAILASH_CATEGORIES")
+            try:
+                os.environ["KAILASH_MANIFEST"] = tools_path
+                os.environ["KAILASH_CATEGORIES"] = os.path.join(
+                    fixture_dir, "categories.yaml")
+                code, out = run_cli(["manifest", "validate"])
+                check(code != 0,
+                      "manifest validate exits non-zero on a broken fixture",
+                      "rc=%d out=%r" % (code, out[:200]))
+                check("manifest-wellformed: FAIL" in out,
+                      "manifest validate prints the validator's FAIL line",
+                      "out=%r" % out[:200])
+            finally:
+                if prev_tools is None:
+                    os.environ.pop("KAILASH_MANIFEST", None)
+                else:
+                    os.environ["KAILASH_MANIFEST"] = prev_tools
+                if prev_cats is None:
+                    os.environ.pop("KAILASH_CATEGORIES", None)
+                else:
+                    os.environ["KAILASH_CATEGORIES"] = prev_cats
+    finally:
+        _shutil.rmtree(fixture_dir, ignore_errors=True)
 
     # 7. usage errors exit 2 (argparse SystemExit path)
     try:
