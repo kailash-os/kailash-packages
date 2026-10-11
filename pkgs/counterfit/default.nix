@@ -40,6 +40,18 @@
 #     strip (the augly attack configs stay listed by the scanner,
 #     marked unavailable exactly as upstream degrades optional
 #     frameworks).
+#   - pandas, tqdm — UNDECLARED runtime imports upstream at this pin:
+#     both are imported at module top level on the eager `import
+#     counterfit` chain (targets/movie_reviews.py `import pandas as pd`,
+#     reached via targets/__init__.py; tqdm in targets/cart_pole/
+#     cart_pole_initstate.py and frameworks/augly/augly.py) yet NEITHER
+#     appears in upstream's requirements.txt (grep-verified at the pin)
+#     — upstream metadata defect, dormant repo. Hosted RED at
+#     38101416710 (x86_64 leg of the 83ccb81 merge sha) exposed it the
+#     moment the strip fix let the build reach pythonImportsCheck:
+#     `ModuleNotFoundError: No module named 'pandas'`. Added to the
+#     kept set (upstream declares no version for them — the requirements
+#     rewrite carries none; no pythonRelaxDeps entry needed).
 #
 # The strip is anchored: every rewritten string is asserted before
 # rewriting, so a pin update that moves these lines fails the build
@@ -104,6 +116,7 @@ python313.pkgs.buildPythonApplication (finalAttrs: {
     onnxruntime
     optuna
     orjson
+    pandas
     pillow
     protobuf
     pygame
@@ -114,6 +127,7 @@ python313.pkgs.buildPythonApplication (finalAttrs: {
     scipy
     tensorflow
     torchvision
+    tqdm
     ]
     );
 
@@ -159,6 +173,7 @@ python313.pkgs.buildPythonApplication (finalAttrs: {
     onnxruntime
     optuna
     orjson
+    pandas
     Pillow
     protobuf
     pygame
@@ -169,6 +184,7 @@ python313.pkgs.buildPythonApplication (finalAttrs: {
     scipy
     tensorflow
     torchvision
+    tqdm
     REQS
 
     python3 - <<'PYEOF'
