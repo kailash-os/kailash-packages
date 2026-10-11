@@ -2933,3 +2933,49 @@ tools:
       category: c-10-runtime-appsec-ai
     docs: layers/c-10/asvs-verification-toolkit.md
     tags: [ai, appsec, classic, data, update:slow]
+
+  # ---- Layer ATTACK — the offensive-AI tool table (KA-10.x / KA-11.x /
+  #      KA-12.x lanes; §3.3 A-1…A-8) ----
+  # ATLAS technique ids verified against the official mitre-atlas/atlas-data
+  # dataset (dist/ATLAS.yaml, fetched at packaging time; the id set is the
+  # matrix corpus) — no invented identifiers. Tool rows carry TECHNIQUE
+  # ids (AML.T####); the AML.TA#### tactic ids live on the census category
+  # rows (categories.yaml). Every ATTACK row carries its safety class and
+  # both OWASP-LLM epochs (§2.4).
+  #
+  # KA-10.2 (kailash-os#81): garak's manifest row — the derivation landed
+  # with KA-10.1 (pkgs/garak/default.nix, pin 105164ba @ 2026-10-09).
+  # Mapping per the issue: A-2 row, atlas_tactics [AML.T0051 LLM Prompt
+  # Injection, AML.T0054 LLM Jailbreak] (dataset-verified), safety
+  # requires-target (target_required true). Smoke note (no fabrication):
+  # `./result/bin/garak --list-probes` is recorded PENDING in the PR —
+  # the darwin host has no linux build surface, and the hosted build.yml
+  # carries build legs only (no probe-index smoke workflow at this rev).
+  #
+  # Update cadence: garak is §8.5 fast-moving (weekly nvfetcher check).
+  - id: garak
+    layer: ATTACK
+    category: a-02-prompt-injection-jailbreaks
+    name: garak
+    description: "LLM vulnerability scanner — probes for jailbreaks, prompt injection, data leakage and hallucination across model providers."
+    source:
+      vcs_owner: NVIDIA
+      repo: garak
+      vcs_url: "https://github.com/NVIDIA/garak"
+    license: "Apache-2.0"
+    packaging:
+      status: bespoke
+      derivation: pkgs/garak/default.nix
+    safety:
+      level: requires-target
+      target-required: true
+    nixos_menu:
+      icon: "garak.svg"
+      exec: garak
+      category: a-02-prompt-injection-jailbreaks
+    atlas_tactics: [AML.T0051, AML.T0054]
+    owasp_llm:
+      2026: [LLM01]
+      v2: [LLM01]
+    docs: layers/a-02/garak.md
+    tags: [scanner, offensive, llm, nvidia, update:weekly]
