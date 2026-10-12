@@ -88,6 +88,9 @@ NATIVE_ATTRS = {
     "qdrant": ["qdrant"],
     "faiss": ["faiss"],
     "txtai": ["python3Packages", "txtai"],
+    # a-04 native rows (KA-22, kailash-os#22; probed nixpkgs 8c3ced:
+    # modelscan 0.8.8 top-level, NOT in python3Packages)
+    "modelscan": ["modelscan"],
 }
 
 # statuses whose rows never reach a generated package list, with the

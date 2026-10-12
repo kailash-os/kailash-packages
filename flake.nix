@@ -131,6 +131,26 @@
             touch $out
           '';
 
+          # ---- KA-22 A-3/A-4 packaging gate (kailash-os#22) --------------
+          # Two legs over the A-3 (agentic/MCP) + A-4 (supply chain)
+          # manifest categories: (1) the row-surface tests (counts,
+          # membership, the mcp-inspector-primary-is-o-07 census rule,
+          # the 404-upstream rows carrying NO derivation) run as python
+          # unittests against the manifest WITH the pkgs/ tree on disk;
+          # (2) the flake packages surface must export every bespoke
+          # a-03/a-04 derivation the manifest names (pname match on THIS
+          # eval). RED stub: at the pre-GREEN commit the six bespoke
+          # derivation dirs do not exist — the tests fail (derivation
+          # missing on disk) and the surface leg throws; GREEN lands the
+          # six dirs and the SAME legs pass through the SAME eval.
+          ka22-a3-a4-row-surface = pkgs.runCommand "ka22-a3-a4-row-surface"
+            {
+              nativeBuildInputs = [ (pkgs.python3.withPackages (ps: [ ps.pyyaml ])) ];
+              src = self;
+            } ''
+            python3 $src/tests/test_ka22_a3_a4_rows.py
+            touch $out
+          '';
           # ---- KA-08.4 torch Shape 4 gate (kailash-os#108) ----------------
           # Shape 4 (plan §5.3/D6): NON-GPU pytorch default + an explicit
           # -nvidia variant built only by labelled jobs, never pulled by
