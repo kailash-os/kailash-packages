@@ -179,6 +179,95 @@ class BespokeDerivation(unittest.TestCase):
         self.assertEqual(findings(FIX_CATS, [t]), [])
 
 
+DEF_NATIVE_CATS = FIX_CATS + [cat("DEFENCE", "d-01-runtime-defence")]
+
+
+class NativeBindings(unittest.TestCase):
+    """KA-24 packaging-reality gate (os#24): a DEFENCE `native` row
+    carries a NATIVE_BINDINGS entry — the PROBED pinned-nixpkgs attr
+    path. The id==attr guess class (a manifest row the pin does not
+    actually provide under its id) is refused exactly like any invented
+    mapping. Scope is the DEFENCE layer — the other layers' binding
+    truth lives in their category modules' probe contracts.
+    """
+
+    def test_defence_native_recorded_binding_ok(self):
+        t = full_tool(layer="DEFENCE", category="d-01-runtime-defence",
+                      packaging={"status": "native"})
+        vm.NATIVE_BINDINGS[t["id"]] = ("nixpkgs", "fixture-attr")
+        try:
+            self.assertEqual(findings(DEF_NATIVE_CATS, [t]), [])
+        finally:
+            del vm.NATIVE_BINDINGS[t["id"]]
+
+    def test_defence_native_unrecorded_fails(self):
+        t = full_tool(layer="DEFENCE", category="d-01-runtime-defence",
+                      packaging={"status": "native"})
+        vm.NATIVE_BINDINGS.pop(t["id"], None)
+        with self.assertRaises(AssertionError) as ctx:
+            findings(DEF_NATIVE_CATS, [t])
+        only(ctx.exception.args[0], "native row without a NATIVE_BINDINGS entry")
+
+    def test_other_layer_native_stays_outside_the_gate(self):
+        # The gate is DEFENCE-scoped: a non-DEFENCE native row needs no
+        # table entry (its binding truth rides the category-module
+        # probe contracts, the landed per-pin named-drop rule).
+        t = full_tool(packaging={"status": "native"})
+        vm.NATIVE_BINDINGS.pop(t["id"], None)
+        self.assertEqual(findings(FIX_CATS, [t]), [])
+
+    def test_real_manifest_defence_native_rows_are_all_recorded(self):
+        # The on-disk manifest's DEFENCE native rows: every one names
+        # its probed binding. Parses the real tools.yaml so a future
+        # DEFENCE row CANNOT claim native silently — the fixture-free
+        # plane bites at the suite level, not only in main().
+        import yaml
+
+        manifest = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "..", "manifest", "tools.yaml"
+        )
+        with open(manifest) as f:
+            doc = yaml.safe_load(f)
+        unrecorded = [
+            t["id"]
+            for t in doc["tools"]
+            if t.get("layer") == "DEFENCE"
+            and (t.get("packaging") or {}).get("status") == "native"
+            and t["id"] not in vm.NATIVE_BINDINGS
+        ]
+        assert unrecorded == [], (
+            "DEFENCE native rows without NATIVE_BINDINGS entries: %s"
+            % unrecorded
+        )
+
+    def test_ka24_probe_receipt_rows_are_native(self):
+        # The KA-24 binding-receipt flips (os#24): these two rows were
+        # transcribed bespoke, but the pin PROVIDES them natively —
+        # probed at nixpkgs e7439b6b (python3Packages: lm-eval 0.4.13,
+        # model-signing 1.1.1; both meta.broken = false). The manifest
+        # must record that reality, not a pending bespoke derivation.
+        import yaml
+
+        manifest = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "..", "manifest", "tools.yaml"
+        )
+        with open(manifest) as f:
+            doc = yaml.safe_load(f)
+        rows = {t["id"]: t for t in doc["tools"]}
+        for tid in ("lm-eval-harness", "modelsign"):
+            row = rows.get(tid)
+            assert row is not None, "manifest row missing: %s" % tid
+            st = (row.get("packaging") or {}).get("status")
+            assert st == "native", (
+                "%s must carry packaging.status native (the KA-24 probe "
+                "receipt: the nixpkgs binding exists and is unbroken at "
+                "the pin); got %r" % (tid, st)
+            )
+            assert tid in vm.NATIVE_BINDINGS, (
+                "%s must carry its NATIVE_BINDINGS entry" % tid
+            )
+
+
 class AtlasTactics(unittest.TestCase):
     def test_attack_tool_with_tactic_ok(self):
         self.assertEqual(findings(FIX_CATS, [full_tool()]), [])

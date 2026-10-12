@@ -42,6 +42,9 @@ tools.yaml invariants (KA-05.1):
   - every tool category and secondary_categories value exists among
     categories.yaml ids
   - packaging.status bespoke carries a packaging.derivation path
+  - KA-24 packaging-reality (os#24): packaging.status native carries a
+    NATIVE_BINDINGS entry — the probed pinned-nixpkgs attr path, table
+    in this file; an unprobed id==attr guess is refused
   - every ATTACK-layer tool carries >= 1 atlas_tactics entry shaped
     AML.T#### (shape-level regex guard — dataset-lookup verification
     stays the census lanes' review job)
@@ -138,6 +141,38 @@ ATLAS_TOOL_PATTERN = _re.compile(ATLAS_TOOL_PATTERN_RE)
 # records the class; the OS side wires the gate.
 SAFETY_LEVELS = {"safe", "requires-target", "exp"}
 
+# KA-24 packaging-reality gate (plan §5.3, os#24): every DEFENCE row
+# claiming `native` names its pinned-nixpkgs attr path here — probed
+# per pin with nix eval against the flake's own locked inputs, never
+# assumed id==attr. Scope is the DEFENCE layer (the KA-24 lane's
+# surface): other layers' native rows carry their per-pin binding
+# truth in their own category modules' probe tables (the landed
+# KA-06/07/08/09 contracts — a row absent at a pin is a NAMED drop
+# there, not a manifest change). The gate refuses unprobed id==attr
+# guesses on DEFENCE: a row may only claim native when this table
+# carries its binding, so the recorded truth and the probed truth
+# cannot drift apart silently. A row whose attr has moved at a new
+# pin exits the table (its flip back to the honest status is the next
+# lane's manifest change, riding that lane's probe receipts).
+NATIVE_BINDINGS = {
+    # Layer DEFENCE (d-01…d-07), probed at nixpkgs e7439b6b:
+    "cosign": ("cosign",),
+    "syft": ("syft",),
+    "grype": ("grype",),
+    "trivy": ("trivy",),
+    "cyclonedx-cli": ("cyclonedx-cli",),
+    "cdxgen": ("cdxgen",),
+    "huggingface-evaluate": ("python3Packages", "evaluate"),
+    "modelsign": ("python3Packages", "model-signing"),
+    "lm-eval-harness": ("python3Packages", "lm-eval"),
+    # NOTE: NOT maestro — the d-05 manifest row's upstream is
+    # agentic-threat-modeling/MAESTRO (the CC-BY-SA threat-modelling
+    # tool); nixpkgs' top-level `maestro` attr is the UNRELATED
+    # mobile.dev UI-testing CLI (name collision). The row stays
+    # bespoke (overlay-pending); a table entry here would record a
+    # false binding under a colliding name.
+}
+
 
 def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) -> list:
     """tools.yaml invariants (KA-05.1, plan §5.2 vocabulary).
@@ -160,6 +195,10 @@ def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) ->
       - packaging.status 'bespoke' carries a non-empty
         packaging.derivation path ("bespoke tool without
         packaging.derivation")
+      - KA-24 packaging-reality (os#24): packaging.status 'native'
+        carries a NATIVE_BINDINGS entry ("native row without a
+        NATIVE_BINDINGS entry" — the probed pinned-nixpkgs attr path,
+        never an unprobed id==attr guess)
       - ATTACK-layer tools carry >= 1 atlas_tactics entry shaped
         AML.T#### ("ATTACK-layer tool without atlas_tactics" /
         "bad MITRE ATLAS technique id shape")
@@ -285,6 +324,23 @@ def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) ->
             findings.append(
                 "manifest-wellformed: FAIL: %s: bespoke tool without "
                 "packaging.derivation" % tid
+            )
+            return findings
+
+        # KA-24 packaging-reality gate (plan §5.3, os#24): a DEFENCE row
+        # claims `native` ONLY when NATIVE_BINDINGS carries its probed
+        # attr path. Unprobed id==attr guesses are refused exactly like
+        # any other invented binding — the table is the single home of
+        # the probed truth for this layer, kept current by the packaging
+        # lane that flips the row (probe receipts in that lane's PR
+        # body). Other layers keep their per-pin binding truth in the
+        # landed category-module probe contracts (the named-drop rule).
+        if packaging.get("status") == "native" and t.get("layer") == "DEFENCE" and tid not in NATIVE_BINDINGS:
+            findings.append(
+                "manifest-wellformed: FAIL: %s: native row without a "
+                "NATIVE_BINDINGS entry (KA-24 packaging-reality gate: "
+                "the binding must be probed and recorded, never assumed "
+                "id==attr)" % tid
             )
             return findings
 

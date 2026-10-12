@@ -5262,8 +5262,7 @@ tools:
       vcs_url: "https://github.com/EleutherAI/lm-evaluation-harness"
     license: MIT
     packaging:
-      status: bespoke
-      derivation: pkgs/lm-eval-harness/default.nix
+      status: native
     safety:
       level: safe
     nixos_menu:
@@ -5542,8 +5541,7 @@ tools:
       vcs_url: "https://github.com/sigstore/model-signing"
     license: "Apache-2.0"
     packaging:
-      status: bespoke
-      derivation: pkgs/modelsign/default.nix
+      status: native
     safety:
       level: safe
     nixos_menu:
