@@ -86,3 +86,75 @@ fetch.git = "https://github.com/Azure/counterfit"
 src.git = "https://github.com/promptfoo/promptfoo"
 src.branch = "main"
 fetch.git = "https://github.com/promptfoo/promptfoo"
+
+# KA-22 lane nvfetcher additions (A-3 + A-4). House pattern: git-source
+# pins on the upstream default branch at pin time (R7 — commit revs, not
+# tags), rev + SRI byte-verified against the commits API before
+# committing. Update-class per manifest tag:update:* row.
+
+# ---- A-3 Agentic / MCP tool-use (KA-22, kailash-os#22; plan §9 Phase 5) ----
+
+[mcp-scan]
+# Invariant's MCP threat scanner (tool poisoning / injection / drift
+# detection). Safety "safe" (defensive-grade scanner riding the ATTACK
+# red-team stack). Update-class fast-moving.
+src.git = "https://github.com/invariantlabs-ai/mcp-scan"
+src.branch = "main"
+fetch.git = "https://github.com/invariantlabs-ai/mcp-scan"
+
+[mcp-guardian]
+# EqtyLab's MCP Guardian — proxy/guard layer for MCP server controls.
+# Update-class steady.
+src.git = "https://github.com/eqtylab/mcp-guardian"
+src.branch = "main"
+fetch.git = "https://github.com/eqtylab/mcp-guardian"
+
+[mcp-remote]
+# stdio/HTTP bridge (node toolchain, Shape 2) for remote-MCP
+# reachability/MITM tests. Update-class fast-moving.
+src.git = "https://github.com/geelen/mcp-remote"
+src.branch = "main"
+fetch.git = "https://github.com/geelen/mcp-remote"
+
+[agent-dojo]
+# ETH's prompt-injection eval environment for LLM agents. MIT. The
+# upstream PYPI PACKAGE name is "agentdojo" (no hyphen); the manifest id
+# keeps the census spelling agent-dojo and the derivation passes
+# meta.mainProgram. Update-class steady.
+src.git = "https://github.com/ethz-spylab/agentdojo"
+src.branch = "main"
+fetch.git = "https://github.com/ethz-spylab/agentdojo"
+
+# ---- A-4 model supply chain (KA-22, kailash-os#22; plan §9 Phase 5) ----
+
+[guarddog]
+# DataDog's PyPI/npm malicious-package scanner. Apache-2.0. Update-class
+# steady (tag:update:steady row). Pinned to the v3 dev-branch head —
+# v3 IS the upstream default branch (main is stale behind it, verified
+# via the GitHub API: main tip 2026-07-13 vs v3 tip 2026-09-02; v3.2.0
+# is the newest release tag off this line).
+src.git = "https://github.com/DataDog/guarddog"
+src.branch = "v3"
+fetch.git = "https://github.com/DataDog/guarddog"
+
+[picklescan]
+# Static pickle/PyTorch artefact scanner. MIT. Update-class steady.
+src.git = "https://github.com/mmaitre314/picklescan"
+src.branch = "main"
+fetch.git = "https://github.com/mmaitre314/picklescan"
+
+# The nine remaining A-3/A-4 manifest rows (langchain-vuln-hunter,
+# llm-agent-fuzzer, mcp-unsafe-deser-probe, mcpoison, and the six
+# kailash-os/* bespoke probes: gguf-template-inspector,
+# safetensors-checker, hf-repo-inspector, namespace-reuse-check,
+# torch-load-poc; plus poisoned-skill-pack) have NO existing upstream at
+# this revision (each verified HTTP 404 via the GitHub API, 2026-10-12) —
+# the llm-red-team-col precedent (kailash-os#104): the manifest rows stay
+# intact, no derivation ships, and the OS-side flake legs carry the
+# absent-derivation tripwire that forces a revisit when a real upstream
+# lands. No pins for them here ON PURPOSE: nvfetcher config is contract,
+# and a pin to a non-existent repo breaks the prefetch.
+
+# The poisoned-skill-pack data pack is NOT here either (status: data —
+# the data-pack cadence rule keeps corpora off the auto-updater; a re-pin
+# would be an explicit human review, and its upstream is also a 404).

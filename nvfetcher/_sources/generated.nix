@@ -6,6 +6,20 @@
   dockerTools,
 }:
 {
+  agent-dojo = {
+    pname = "agent-dojo";
+    version = "089ed468cf3ed0322acc66b0211f26d9d90dbf60";
+    src = fetchgit {
+      url = "https://github.com/ethz-spylab/agentdojo";
+      rev = "089ed468cf3ed0322acc66b0211f26d9d90dbf60";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-APIpLZb2qJzr5Dzsww8BJU9hvHEiwLUwXYo/bgKAVro=";
+    };
+    date = "2026-06-02";
+  };
   art = {
     pname = "art";
     version = "4da50bdc5a1393bd33a52f7012f4928dd68fb260";
@@ -61,6 +75,76 @@
       sha256 = "sha256-Z71oeb5DrHT/qIgYE3HID8yWlAcp5CVSVmHNBm+eb3A=";
     };
     date = "2026-10-09";
+  };
+  guarddog = {
+    pname = "guarddog";
+    version = "1f4a66c064fb2087c224750507f3b65c7633deeb";
+    src = fetchgit {
+      url = "https://github.com/DataDog/guarddog";
+      rev = "1f4a66c064fb2087c224750507f3b65c7633deeb";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-LtRa7ZuXXNVO14IWdxYt5pGN/772FbgVSKRhQwBl/NY=";
+    };
+    date = "2026-09-02";
+  };
+  mcp-guardian = {
+    pname = "mcp-guardian";
+    version = "54395bfe65c8db7192d62a6e6ecab246f818193f";
+    src = fetchgit {
+      url = "https://github.com/eqtylab/mcp-guardian";
+      rev = "54395bfe65c8db7192d62a6e6ecab246f818193f";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-rnRr1XGoyg8shSfLAmc8DuBFUhLt2bFVfxpYh7HLkjk=";
+    };
+    date = "2025-04-10";
+  };
+  mcp-remote = {
+    pname = "mcp-remote";
+    version = "6a06aca546a8fd3b7beb040f39761b364893198d";
+    src = fetchgit {
+      url = "https://github.com/geelen/mcp-remote";
+      rev = "6a06aca546a8fd3b7beb040f39761b364893198d";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-oRsutl0pvt+9IsQ86lr1UgbU7TKJHVoLDLLagutEy58=";
+    };
+    date = "2026-09-20";
+  };
+  mcp-scan = {
+    pname = "mcp-scan";
+    version = "2d3ca361e33452dcfb8e74f7b7db6db0ee08d59e";
+    src = fetchgit {
+      url = "https://github.com/invariantlabs-ai/mcp-scan";
+      rev = "2d3ca361e33452dcfb8e74f7b7db6db0ee08d59e";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-Pz1NifODEUsTie7fZOQwfp3eacpPtQHjdprzLahmrLg=";
+    };
+    date = "2026-10-06";
+  };
+  picklescan = {
+    pname = "picklescan";
+    version = "5e7ab22cb5bc59c4276820df5153829db4c751e8";
+    src = fetchgit {
+      url = "https://github.com/mmaitre314/picklescan";
+      rev = "5e7ab22cb5bc59c4276820df5153829db4c751e8";
+      fetchSubmodules = false;
+      deepClone = false;
+      leaveDotGit = false;
+      sparseCheckout = [ ];
+      sha256 = "sha256-IavFh2jLdbIe7i3VSADOXGHQHBTDna92XwW8Uyl/5G4=";
+    };
+    date = "2026-08-31";
   };
   promptfoo = {
     pname = "promptfoo";

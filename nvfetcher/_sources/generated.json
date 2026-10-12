@@ -1,4 +1,24 @@
 {
+    "agent-dojo": {
+        "cargoLock": null,
+        "date": "2026-06-02",
+        "extract": null,
+        "name": "agent-dojo",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+            "sha256": "sha256-APIpLZb2qJzr5Dzsww8BJU9hvHEiwLUwXYo/bgKAVro=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/ethz-spylab/agentdojo"
+        },
+        "version": "089ed468cf3ed0322acc66b0211f26d9d90dbf60"
+    },
     "art": {
         "cargoLock": null,
         "date": "2026-10-08",
@@ -18,6 +38,26 @@
             "url": "https://github.com/Trusted-AI/adversarial-robustness-toolbox"
         },
         "version": "4da50bdc5a1393bd33a52f7012f4928dd68fb260"
+    },
+    "counterfit": {
+        "cargoLock": null,
+        "date": "2025-07-18",
+        "extract": null,
+        "name": "counterfit",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "c00edbf595303a85a4ce0ac9d8d55d505abf4de5",
+            "sha256": "sha256-bnFQ3HgL+Z+dpYP+svm/JwtYQGSdpk16Wr2g/FO8QwE=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/Azure/counterfit"
+        },
+        "version": "c00edbf595303a85a4ce0ac9d8d55d505abf4de5"
     },
     "dnsrecon": {
         "cargoLock": null,
@@ -58,6 +98,106 @@
             "url": "https://github.com/NVIDIA/garak"
         },
         "version": "105164ba3f7960954cf69fb81a610fe672197eb0"
+    },
+    "guarddog": {
+        "cargoLock": null,
+        "date": "2026-09-02",
+        "extract": null,
+        "name": "guarddog",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "1f4a66c064fb2087c224750507f3b65c7633deeb",
+            "sha256": "sha256-LtRa7ZuXXNVO14IWdxYt5pGN/772FbgVSKRhQwBl/NY=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/DataDog/guarddog"
+        },
+        "version": "1f4a66c064fb2087c224750507f3b65c7633deeb"
+    },
+    "mcp-guardian": {
+        "cargoLock": null,
+        "date": "2025-04-10",
+        "extract": null,
+        "name": "mcp-guardian",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "54395bfe65c8db7192d62a6e6ecab246f818193f",
+            "sha256": "sha256-rnRr1XGoyg8shSfLAmc8DuBFUhLt2bFVfxpYh7HLkjk=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/eqtylab/mcp-guardian"
+        },
+        "version": "54395bfe65c8db7192d62a6e6ecab246f818193f"
+    },
+    "mcp-remote": {
+        "cargoLock": null,
+        "date": "2026-09-20",
+        "extract": null,
+        "name": "mcp-remote",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "6a06aca546a8fd3b7beb040f39761b364893198d",
+            "sha256": "sha256-oRsutl0pvt+9IsQ86lr1UgbU7TKJHVoLDLLagutEy58=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/geelen/mcp-remote"
+        },
+        "version": "6a06aca546a8fd3b7beb040f39761b364893198d"
+    },
+    "mcp-scan": {
+        "cargoLock": null,
+        "date": "2026-10-06",
+        "extract": null,
+        "name": "mcp-scan",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "2d3ca361e33452dcfb8e74f7b7db6db0ee08d59e",
+            "sha256": "sha256-Pz1NifODEUsTie7fZOQwfp3eacpPtQHjdprzLahmrLg=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/invariantlabs-ai/mcp-scan"
+        },
+        "version": "2d3ca361e33452dcfb8e74f7b7db6db0ee08d59e"
+    },
+    "picklescan": {
+        "cargoLock": null,
+        "date": "2026-08-31",
+        "extract": null,
+        "name": "picklescan",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "5e7ab22cb5bc59c4276820df5153829db4c751e8",
+            "sha256": "sha256-IavFh2jLdbIe7i3VSADOXGHQHBTDna92XwW8Uyl/5G4=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/mmaitre314/picklescan"
+        },
+        "version": "5e7ab22cb5bc59c4276820df5153829db4c751e8"
     },
     "promptfoo": {
         "cargoLock": null,
@@ -118,25 +258,5 @@
             "url": "https://github.com/projectdiscovery/subfinder"
         },
         "version": "c97f25802892093060f0fc424bfc3f39e273693a"
-    },
-    "counterfit": {
-        "cargoLock": null,
-        "date": "2025-07-18",
-        "extract": null,
-        "name": "counterfit",
-        "passthru": null,
-        "pinned": false,
-        "src": {
-            "deepClone": false,
-            "fetchSubmodules": false,
-            "leaveDotGit": false,
-            "name": null,
-            "rev": "c00edbf595303a85a4ce0ac9d8d55d505abf4de5",
-            "sha256": "sha256-bnFQ3HgL+Z+dpYP+svm/JwtYQGSdpk16Wr2g/FO8QwE=",
-            "sparseCheckout": [],
-            "type": "git",
-            "url": "https://github.com/Azure/counterfit"
-        },
-        "version": "c00edbf595303a85a4ce0ac9d8d55d505abf4de5"
     }
 }
