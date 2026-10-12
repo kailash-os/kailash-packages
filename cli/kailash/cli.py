@@ -118,6 +118,12 @@ def cmd_search(args):
             t.get("name"),
             t.get("description"),
             " ".join(t.get("tags") or []),
+            # secondary_categories joins the haystack (KA-13.2,
+            # kailash-os#104): the dual-use cross-list must be VISIBLE
+            # through search — `kailash search c-08-...` surfaces
+            # trufflehog (primary a-01, secondary c-08) the same way
+            # the category listing would. One derivation, many tags.
+            " ".join(t.get("secondary_categories") or []),
         )
         if any(isinstance(h, str) and q in h.lower() for h in hay):
             hits.append("%s\t%s\t%s" % (

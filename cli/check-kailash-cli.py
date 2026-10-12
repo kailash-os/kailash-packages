@@ -162,6 +162,30 @@ def main():
         token = t0["id"].split("-")[0]
         code, out = run_cli(["search", token])
         check(code == 0 and t0["id"] in out, "search finds id fragments")
+        # secondary_categories are searchable (KA-13.2, kailash-os#104):
+        # every row carrying a secondary id must surface under a query
+        # on it — the cross-list visibility contract, computed from the
+        # parsed manifest DATA (vacuous-safe: exits green when the
+        # manifest carries no secondary tags at all, bites the moment
+        # one lands).
+        sec_rows = [
+            t
+            for t in tools
+            if isinstance(t.get("secondary_categories"), list)
+            and t["secondary_categories"]
+        ]
+        if sec_rows:
+            for t in sec_rows:
+                for sid in t["secondary_categories"]:
+                    code, out = run_cli(["search", sid])
+                    check(
+                        code == 0 and t["id"] in out,
+                        "search %s surfaces secondary-categorized %s"
+                        % (sid, t["id"]),
+                        "rc=%d out=%r" % (code, (out or "")[:120]),
+                    )
+        else:
+            check(code == 0, "search haystack extended to secondary_categories (no secondary rows at this manifest state — vacuous green)")
     else:  # header-only stub: corpus empty -> every query exits 1
         check(code == 1, "search over the empty tools table exits 1")
 
