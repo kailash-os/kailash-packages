@@ -587,7 +587,10 @@ def main(argv=None) -> int:
     # (landed first on main via kp#38 — §3.1 one-tool-one-primary), with a-03 as a
     # secondary tag on that row. ATTACK primaries are therefore 58; the 59th census
     # slot is counted under OPS. Delta recorded on kp#39/kp#40 bodies + os#76.
-    LAYER_TOTALS = {"CLASSIC": 141, "ATTACK": 58, "DEFENCE": 46, "OPS": 91}
+    # KA-29 delta (kailash-os#29): C-5 gains the pw-packs DATA row
+    # (rockyou.txt slice) — CLASSIC 141→142; the seclists data row
+    # already counted. Delta recorded on the KA-29 PR bodies + os#29.
+    LAYER_TOTALS = {"CLASSIC": 142, "ATTACK": 58, "DEFENCE": 46, "OPS": 91}
     for layer, got in sorted(per_layer.items()):
         want = LAYER_TOTALS[layer]
         if got != want:

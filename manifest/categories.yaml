@@ -117,9 +117,11 @@ categories:
     name: Password & Offline-Credential Attacks
     purpose: Offline credential attacks (hashes, dumps, artefacts).
     coverage: High
-    tools: 15
+    tools: 16
     notes: online brute-forcing against live services stays OUT (§3.7);
-      wordlists ride the opt-in kailash-data.wordlists-mega pack (KA-07.2).
+      wordlists ride the opt-in kailash-data.wordlists-mega pack
+      (KA-29; wordlists-mega default OFF, pw-packs beside it — both
+      never on default profiles/ISOs).
   - id: c-06-reverse-engineering
     layer: CLASSIC
     kind: category
