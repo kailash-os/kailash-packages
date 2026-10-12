@@ -45,13 +45,25 @@ stdenv.mkDerivation (finalAttrs: {
   # version (a pnpm-10 fetcher produced a v10-layout store the
   # v10 build-side pnpm could not read → ERR_PNPM_NO_OFFLINE_TARBALL;
   # same-version fetch + install is the shape the nixpkgs recipes use).
-  # Hash cycled per the documented RED→hash procedure (FOD content is
-  # the pnpm store — platform-independent).
+  #
+  # NOT platform-independent at fetcherVersion 4: the pin's
+  # pnpm-lock.yaml carries 20 os/cpu-filtered OPTIONAL snapshots
+  # (fsevents os:[darwin]; the esbuild/rollup-family platform
+  # optionals) — the fetcher honours the filters, so the store (and
+  # its hash) differs per builder OS. Hash-split by libc case with
+  # the real per-OS hashes from the hosted CI FOD mismatch receipts
+  # (run 38317207767): x86_64-linux = TOraN9vd…, aarch64-linux =
+  # NcBVarCa…, darwin = aamJhNTA… (the original committed hash —
+  # validated by the local darwin fetch). A lockfile change re-cycles
+  # all three via the documented RED→hash procedure.
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     pnpm = pnpm;
     fetcherVersion = 4;
-    hash = "sha256-aamJhNTAzkhZfiaX+W7i9l36MAS0YWexLecU7PFxGb0=";
+    hash =
+      if stdenv.hostPlatform.isDarwin then "sha256-aamJhNTAzkhZfiaX+W7i9l36MAS0YWexLecU7PFxGb0="
+      else if stdenv.hostPlatform.isMusl then "sha256-TOraN9vdVwC7XxzNV7RZt2f5hTKeFexkIZn5EYebSQA="
+      else "sha256-NcBVarCaDl8p/IE3u8qbK6ZbUFFi29yjFaZ/iF5qTmg=";
   };
 
   nativeBuildInputs = [
