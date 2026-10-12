@@ -130,8 +130,170 @@
             test "$WRAPN" -eq "$COUNT" || { echo "emitted wrapper count ($WRAPN) != exp_ids count ($COUNT)"; exit 1; }
             touch $out
           '';
+
+          # ---- KA-08.4 torch Shape 4 gate (kailash-os#108) ----------------
+          # Shape 4 (plan §5.3/D6): NON-GPU pytorch default + an explicit
+          # -nvidia variant built only by labelled jobs, never pulled by
+          # default. No global cudaSupport flip anywhere (D6) — the
+          # variant arg lives inside pkgs/torch-nvidia/default.nix.
+          #
+          # EVAL-ONLY HARDENED LEG (v2, after the v1 runCommand closure-walk
+          # legs stalled hosted flake-check 50+ min on both systems: the
+          # env-context walker mounted the torch drv's WHOLE closure graph
+          # — 2800+ drvs — for sandbox substitution per leg, on top of a
+          # cold-pin nixpkgs eval). The leg is now a trivial runCommand
+          # whose env forces an eval-time `builtins.toJSON` of
+          # require-style proofs: the assertions fire DURING
+          # `nix flake check` EVALUATION (before any build; the builder is
+          # a receipt printer that only echoes the proof blob).
+          #
+          # Proof surfaces are 100% PURE-EVAL-SAFE (probed): torch's own
+          # passthru contract (`cudaSupport`, `rocmSupport`,
+          # `cudaCapabilities` — nixpkgs exports the cuda-shape since the
+          # variant split), drv/outPath distinctness, file presence and
+          # packages-surface membership. A derivation-LEVEL drv-text
+          # direct-ref scan is NOT expressible here: reading the .drv text
+          # is FORBIDDEN in pure eval ("access to absolute path … is
+          # forbidden in pure evaluation mode", discovered by running this
+          # very leg), and the RED stub's CUDA deps enter TRANSITIVELY via
+          # inputDrvs anyway (its 65 direct refs carry 0 cuda names at the
+          # pin) — so the non-GPU-default gate rides the passthru
+          # contract, which provably separates the shapes:
+          #   torchWithCuda (RED stub)  → passthru.cudaSupport = true,
+          #                               cudaCapabilities non-empty
+          #   cudaSupport=false (GREEN) → passthru.cudaSupport = false,
+          #                               cudaCapabilities = [ ] (probed
+          #                               on the real pin closures)
+          #
+          # `.*nvidia` is deliberately NOT a cuda-family token: the
+          # cpu-default torch closure's only nvidia-token drv is triton's
+          # own upstream 0002-nvidia-driver-short-circuit-before-ldconfig
+          # patch (a CPU-build patch shipped by the triton recipe), not a
+          # CUDA library.
+          #
+          # RED stub state (this commit): pkgs/pytorch/default.nix passes
+          # through torchWithCuda (passthru.cudaSupport = true) → the
+          # non-GPU-default assertion THROWS at eval; pkgs/torch-nvidia is
+          # absent → the variant assertions throw. The throws fail flake
+          # check at eval, on both systems, in seconds. GREEN swaps the
+          # stub body to `torch.override { cudaSupport = false; }` (an
+          # explicit cudaSupport=false build that survives a future
+          # upstream default flip) and lands pkgs/torch-nvidia.
+          #
+          # Probe scope: the default-surface proof evals against an
+          # allowUnfree-scoped nixpkgs so the CUDA-carrying RED stub
+          # evaluates for the scan; GREEN's default (cudaSupport=false)
+          # is free-license and needs no scope.
+          torch-shape-eval-proofs = pkgs.runCommand "torch-shape-eval-proofs"
+            {
+              env.PROOFS = builtins.toJSON (let
+                torchScope = (import inputs.nixpkgs {
+                  inherit system;
+                  config.allowUnfree = true;
+                }).python3Packages;
+                defaultTorch = import (self + "/pkgs/pytorch/default.nix") {
+                  inherit lib;
+                  python3Packages = torchScope;
+                };
+                variantFile = self + "/pkgs/torch-nvidia/default.nix";
+                variantTorch = if builtins.pathExists variantFile
+                  then import variantFile {
+                    inherit lib;
+                    python3Packages = torchScope;
+                  }
+                  else null;
+                exported = self.packages.${system} ? "pytorch";
+              in {
+                # the NON-GPU DEFAULT contract (acceptance core): torch's
+                # own passthru must say cudaSupport = false — RED stub
+                # says true → throw names the offending shape
+                torch-cpu-non-GPU-default =
+                  if defaultTorch.passthru.cudaSupport == false
+                  then true
+                  else throw "torch-cpu-shape: FAIL — the default torch carries passthru.cudaSupport = ${lib.boolToString defaultTorch.passthru.cudaSupport}; Shape 4 requires a non-GPU default built with cudaSupport = false (kailash-os#108)";
+                torch-cpu-no-rocm =
+                  if defaultTorch.passthru.rocmSupport == false
+                  then true
+                  else throw "torch-cpu-shape: FAIL — the default torch carries passthru.rocmSupport = ${lib.boolToString defaultTorch.passthru.rocmSupport}; the non-GPU default carries no GPU compute backend";
+                torch-cpu-cudaCapabilities-empty =
+                  if defaultTorch.passthru.cudaCapabilities == [ ]
+                  then true
+                  else throw "torch-cpu-shape: FAIL — the default torch advertises non-empty passthru.cudaCapabilities (${builtins.toJSON defaultTorch.passthru.cudaCapabilities}); a non-GPU default compiles no GPU kernels";
+                # the default must still ship the packages surface
+                torch-cpu-packaged =
+                  if exported
+                  then true
+                  else throw "torch-cpu-shape: FAIL — packages.${system}.pytorch is not exported (.nocall still present? the non-GPU default must ship the default packages/matrix surface)";
+                torch-cpu-packages-attr = exported;
+                # the VARIANT contract: file present, .nocall-excluded
+                # from the auto-call surface (never pulled by default),
+                # distinct from the default drv, CUDA-flagged by torch's
+                # own passthru
+                torch-nvidia-variant-present =
+                  if variantTorch != null
+                  then true
+                  else throw "torch-nvidia-shape: FAIL — pkgs/torch-nvidia/default.nix does not exist: the explicit -nvidia variant output is not landed (Shape 4: non-GPU default + explicit variant)";
+                torch-nvidia-nocall-excluded =
+                  if builtins.pathExists (self + "/pkgs/torch-nvidia/.nocall")
+                  then true
+                  else throw "torch-nvidia-shape: FAIL — pkgs/torch-nvidia/.nocall is missing: the variant must stay OUT of the auto-call packages/build-matrix default surface (never pulled by default; labelled CI jobs build it explicitly)";
+                torch-nvidia-not-in-packages-surface =
+                  if !(self.packages.${system} ? "torch-nvidia")
+                  then true
+                  else throw "torch-nvidia-shape: FAIL — packages.${system}.torch-nvidia exists in the auto-call surface; the variant must never be pulled by default (labelled CI jobs only)";
+                torch-nvidia-distinct-from-default =
+                  if variantTorch != null && variantTorch.outPath != defaultTorch.outPath
+                  then true
+                  else throw "torch-nvidia-shape: FAIL — the -nvidia variant outPath equals the default torch outPath; the variant is not a distinct CUDA shape";
+                torch-nvidia-cuda-flagged =
+                  if variantTorch != null && variantTorch.passthru.cudaSupport == true
+                  then true
+                  else throw "torch-nvidia-shape: FAIL — the -nvidia variant carries passthru.cudaSupport = ${lib.boolToString (variantTorch.passthru.cudaSupport or false)}; it is not the explicit CUDA variant";
+              });
+            }
+            # The builder is a receipt printer only: every proof above was
+            # already asserted at eval (throws fail `nix flake check`
+            # before this script ever runs).
+            ''
+            echo "torch-shape-eval-proofs (KA-08.4, Shape 4):"
+            echo "$PROOFS"
+            touch $out
+          '';
         };
       };
+      # ---- KA-08.4 (kailash-os#108) — torch Shape-4 variant lines (D6) ---
+      #
+      # The torch family ships Shape 4: a NON-GPU default plus an explicit
+      # -nvidia variant, with NO global cudaSupport flip anywhere (D6).
+      #
+      #   packages.<system>.pytorch — the non-GPU default (pkgs/pytorch:
+      #     torch built with cudaSupport = false explicitly, so the
+      #     default stays cuda-free even if an upstream nixpkgs flip ever
+      #     changes the plain attr's default). Its closure carries ZERO
+      #     cuda-family input derivations — proven per-arch by the
+      #     checks.*.torch-cpu-shape leg (drv-closure dep scan).
+      #   pkgs/torch-nvidia/default.nix — the explicit CUDA variant
+      #     (torch.override { cudaSupport = true; } shape). It carries a
+      #     .nocall marker: it is NOT in the auto-call packages surface
+      #     and NOT in the default build matrix — it is never pulled by
+      #     default. Labelled CI jobs build it explicitly against an
+      #     allowUnfree-scoped nixpkgs, e.g.:
+      #       nix build --impure --expr 'let fl = builtins.getFlake
+      #         (toString ./.); np = fl.inputs.nixpkgs; in
+      #         (import (fl.outPath + "/pkgs/torch-nvidia/default.nix")
+      #           { lib = np.lib; python3Packages =
+      #             (import np { system = "x86_64-linux";
+      #                          config.allowUnfree = true; }).python3Packages; })'
+      #     (the checks.*.torch-nvidia-shape leg proves the variant
+      #     exists, is .nocall-excluded, distinct from the default drv,
+      #     and CUDA-carrying — without building it).
+      #
+      # Documented fallback (plan §5.3): if the nixpkgs variant fights
+      # (build breakage, licence churn), the nixvital/ml-pkgs
+      # torch-family overlay is the designated fallback source for the
+      # variant line — the flake's optional-inputs seam is where it
+      # would compose; the default pytorch line stays nixpkgs-native.
+      #
       flake.overlays.default =
         let lib = nixpkgs.lib;
         in final: prev:
