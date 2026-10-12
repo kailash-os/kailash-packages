@@ -15,8 +15,15 @@ description = "Kailash OS manifest CLI - list/search/info over the tool manifest
 requires-python = ">=3.9"
 dependencies = ["pyyaml"]
 
+[project.optional-dependencies]
+# The MCP face (KA-25, kailash-os#25): pkgs/kailash-mcp installs the
+# wheel with this extra, adding the MCP SDK + the kailash-mcp entry
+# point. The CLI wheel itself stays pyyaml-only.
+mcp = ["mcp>=1.0"]
+
 [project.scripts]
 kailash = "kailash.cli:main"
+kailash-mcp = "kailash.mcp_server:main"
 
 [tool.setuptools]
 packages = ["kailash"]
