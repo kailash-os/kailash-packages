@@ -40,3 +40,14 @@ jobs:
             extra-trusted-public-keys = kailash.cachix.org-1:HnASOtfS7XRjQBrH9umnPljPRjvHeJKDvwZDYXt+sKM=
       - name: Flake check (${{ matrix.system }})
         run: nix flake check
+      # Cache push (KA-08.4 stall review, kailash-os#108): flake-check.yml
+      # was the one workflow WITHOUT the cachix push block — build.yml
+      # pushes (per-leg build legs) but the eval/check job never did, so
+      # every cold build this gate performs lands nowhere. The daemon
+      # pushes all paths BUILT during the check; the stall-review run's
+      # cold rebuilds are exactly what later PRs should pull.
+      - name: Cachix (kailash) — push daemon
+        uses: cachix/cachix-action@v17
+        with:
+          name: kailash
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
