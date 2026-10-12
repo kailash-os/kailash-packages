@@ -165,7 +165,12 @@ NATIVE_BINDINGS = {
     "huggingface-evaluate": ("python3Packages", "evaluate"),
     "modelsign": ("python3Packages", "model-signing"),
     "lm-eval-harness": ("python3Packages", "lm-eval"),
-    "maestro": ("maestro",),
+    # NOTE: NOT maestro — the d-05 manifest row's upstream is
+    # agentic-threat-modeling/MAESTRO (the CC-BY-SA threat-modelling
+    # tool); nixpkgs' top-level `maestro` attr is the UNRELATED
+    # mobile.dev UI-testing CLI (name collision). The row stays
+    # bespoke (overlay-pending); a table entry here would record a
+    # false binding under a colliding name.
 }
 
 
