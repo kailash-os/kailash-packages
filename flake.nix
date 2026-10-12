@@ -131,6 +131,72 @@
             touch $out
           '';
 
+          # ---- KA-22 A-3/A-4 packaging gate (kailash-os#22) --------------
+          # Two legs over the A-3 (agentic/MCP) + A-4 (supply chain)
+          # manifest categories: (1) the row-surface tests (counts,
+          # membership, the mcp-inspector-primary-is-o-07 census rule,
+          # the 404-upstream rows carrying NO derivation) run as python
+          # unittests against the manifest WITH the pkgs/ tree on disk;
+          # (2) the flake packages surface must export every bespoke
+          # a-03/a-04 derivation the manifest names (pname match on THIS
+          # eval). RED stub: at the pre-GREEN commit the six bespoke
+          # derivation dirs do not exist — the tests fail (derivation
+          # missing on disk) and the surface leg throws; GREEN lands the
+          # six dirs and the SAME legs pass through the SAME eval.
+          ka22-a3-a4-row-surface = pkgs.runCommand "ka22-a3-a4-row-surface"
+            {
+              nativeBuildInputs = [ (pkgs.python3.withPackages (ps: [ ps.pyyaml ])) ];
+              src = self;
+            } ''
+            python3 $src/tests/test_ka22_a3_a4_rows.py
+            touch $out
+          '';
+          # The flake packages surface must export every bespoke A-3/A-4
+          # derivation the manifest names — proven at EVAL (the pk#51
+          # require-in-env shape: throws fail this check BEFORE any build;
+          # the builder script is the receipt printer). RED stub: at the
+          # pre-GREEN commit the six bespoke derivation dirs do not exist
+          # and the exports assert THROWS with its named message; GREEN
+          # lands the dirs and the SAME eval passes.
+          ka22-a3-a4-packages-surface =
+            let
+              require = cond: msg: if cond then true else throw msg;
+              namesOf = set: name: if set ? "${name}" then (set.${name}.pname or name) else "<absent>";
+              pkgsSurface = self.packages.${system};
+              a03Exported = [ "mcp-scan" "mcp-guardian" "mcp-remote" "agent-dojo" ];
+              a04Exported = [ "guarddog" "picklescan" ];
+              # 404-upstream probe rows (kailash-os#22 lane record) ride NO
+              # derivation — their arrival is the tripwire, never a default
+              # expectation
+              pendRows = [
+                "mcp-unsafe-deser-probe" "langchain-vuln-hunter"
+                "llm-agent-fuzzer" "mcpoison" "gguf-template-inspector"
+                "safetensors-checker" "hf-repo-inspector"
+                "namespace-reuse-check" "torch-load-poc"
+              ];
+              missingA03 = builtins.filter (id: !(pkgsSurface ? "${id}")) a03Exported;
+              missingA04 = builtins.filter (id: !(pkgsSurface ? "${id}")) a04Exported;
+              leaked = builtins.filter (id: pkgsSurface ? "${id}") pendRows;
+              _evalProofs = [
+                (require (missingA03 == [ ])
+                  "ka22-a3-a4-packages-surface: packages does not export the bespoke A-3 derivations [${builtins.concatStringsSep ", " missingA03}] — the derivation lanes have not landed (KA-22 GREEN)")
+                (require (missingA04 == [ ])
+                  "ka22-a3-a4-packages-surface: packages does not export the bespoke A-4 derivations [${builtins.concatStringsSep ", " missingA04}] — the derivation lanes have not landed (KA-22 GREEN)")
+                (require (leaked == [ ])
+                  "ka22-a3-a4-packages-surface: a 404-upstream probe row unexpectedly exports a derivation [${builtins.concatStringsSep ", " leaked}] — the kailash-os#22 404 record must be revisited")
+              ];
+            in
+            pkgs.runCommand "ka22-a3-a4-packages-surface"
+              {
+                proofs = toString _evalProofs;
+              }
+              ''
+                echo "ka22-a3-a4-packages-surface: ${toString (builtins.length _evalProofs)} eval proofs passed"
+                echo "A-3 exports: ${toString (map (n: namesOf pkgsSurface n) a03Exported)}"
+                echo "A-4 exports: ${toString (map (n: namesOf pkgsSurface n) a04Exported)}"
+                echo "A-3/A-4 derivation-free probe rows (404-upstream record): ${toString pendRows}"
+                touch $out
+              '';
           # ---- KA-08.4 torch Shape 4 gate (kailash-os#108) ----------------
           # Shape 4 (plan §5.3/D6): NON-GPU pytorch default + an explicit
           # -nvidia variant built only by labelled jobs, never pulled by
