@@ -1551,7 +1551,7 @@ tools:
     layer: CLASSIC
     category: c-05-password-offline-credential
     name: seclists
-    description: "Collection of security wordlists (passwords, usernames, URLs) — the opt-in wordlist pack seed row for KA-07.2."
+    description: "Collection of security wordlists (passwords, usernames, URLs) — rides the opt-in kailash-data.wordlists-mega DATA pack (KA-29 derivation:pkgs/seclists, default OFF — data packs never ride a default profile); per-file corpus content licences beyond the repo licence are NOT established."
     source:
       vcs_owner: danielmiessler
       repo: SecLists
@@ -1567,6 +1567,26 @@ tools:
       category: c-05-password-offline-credential
     docs: layers/c-05/seclists.md
     tags: [classic, data, update:slow, wordlists]
+  - id: pw-packs
+    layer: CLASSIC
+    category: c-05-password-offline-credential
+    name: pw-packs
+    description: "Small password pack — rockyou.txt as the pw-packs DATA pack (KA-29 derivation:pkgs/pw-packs, default OFF — data packs never ride a default profile); the breach-list content licence beyond the repo MIT licence is NOT established."
+    source:
+      vcs_owner: danielmiessler
+      repo: SecLists
+      vcs_url: "https://github.com/danielmiessler/SecLists"
+    license: MIT
+    packaging:
+      status: data
+    safety:
+      level: safe
+    nixos_menu:
+      icon: "rockyou.svg"
+      exec: rockyou
+      category: c-05-password-offline-credential
+    docs: layers/c-05/pw-packs.md
+    tags: [classic, data, update:slow, passwords]
   - id: ghidra
     layer: CLASSIC
     category: c-06-reverse-engineering
