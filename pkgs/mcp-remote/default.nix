@@ -52,18 +52,22 @@ stdenv.mkDerivation (finalAttrs: {
   # optionals) — the fetcher honours the filters, so the store (and
   # its hash) differs per builder OS. Hash-split by libc case with
   # the real per-OS hashes from the hosted CI FOD mismatch receipts
-  # (run 38317207767): x86_64-linux = TOraN9vd…, aarch64-linux =
-  # NcBVarCa…, darwin = aamJhNTA… (the original committed hash —
-  # validated by the local darwin fetch). A lockfile change re-cycles
-  # all three via the documented RED→hash procedure.
+  # (runs 38317207767 + 38324702538): x86_64-linux AND aarch64-linux
+  # share ONE hash (TOraN9vd… — the receipts' earlier "per-arch"
+  # reading was an artifact of the FIRST run's two different drv
+  # revisions evaluating different optional-dep generations; the
+  # corrected run proves the split is by LIBC/OS, not by arch:
+  # aarch64-linux got TOraN9vd… on the second attempt) and darwin =
+  # aamJhNTA… (the original committed hash — validated by the local
+  # darwin fetch). A lockfile change re-cycles both arms via the
+  # documented RED→hash procedure.
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     pnpm = pnpm;
     fetcherVersion = 4;
     hash =
       if stdenv.hostPlatform.isDarwin then "sha256-aamJhNTAzkhZfiaX+W7i9l36MAS0YWexLecU7PFxGb0="
-      else if stdenv.hostPlatform.isMusl then "sha256-TOraN9vdVwC7XxzNV7RZt2f5hTKeFexkIZn5EYebSQA="
-      else "sha256-NcBVarCaDl8p/IE3u8qbK6ZbUFFi29yjFaZ/iF5qTmg=";
+      else "sha256-TOraN9vdVwC7XxzNV7RZt2f5hTKeFexkIZn5EYebSQA=";
   };
 
   nativeBuildInputs = [
