@@ -26,8 +26,21 @@ name: build
 # CACHIX_AUTH_TOKEN secret is not configured yet (verified empty in the
 # repo's actions secrets). Uncomment both blocks once the secret lands.
 
+# PATH SCOPING (kailash-packages#60, the ko#194 mirror): the build matrix
+# compiles the manifest + derivations — a docs/meta-only change pays no
+# nix builds. The pk-side derivation inputs are: the manifest, the pkgs/
+# tree, the generators, and this workflow. Pushes to main ALWAYS run
+# (the cachix feed). The pull_request gate list:
 on:
   pull_request:
+    paths:
+      - "manifest/**"
+      - "pkgs/**"
+      - "flake.nix"
+      - "flake.lock"
+      - "tools/**"
+      - "tests/**"
+      - ".github/workflows/build.yml"
   push:
     branches: [main]
 
