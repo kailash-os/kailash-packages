@@ -51,21 +51,24 @@ buildNpmPackage (finalAttrs: {
 
   npmDepsHash = "sha256-twig8tHo5mYr4E34HSVkGxg5dEu0/K6RnJ2wlEVzFdU=";
 
-  # The root postinstall cascade is the official CI-opt-out
-  # (INSPECTOR_SKIP_CLIENT_INSTALL=1 — the script's own contract): the
-  # per-client installs ride deps outside the root lockfile, which the
-  # offline sandbox cannot fetch (the CI receipts). Preempted BEFORE
-  # npm-install-hook runs the scripts.
-  preConfigure = ''
-    export INSPECTOR_SKIP_CLIENT_INSTALL=1
-  '';
+  # The root postinstall cascade must never run in the sandbox.
 
-  # npm ci runs --ignore-scripts (the config hook); makeCacheWritable
-  # MUST stay unset — setting it makes the hook RE-RUN `npm ci` WITH
-  # lifecycle scripts (the exact mechanism behind the CI receipts: the
-  # root postinstall cascade fired and ENOTCACHED on clients/web). NO
-  # upstream lifecycle script is needed in the sandbox.
+  # EVERY npm invocation in the sandbox must carry --ignore-scripts:
+  # npm ci gets it from the config hook, but npmInstallHook's
+  # `npm prune --omit=dev --no-save` does NOT — and npm prune RUNS
+  # lifecycle scripts, so the root postinstall cascade
+  # (scripts/install-clients.mjs) fired there and ENOTCACHED on
+  # clients/web (deps outside the root lockfile — the CI receipts,
+  # runs 38321435525 + 38325241587, both systems). npmPruneFlags
+  # feeds the prune invocation directly; the
+  # INSPECTOR_SKIP_CLIENT_INSTALL=1 env export is belt-and-braces
+  # (the script's own official opt-out), set as derivation env so it
+  # covers every phase.
   npmPackFlags = [ "--ignore-scripts" ];
+  npmPruneFlags = [ "--ignore-scripts" ];
+  env = {
+    INSPECTOR_SKIP_CLIENT_INSTALL = "1";
+  };
 
   meta = {
     description = "MCP Inspector — visual testing tool for MCP servers (o-07 dogfood duty)";
