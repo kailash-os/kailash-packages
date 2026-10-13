@@ -325,6 +325,139 @@
             echo "$PROOFS"
             touch $out
           '';
+
+          # ---- KA-25 O-7 gate (kailash-os#25) -----------------------------
+          #
+          # EVAL-ONLY leg (the KA-08.4 hardened shape — the builder is a
+          # receipt printer; every assertion fires during `nix flake
+          # check` evaluation, before any build). Proves the O-7 Agent
+          # & MCP Operability derivations this lane lands against the
+          # manifest rows that route them (the manifest is the single
+          # registry):
+          #
+          #   * every o-07 packaging.status == "bespoke" row has its
+          #     packages.<system> export (the auto-call surface mirrors
+          #     pkgs/<id>/default.nix) with meta.mainProgram (the OS
+          #     gate's mainProgOf convention binds it into the wrapper);
+          #   * the exp row count is the manifest's own (7 at this pin —
+          #     the §11.2 routing record, gate-checked);
+          #   * the grant face (cli/kailash/mcp_server.py) ships the
+          #     deny-by-default contract markers (KAILASH_GRANTS /
+          #     KAILASH_GRANT_LOG) — the OS-side agent-grants module
+          #     mounts the rest (§11.2).
+          #
+          # The manifest scan is PURE EVAL (the safety-defaults
+          # scanToolsYaml technique — row/level line matching, no FOD
+          # parse — eval must stay host-agnostic).
+          #
+          # RED stub state (first commit): the four pkgs/<id>/ dirs do
+          # not exist yet → the packages-surface assertions throw at
+          # eval, on both systems, in seconds. GREEN: the four
+          # derivations land and every assertion passes.
+          o-7-deliverables-eval-proofs = pkgs.runCommand "o-7-deliverables-eval-proofs"
+            {
+              env.PROOFS = builtins.toJSON (let
+                # Pure-eval manifest scan (the safety-defaults row-shape
+                # contract): `- id: <tool>` rows, `category: <slug>` and
+                # `status:`/`level:` lines collected per pending id; a
+                # row closes at its NEXT `- id:` (or EOF), so state
+                # flushes there. tools.yaml entry blocks are ordered
+                # id → … → category → … → packaging(status) → … →
+                # safety(level) — the flush-at-next-id walk sees every
+                # field before the row closes.
+                lines = lib.splitString "\n" (builtins.readFile (self + "/manifest/tools.yaml"));
+                step = state: line:
+                  let
+                    idRow = lib.match " *- id: *([A-Za-z0-9._-]*)" line;
+                    catRow = lib.match " *category: *([a-z]-[0-9][0-9]-[a-z-]*)" line;
+                    statRow = lib.match " *status: *([a-z]*)" line;
+                    lvlRow = lib.match " *level: *([a-z]*)" line;
+                    comment = line == "" || lib.match " *#.*" line != null;
+                    isO7 = state.pendingCat == "o-07-agent-mcp-operability";
+                  in
+                    if comment then state
+                    else if idRow != null then
+                      (if isO7 && state.pendingIsO7row
+                       then let closed = [ { id = state.pending; status = state.pendingStatus; level = state.pendingLevel; } ]; in state // { seen = state.seen ++ closed; pending = builtins.head idRow; pendingStatus = ""; pendingLevel = ""; pendingIsO7row = false; }
+                       else state // { pending = builtins.head idRow; pendingStatus = ""; pendingLevel = ""; pendingIsO7row = false; })
+                    else if catRow != null then
+                      state // { pendingCat = builtins.head catRow; pendingIsO7row = builtins.head catRow == "o-07-agent-mcp-operability"; }
+                    else if statRow != null then
+                      state // { pendingStatus = builtins.head statRow; }
+                    else if lvlRow != null then
+                      state // { pendingLevel = builtins.head lvlRow; }
+                    else state;
+                scan = builtins.foldl' step
+                  {
+                    seen = [ ];
+                    pending = "";
+                    pendingCat = "";
+                    pendingStatus = "";
+                    pendingLevel = "";
+                    pendingIsO7row = false;
+                  }
+                  lines;
+                # flush the LAST row (no next-id close at EOF)
+                lastFlush = if scan.pendingIsO7row && scan.pending != ""
+                  then scan.seen ++ [ { id = scan.pending; status = scan.pendingStatus; level = scan.pendingLevel; } ]
+                  else scan.seen;
+                o7Rows = lastFlush;
+                uniqRows = lib.unique o7Rows;
+                bespokeIds = map (r: r.id)
+                  (builtins.filter (r: r.status == "bespoke") uniqRows);
+                expCount = builtins.length
+                  (builtins.filter (r: r.level == "exp") uniqRows);
+                pkgExported = id: builtins.hasAttr id self.packages.${system};
+                pkgMain = id: (self.packages.${system}.${id}.meta.mainProgram
+                  or (throw "o-7-gate: packages.${system}.${id} carries no meta.mainProgram — the OS lab gate's mainProgOf convention cannot bind it"));
+                # This lane's 4 landed bespoke faces; the remaining 2
+                # manifest-bespoke ids (kailash-container,
+                # headless-agent — first-party DELIVERABLES, image-wave
+                # surface per the §4.5 overlay-pending rule) stay named
+                # drops asserted absent (never silently missing).
+                landedIds = [ "hexstrike-ai" "mcp-kali-server" "kailash-mcp" "mcp-inspector" ];
+                pendingIds = [ "kailash-container" "headless-agent" ];
+              in {
+                o-7-bespoke-rows-exported = builtins.map (id:
+                  if pkgExported id
+                  then { inherit id; exported = true; }
+                  else throw "o-7-gate: FAIL — manifest row ${id} is packaging.status bespoke but packages.${system}.${id} does not exist (pkgs/${id}/ missing or .nocall)"
+                ) landedIds;
+                o-7-pending-named-drops-absent = builtins.map (id:
+                  if pkgExported id
+                  then throw "o-7-gate: FAIL — ${id} resolved on the packages surface, but its derivation lane has NOT landed (the named-drop contract says it resolves null until then — a surprise attr here means something else exported it; audit before trusting the surface)"
+                  else { inherit id; pending = true; }
+                ) pendingIds;
+                o-7-mainProgram-hexstrike = (pkgMain "hexstrike-ai") == "hexstrike-ai";
+                o-7-mainProgram-mcpkali = (pkgMain "mcp-kali-server") == "mcp-kali-server";
+                o-7-mainProgram-kailashmcp = (pkgMain "kailash-mcp") == "kailash-mcp";
+                o-7-mainProgram-inspector = (pkgMain "mcp-inspector") == "mcp-inspector";
+                o-7-exp-row-count =
+                  if expCount == 7
+                  then true
+                  else throw "o-7-gate: FAIL — expected 7 exp-class o-07 rows, found ${toString expCount}: the exp routing record drifted (§11.2 owns this surface)";
+                o-7-kailash-mcp-server-module-ships =
+                  if builtins.pathExists (self + "/cli/kailash/mcp_server.py")
+                  then true
+                  else throw "o-7-gate: FAIL — cli/kailash/mcp_server.py missing: kailash-mcp (the manifest-generated MCP face + grant-gated exec surface) is not landed";
+                o-7-kailash-mcp-grant-contract =
+                  let
+                    src = builtins.readFile (self + "/cli/kailash/mcp_server.py");
+                    has = builtins.match ".*KAILASH_GRANTS.*" src != null
+                      && builtins.match ".*KAILASH_GRANT_LOG.*" src != null
+                      && builtins.match ".*deny-by-default.*" src != null;
+                  in
+                    if has
+                    then true
+                    else throw "o-7-gate: FAIL — cli/kailash/mcp_server.py lacks the grant contract markers (KAILASH_GRANTS / KAILASH_GRANT_LOG / deny-by-default): the capability-grants v1 face is incomplete";
+              });
+            }
+            # receipt printer — all assertions fired at eval
+            ''
+            echo "o-7-deliverables-eval-proofs (KA-25, kailash-os#25):"
+            echo "$PROOFS"
+            touch $out
+          '';
         };
       };
       # ---- KA-08.4 (kailash-os#108) — torch Shape-4 variant lines (D6) ---
