@@ -339,8 +339,10 @@
           #     packages.<system> export (the auto-call surface mirrors
           #     pkgs/<id>/default.nix) with meta.mainProgram (the OS
           #     gate's mainProgOf convention binds it into the wrapper);
-          #   * the exp row count is the manifest's own (7 at this pin —
-          #     the §11.2 routing record, gate-checked);
+          #   * the exp row count is the manifest's own (7 at the
+          #     pre-purge pin; os#210 phantom purge removed 4 of them —
+          #     malicious-mcp-poc, insecure-mcp-lab, kailash-container,
+          #     headless-agent — so 3 at this pin, gate-checked);
           #   * the grant face (cli/kailash/mcp_server.py) ships the
           #     deny-by-default contract markers (KAILASH_GRANTS /
           #     KAILASH_GRANT_LOG) — the OS-side agent-grants module
@@ -410,13 +412,16 @@
                 pkgExported = id: builtins.hasAttr id self.packages.${system};
                 pkgMain = id: (self.packages.${system}.${id}.meta.mainProgram
                   or (throw "o-7-gate: packages.${system}.${id} carries no meta.mainProgram — the OS lab gate's mainProgOf convention cannot bind it"));
-                # This lane's 4 landed bespoke faces; the remaining 2
-                # manifest-bespoke ids (kailash-container,
-                # headless-agent — first-party DELIVERABLES, image-wave
-                # surface per the §4.5 overlay-pending rule) stay named
-                # drops asserted absent (never silently missing).
+                # This lane's 4 landed bespoke faces. The os#210 phantom
+                # purge (2026-10-14) removed the two first-party
+                # DELIVERABLE ids (kailash-container, headless-agent —
+                # their claimed upstream repos never existed; registry:
+                # kailash-os#210), so the pending named-drop list is
+                # empty BY CONSTRUCTION: deliverable rows cannot exist
+                # without a verified upstream now (validate_manifest
+                # upstream-realism gate, KA-05.1a).
                 landedIds = [ "hexstrike-ai" "mcp-kali-server" "kailash-mcp" "mcp-inspector" ];
-                pendingIds = [ "kailash-container" "headless-agent" ];
+                pendingIds = [ ];
               in {
                 o-7-bespoke-rows-exported = builtins.map (id:
                   if pkgExported id
@@ -433,9 +438,9 @@
                 o-7-mainProgram-kailashmcp = (pkgMain "kailash-mcp") == "kailash-mcp";
                 o-7-mainProgram-inspector = (pkgMain "mcp-inspector") == "mcp-inspector";
                 o-7-exp-row-count =
-                  if expCount == 7
+                  if expCount == 3
                   then true
-                  else throw "o-7-gate: FAIL — expected 7 exp-class o-07 rows, found ${toString expCount}: the exp routing record drifted (§11.2 owns this surface)";
+                  else throw "o-7-gate: FAIL — expected 3 exp-class o-07 rows, found ${toString expCount}: the exp routing record drifted (os#210 purge removed 4 exp rows; §11.2 owns this surface)";
                 o-7-kailash-mcp-server-module-ships =
                   if builtins.pathExists (self + "/cli/kailash/mcp_server.py")
                   then true
