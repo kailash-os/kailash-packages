@@ -167,10 +167,15 @@ categories:
     purpose: AppSec toolkit aimed at AI endpoints — the ASVS-scoped runtime surface (the layer AISVS scopes out).
     coverage: Medium
     tools: 1
-    notes: mitmproxy/zap + AI-endpoint DAST (ais primary, llm-fuzzer,
-      oauth-mcp-prober, sdl3-stream-fuzzer bespoke entries) per KA-07.4.
+    notes: mitmproxy/zap + AI-endpoint DAST per KA-07.4 (the pre-purge
+      AI-scanner/toolkit rows — ais, llm-fuzzer, oauth-mcp-prober,
+      sdl3-stream-fuzzer — were phantom-upstream and are removed; they
+      never were this category's primary; aspirational names in the
+      os#210 registry).
 
-  # ---- Layer ATTACK (8 entries, ~59 slots; KA-04.2) ----
+  # ---- Layer ATTACK (8 entries, 23 slots post-purge; KA-04.2, re-based
+  # per the os#210 phantom purge — the pre-purge ~59 counted 35 removed
+  # phantom rows) ----
   # ATLAS tactic ids verified against the official mitre-atlas/atlas-data
   # dataset (dist/v6/ATLAS-2026.05.yaml + ATLAS-2026.07.yaml): tactic ids
   # and technique placements below cross-checked per epoch — no invented
@@ -191,9 +196,12 @@ categories:
     owasp_llm:
       "2026": [LLM02]
       v2: [LLM02, LLM07]
-    notes: all bespoke (recon-ai, llm-recon, huggingface-org-scan,
-      colab-crawler) plus trufflehog (native; secondary C-8) hunting
-      leaked AI-provider keys; the recon stage of the injection class —
+    notes: trufflehog (native; secondary C-8) hunting leaked
+      AI-provider keys — the category's only row (the pre-purge four
+      bespoke recon rows recon-ai, llm-recon, huggingface-org-scan,
+      colab-crawler were phantom-upstream and are removed; aspirational
+      names in the os#210 registry); the recon stage of the injection
+      class —
       ATLAS Reconnaissance (T0006 Active Scanning, T0004 Search
       Application Repositories, T0064 Gather RAG-Indexed Targets) plus
       Resource Development (T0021 Establish Accounts, T0065 LLM Prompt
@@ -211,11 +219,12 @@ categories:
     owasp_llm:
       "2026": [LLM01]
       v2: [LLM01]
-    notes: garak/pyrit/promptfoo flagship + inj3ct-llm + the payload/data
-      packs; techniques AML.T0051 LLM Prompt Injection (direct/indirect/
-      triggered sub-techniques) and AML.T0054 LLM Jailbreak — T0051
-      Execution-placed, T0054 Defense Evasion (dataset placements);
-      ais is primary-homed in C-10.
+    notes: garak/pyrit/promptfoo flagship + the payload/data packs (the
+      pre-purge inj3ct-llm row was phantom-upstream and is removed;
+      aspirational names in the os#210 registry); techniques AML.T0051
+      LLM Prompt Injection (direct/indirect/triggered sub-techniques)
+      and AML.T0054 LLM Jailbreak — T0051 Execution-placed, T0054
+      Defense Evasion (dataset placements).
   - id: a-03-agentic-mcp-tool-use
     layer: ATTACK
     kind: category
@@ -229,8 +238,11 @@ categories:
       v2: [LLM01, LLM03, LLM06, LLM08, LLM10]
     aisvs: [C9, C10]
     notes: the novel surface (mcp-inspector, mcp-scan, mcp-guardian,
-      mcp-unsafe-deser-probe, langchain-vuln-hunter, llm-agent-fuzzer,
-      mcpoison, agent-dojo + packs). Mapped to the ATLAS 2026.07 agentic
+      mcpoison, agent-dojo — the pre-purge mcp-unsafe-deser-probe,
+      langchain-vuln-hunter, llm-agent-fuzzer rows and the
+      poisoned-skill-pack data row were phantom-upstream and are
+      removed; aspirational names in the os#210 registry). Mapped to
+      the ATLAS 2026.07 agentic
       technique set — T0053 AI Agent Tool Invocation, T0103 Deploy AI
       Agent, T0080 AI Agent Context Poisoning, T0110 AI Agent Tool
       Poisoning (executing via T0011.002 Poisoned AI Agent Tool),
@@ -252,7 +264,11 @@ categories:
     owasp_llm:
       "2026": [LLM04]
       v2: [LLM03]
-    notes: guarddog/picklescan/modelscan + the artefact inspectors;
+    notes: guarddog/picklescan/modelscan (the pre-purge inspector rows
+      gguf-template-inspector, safetensors-checker, hf-repo-inspector,
+      namespace-reuse-check and the torch-load-poc row were
+      phantom-upstream and are removed; aspirational names in the os#210
+      registry);
       AML.T0010 AI Supply Chain Compromise (Initial Access; the
       artefact-variety parent technique in the 2026 matrix) with
       T0011.001 Malicious Package executing the malicious artefact
@@ -271,7 +287,9 @@ categories:
       "2026": [LLM02]
       v2: [LLM02]
     notes: counterfit (pinned reference), ART/foolbox/cleverhans research
-      stack + privacy-meter; techniques T0040/T0041/T0044/T0047 (AI Model
+      stack + privacy-meter (the pre-purge model-extraction-attack row
+      was phantom-upstream and is removed; aspirational name in the
+      os#210 registry); techniques T0040/T0041/T0044/T0047 (AI Model
       Access, TA0000) and T0024.002 Extract AI Model / T0057 LLM Data
       Leakage (Exfiltration, TA0010); LLM02 sensitive-information
       disclosure is the epoch-stable class for leakage-by-inference.
@@ -286,8 +304,12 @@ categories:
     owasp_llm:
       "2026": [LLM01]
       v2: [LLM01]
-    notes: vlm-image-injector, adversarial clothing/patches/camera packs,
-      audio-voice-clone-injector (pairs with C-7's software DSP pack);
+    notes: EMPTY post-purge (every pre-purge row — vlm-image-injector,
+      adversarial clothing/patches/camera packs,
+      audio-voice-clone-injector — was phantom-upstream and is removed;
+      aspirational names in the os#210 registry, the definition stays,
+      rebuild goes through the registry; the C-7 software-DSP pairing
+      note below carries the same correction);
       techniques T0041 Physical Environment Access (TA0000 AI Model
       Access — the camera/sensor channel), T0043 Craft Adversarial Data
       + T0043.004 Insert Backdoor Trigger (TA0001 AI Attack Staging),
@@ -304,8 +326,11 @@ categories:
     owasp_llm:
       "2026": [LLM02, LLM10]
       v2: [LLM02, LLM10]
-    notes: mlflow-bypass, the *-pwn probes, shadow-ray (ATLAS case study
-      CS0023 ShadowRay), vector-db-ripper; T0010/T0049 Exploit
+    notes: EMPTY post-purge (every pre-purge row — mlflow-bypass, the
+      *-pwn probes, shadow-ray, vector-db-ripper — was phantom-upstream
+      and is removed; aspirational names in the os#210 registry, the
+      definition stays, rebuild goes through the registry);
+      T0010/T0049 Exploit
       Public-Facing Application (Initial Access, the exposed-service
       class) + T0050 Command and Scripting Interpreter (Execution) +
       T0057 LLM Data Leakage / T0024.002 Extract AI Model (Exfiltration);
@@ -323,16 +348,22 @@ categories:
     owasp_llm:
       "2026": [LLM05]
       v2: [LLM04]
-    notes: poison-dataset-builder, trojai/trojan-lm toolkits,
-      prompt-backdoor-tool, data-exfil-via-poison, split-view-replay;
+    notes: trojai-toolkit (upstream trojai/trojai) is the category's one
+      real row — the pre-purge poison-dataset-builder,
+      trojan-lm-toolkit, prompt-backdoor-tool, data-exfil-via-poison,
+      split-view-replay rows were phantom-upstream and are removed
+      (aspirational names in the os#210 registry);
       techniques T0020 Training Data Poisoning (2026.07 dataset
       placement Persistence) and T0018.000 Poison AI Model (staging);
       LLM05 — the 2026 Data and Model Poisoning class (v2:2025 = LLM04).
 
-  # ---- Layer OPS (7 entries, 91 slots; KA-04.4) ----
+  # ---- Layer OPS (7 entries, 82 slots post-purge; KA-04.4, re-based
+  # per the os#210 phantom purge — the pre-purge 91 counted 9 removed
+  # phantom rows) ----
   # Transcribed from plan §3.6 Table 1 (post-purge census), born OPS per
   # the rename record (os#121 + mirror kp#9): B-1…B-7 → O-1…O-7
-  # row-for-row, no scope/count/order change — 91 primary slots as
+  # row-for-row, no scope/count/order change — census re-based to the
+  # post-purge 82 slots per os#210
   # planned. Platform surface, not tactic-mapped: no ATLAS field here
   # (only ATTACK carries tactics per KA-04.2). Excluded classes live in
   # the header's deliberate-exclusions ledger (§3.7) — e.g. cloud-only
@@ -345,8 +376,10 @@ categories:
     coverage: High
     tools: 18
     notes: mlflow ships as the service module — the pairing-thesis lab
-      target (A-7 mlflow-bypass runs against it; lab-default open
-      binding documented, never defaulted); dvc, git-lfs, bentoml,
+      target (the §5.5 attack/defence pairing runs against it; lab-default open
+      binding documented, never defaulted; the pre-purge mlflow-bypass
+      attack row was phantom-upstream and is removed — aspirational name
+      in the os#210 registry); dvc, git-lfs, bentoml,
       feast, kedro + kedro-datasets, clearml (module), airflow
       (module), prefect (module), wandb-cli (the CLI-only deliverable
       admitted past the §3.7 cloud-only SaaS exclusion); native
@@ -383,7 +416,10 @@ categories:
     tools: 4
     notes: ollama primary home here (with the documented tiny test
       model for offline smoke tests); llama.cpp, text-generation-webui,
-      open-webui, gguf-quantiser. Ollama/llama.cpp also serve O-2 —
+      open-webui (the pre-purge gguf-quantiser helper row was
+      phantom-upstream and is removed — the real GGUF quantisation
+      tooling is llama.cpp's own; aspirational name in the os#210
+      registry). Ollama/llama.cpp also serve O-2 —
       secondary tags at KA-05, never a second primary.
   - id: o-05-ai-engineering-sdks-dev-env
     layer: OPS
@@ -420,10 +456,14 @@ categories:
     coverage: mixed
     tools: 4
     notes: hexstrike-ai + mcp-kali-server (third-party deliverables,
-      exp), malicious-mcp-poc + insecure-mcp-lab (lab packs, exp),
-      kailash-mcp (first-party, generated from the manifest),
-      kailash-container, headless-agent image, mcp-inspector (the A-3
-      tool on dogfood duty). Capability grants (short-lived,
+      exp), kailash-mcp (first-party, generated from the manifest),
+      mcp-inspector (the A-3
+      tool on dogfood duty) — the pre-purge malicious-mcp-poc +
+      insecure-mcp-lab lab-pack rows and the kailash-container +
+      headless-agent deliverable rows were phantom-upstream and are
+      removed (aspirational names in the os#210 registry; the
+      headless-agent IMAGE profile is a separate real OS deliverable,
+      unrelated to the removed row). Capability grants (short-lived,
       human-minted) scope agent actions (R11); the CI dogfood loop runs
       the A-3 scanner suite against the distro's own kailash-mcp.
   - id: d-01-runtime-defence
@@ -433,8 +473,10 @@ categories:
     purpose: Guard and filter LLM traffic at runtime — prompts and completions pass defence rails before reaching the model or the user.
     coverage: Low
     tools: 4
-    notes: nemo-guardrails, llm-guard, guardrails-ai, rebuff, gaskunk,
-      llm-firewall, whisper-gate (§3.4); bespoke pip derivations,
+    notes: nemo-guardrails, llm-guard, guardrails-ai, rebuff (§3.4) —
+      the pre-purge gaskunk/llm-firewall/whisper-gate rows were
+      phantom-upstream and are removed (aspirational names in the os#210
+      registry); bespoke pip derivations,
       Apache/MIT licence class (§11.3); the defensive counterpart the
       attack lanes' requires-target tooling is tested against.
   - id: d-02-detection-monitoring-observability
@@ -445,8 +487,10 @@ categories:
     coverage: Low
     tools: 6
     notes: langfuse (module — the heavy one), phoenix, whylogs, evidently,
-      otel-ai, prompt-injection-detector-bert, canary-token-generator,
-      giskard (§3.4); OTel-aligned AI observability feeding incident
+      otel-ai, giskard (§3.4) — the pre-purge
+      prompt-injection-detector-bert + canary-token-generator rows were
+      phantom-upstream and are removed (aspirational names in the os#210
+      registry); OTel-aligned AI observability feeding incident
       response.
   - id: d-03-assurance-evals-benchmarks
     layer: DEFENCE
@@ -466,8 +510,11 @@ categories:
     coverage: Medium-High
     tools: 8
     notes: cosign, syft, grype, trivy, cyclonedx-cli (native, pinned) plus
-      cdxgen, sigstore-tools, modelsign, hf-repo-auditor,
-      model-card-toolkit (bespoke, §3.4); the AI-BOM flow lands at
+      cdxgen, modelsign, model-card-toolkit (bespoke, §3.4) — the
+      pre-purge sigstore-tools + hf-repo-auditor helper rows were
+      phantom-upstream and are removed (the real sigstore client is
+      cosign itself; aspirational names in the os#210 registry); the
+      AI-BOM flow lands at
       Phase 6 per the release order.
   - id: d-05-threat-modelling
     layer: DEFENCE
@@ -476,9 +523,11 @@ categories:
     purpose: Threat-model AI systems — ATLAS-mapped worksheet packs, visualisers and playbook templates producing reviewable artefacts.
     coverage: Very Low
     tools: 1
-    notes: genai-threat-modelling-templates, atlas-visualiser,
-      stride-ai-worksheet, maestro, atlas-case-study-explorer,
-      ai-incident-playbook-packs (§3.4); data + small CLIs; the AISVS /
+    notes: maestro plus the real workbook workflow this category keeps
+      (the pre-purge template/pack rows genai-threat-modelling-templates,
+      atlas-visualiser, stride-ai-worksheet, atlas-case-study-explorer,
+      ai-incident-playbook-packs were phantom-upstream and are removed;
+      aspirational names in the os#210 registry); the AISVS /
       MLSVS assurance chapter mappings anchor here (§3.8) and are
       transcribed per-tool at KA-05.5.
   - id: d-06-governance-regulation-mapping
@@ -488,9 +537,12 @@ categories:
     purpose: Map AI deployments to governance regimes — EU AI Act checks, NIST AI RMF tooling, ISO/IEC 42001 templates, vendor review forms.
     coverage: n/a
     tools: 0
-    notes: ai-act-compliance-checker, nist-ai-rmf-toolkit,
-      iso-42001-templates, genai-vendor-review-form (§3.4); pure
-      content (data + CLI); the AU IRAP/ISM governance lens-pack is
+    notes: EMPTY post-purge (every pre-purge row —
+      ai-act-compliance-checker, nist-ai-rmf-toolkit,
+      iso-42001-templates, genai-vendor-review-form — was phantom-origin
+      and is removed; aspirational names in the os#210 registry, the
+      definition stays, rebuild goes through the registry); the AU
+      IRAP/ISM governance lens-pack is
       D-6 follow-on work (KA-40, backlog).
   - id: d-07-standards-verification
     layer: DEFENCE
@@ -499,8 +551,12 @@ categories:
     purpose: Verify against security standards — ASVS 5.0 / AISVS 1.0 / MLSVS / OWASP LLM Top 10 evidence tooling feeding the kailash verifier.
     coverage: n/a
     tools: 0
-    notes: asvs-verification-toolkit, aisvs-1.0-toolkit, mlsvs-toolkit,
-      llm-top10-toolkit, kailash-verifier (§3.4); D-7 is the
+    notes: EMPTY post-purge (every pre-purge row —
+      asvs-verification-toolkit, aisvs-1.0-toolkit, mlsvs-toolkit,
+      llm-top10-toolkit, kailash-verifier — was phantom-upstream and is
+      removed; the OWASP/NIST STANDARDS are real, the claimed toolkit
+      repos were not; aspirational names in the os#210 registry, the
+      definition stays, rebuild goes through the registry); D-7 is the
       verification-standards category — the kailash verifier's source
       data (§3.8 standard-first navigation mode); AISVS 1.0 chapters
       C01–C12 and the MLSVS section set are the mapping targets,
