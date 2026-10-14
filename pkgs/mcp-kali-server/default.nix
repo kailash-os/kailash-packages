@@ -1,8 +1,8 @@
 # mcp-kali-server — Wh0am123/MCP-Kali-Server, the Kali toolchain exposed
-# over MCP for agent operators (KA-25, kailash-os#25; plan §3.5 O-7
+# over MCP for agent operators (KA-25, kailash-os#25; spec §2.5 O-7
 # third-party deliverable, exp grant-gated).
 #
-# Shape 1 (plan §5.3): pure python, pinned from the upstream git head —
+# Shape 1 (spec §4.3): pure python, pinned from the upstream git head —
 # pin 00154c053845b2ec4c3eef49ad09dd9bb2d3b7aa (main head, committer
 # date 2026-03-17T20:46:38Z, verified via the GitHub commits API; the
 # manifest row's source block is the routing record). Licence MIT

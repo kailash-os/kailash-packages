@@ -25,7 +25,7 @@
 # pname override: the drv distinguishes itself (`torch-nvidia`) while
 # inheriting torch's version and passthru contract.
 #
-# Documented fallback (plan §5.3): if the nixpkgs variant fights
+# Documented fallback (spec §4.3): if the nixpkgs variant fights
 # (breakage or licence churn), the nixvital/ml-pkgs torch-family
 # overlay is the designated fallback source for this variant line —
 # compose it at the flake's §4.4 optional-inputs seam; the default

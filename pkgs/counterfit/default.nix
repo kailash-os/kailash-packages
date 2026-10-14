@@ -1,5 +1,5 @@
 # counterfit — Azure/counterfit, the A-5 model-attack CLI (KA-12.2 #85).
-# Shape 1 (interpreted-language tools, plan §5.3) on the garak exemplar:
+# Shape 1 (interpreted-language tools, spec §4.3) on the garak exemplar:
 # buildPythonApplication over the committed nvfetcher pin, doCheck = false
 # (VM tests cover behaviour at kailash-os#65), pythonImportsCheck as the
 # smoke gate.

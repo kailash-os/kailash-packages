@@ -42,10 +42,10 @@ one-primary-category with secondary tags is validator-enforced; layer/category/
 tool facts are written here, never duplicated into the OS modules, READMEs or
 site copy.
 
-The census is the spec's §3.6 post-purge table: CLASSIC (~141 tool slots),
+The census is [the spec's §2.6 post-purge table](https://github.com/kailash-os/kailash-os/blob/master/docs/spec.md#26-the-full-category-table-post-purge-census) (CLASSIC 141 tool slots),
 ATTACK (~59), DEFENCE (~46), OPS (~91), plus the C-7 SDR pack recorded as
 `opt-in: data-pack` — never on default profiles or images. Deliberate
-exclusions (§3.7: no hardware/RF/wifi tools, no paid-licence tools, no
+exclusions ([spec §2.7](https://github.com/kailash-os/kailash-os/blob/master/docs/spec.md#27-deliberate-exclusions): no hardware/RF/wifi tools, no paid-licence tools, no
 unmaintained or cloud-only tools) are the "no-resurrection guard": the
 manifest validator refuses purged tooling — do not reintroduce it.
 

@@ -1,8 +1,8 @@
 # hexstrike-ai — 0x4m4/hexstrike-ai: the MCP server that lets AI agents
-# autonomously run 100+ security tools (KA-25, kailash-os#25; plan §3.5
+# autonomously run 100+ security tools (KA-25, kailash-os#25; spec §2.5
 # O-7 third-party deliverable, exp grant-gated).
 #
-# Shape 1 (plan §5.3): pure python, pinned from the upstream git head —
+# Shape 1 (spec §4.3): pure python, pinned from the upstream git head —
 # pin d689933ff579d839c676c82b231f8e98326c5f04 (master head, committer
 # date 2026-08-03T14:33:01Z, verified via the GitHub commits API; the
 # manifest row's source block is the routing record). Licence MIT

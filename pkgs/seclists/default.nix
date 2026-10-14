@@ -1,5 +1,5 @@
 # seclists — the SecLists corpus as the kailash-data.wordlists-mega DATA
-# pack (manifest id seclists, c-05; KA-29, kailash-os#29); plan §3.2 C-5
+# pack (manifest id seclists, c-05; KA-29, kailash-os#29); spec §2.2 C-5
 # "seclists ~100 MB behind `kailash-data.wordlists-mega`".
 #
 # Data pack NOT a tool: unpackaged, byte-identical corpus passthrough
@@ -11,7 +11,7 @@
 # SIZE (the reason this is a data pack, never a category-module row):
 # the pinned tag's tree is ~3.6 GB checked out; the fetched tarball is
 # ~0.5 GB and the unpacked corpus ~1.8 GB — it rides NO default
-# profile/ISO (plan §8.1: "the wordlist packs are excluded from every
+# profile/ISO (spec §7.1: "the wordlist packs are excluded from every
 # default ISO by construction"); the OS-side flips are per-host opt-ins.
 #
 # LICENCE (record-uncertainty rule, kailash-os#104 posture): the repo

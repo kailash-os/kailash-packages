@@ -1,12 +1,12 @@
 """kailash-mcp — the distro's own MCP server, generated from the manifest
-(KA-25, kailash-os#25; plan §3.5 O-7, §11.2).
+(KA-25, kailash-os#25; spec §2.5 O-7, §11.2).
 
 First-party module of the kailash CLI package (the same cli/ source tree
 pkgs/kailash builds): an MCP stdio server whose tools serve the two
 manifest files through the same loader (`kailash.manifest`) the CLI uses
 — the manifest is the only registry, the server never hardcodes a row.
 
-CAPABILITY-GRANT POSTURE (plan §11.2, the KA-25 v1 grant design):
+CAPABILITY-GRANT POSTURE (spec §9.2, the KA-25 v1 grant design):
   * ALWAYS available (read-only, safe for unsupervised agents):
       - kailash_list_tools      — manifest rows with per-category filters
       - kailash_search_tools    — substring/field search
@@ -19,7 +19,7 @@ CAPABILITY-GRANT POSTURE (plan §11.2, the KA-25 v1 grant design):
         listed), and whose allow_exp covers safety.level == "exp" tools.
         Every invocation — allowed OR refused — appends one JSON line to
         the grant action log (KAILASH_GRANT_LOG), so grant-scoped actions
-        are logged (plan §11.2).
+        are logged (spec §9.2).
 
 Unset KAILASH_GRANTS ⇒ no grants exist ⇒ kailash_run_tool always
 refuses (deny-by-default; unsupervised agents keep list/search/read
@@ -233,7 +233,7 @@ def build_server():
             "note": ("grant v1 scopes and logs; execution routes through "
                      "the host's lab-mode gate (KAILASH_LAB_MODE "
                      "double-key) in the wave that lands the exec "
-                     "transport — plan §11.2"),
+                     "transport — spec §9.2"),
             "holder": live[0]["holder"],
         })
 

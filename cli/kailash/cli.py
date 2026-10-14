@@ -1,6 +1,6 @@
 """kailash CLI — list / search / info over the two manifest files.
 
-KA-14.1 (plan §7.1–7.4): the commands read the manifest and print; the
+KA-14.1 (spec §6.1–7.4): the commands read the manifest and print; the
 nix shelling-out commands (shell/enable/doctor/...) are later KA-14
 children's surface. Machine-readable posture per §7.4: every command
 carries --json (stable JSON shape, null for absent fields) — accepted
@@ -295,7 +295,7 @@ def cmd_validate(args):
 def build_parser():
     p = argparse.ArgumentParser(
         prog=PROG,
-        description="Kailash OS manifest CLI (KA-14.1; plan §7). Commands "
+        description="Kailash OS manifest CLI (KA-14.1; spec §6). Commands "
                     "read the manifest; the nix-wrapper commands land with "
                     "later KA-14 children.")
     p.add_argument(

@@ -1,6 +1,6 @@
-# kailash — the manifest-aware CLI core (KA-14.1, plan §7.1–7.4).
+# kailash — the manifest-aware CLI core (KA-14.1, spec §6.1–7.4).
 
-The manifest-aware front-end (plan §7.1): Python, packaged in the packages
+The manifest-aware front-end (spec §6.1): Python, packaged in the packages
 repo, driven by the same two manifest files — **not a second source of
 truth**. This directory carries the loader + command core; the wheel
 metadata is `pyproject.toml` (the packaged artifact lands with KA-14.2 via
@@ -24,17 +24,17 @@ cli/
 Paths resolve relative to the package module (`cli/kailash/__file__` →
 `../../manifest/…`), which holds in the repo tree, in the flake source
 tree (`src = self`), and installed — the wheel ships the whole `cli/`
-subtree. `KAILASH_MANIFEST` (the §7.3 env spelling; §7.3's store-baked
+subtree. `KAILASH_MANIFEST` (the [spec §6.3](https://github.com/kailash-os/kailash-os/blob/master/docs/spec.md#63-the-manifest-baked-path-the-drift-killer) env spelling; [spec §6.3](https://github.com/kailash-os/kailash-os/blob/master/docs/spec.md#63-the-manifest-baked-path-the-drift-killer)'s store-baked
 wiring lands with KA-14.2's wrapProgram) overrides both files' directory.
 pyyaml is declared the same way the validator check declares it —
 `python3.withPackages (ps: [ ps.pyyaml ])` in the check env, the same
 dependency in the wheel metadata.
 
-Data accessors only: the §5.2 manifest invariants stay single-homed in
+Data accessors only: the [spec §4.2](https://github.com/kailash-os/kailash-os/blob/master/docs/spec.md#42-the-tool-manifest-the-single-source-of-truth) manifest invariants stay single-homed in
 `tests/validate_manifest.py` (AGENTS.md single-home rule) — this package
 never re-implements them.
 
-## Command surface (§7.2 slice)
+## Command surface (spec §6.2 slice)
 
 - `kailash list [--layer L] [--category C] [--status S] [--json]` — tools
   rows once the census table fills (status filters on
@@ -49,7 +49,7 @@ never re-implements them.
   data-driven assertions).
 - `kailash manifest validate` — runs the repo manifest gate
   (`tests/validate_manifest.py`) in-process against the manifest the CLI
-  itself resolves (the §7.3 per-file env contract included: a baked
+  itself resolves (the [spec §6.3 per-file env contract](https://github.com/kailash-os/kailash-os/blob/master/docs/spec.md#63-the-manifest-baked-path-the-drift-killer) included: a baked
   store path validates the baked bytes). Exit 0 with the validator's OK
   line on a well-formed manifest, 1 with the FAIL line on gate failure,
   2 when `tests/` is not beside the package (installed wheels carry
@@ -57,7 +57,7 @@ never re-implements them.
   CI gate locally" clause (KA-14.3, kailash-os#137).
 - `kailash profile list [--json]` — the KA-17.2 (kailash-os#115) profile
   stub: one row per OS profile, `<name>\t<layers-summary>\t<description>`,
-  read from a profiles.json file named by the §7.3-adjacent per-file env
+  read from a profiles.json file named by the [spec §6.3]-adjacent per-file env
   var `KAILASH_PROFILES` (the packaged binary's wrapProgram bake; the
   OS-side generator produces the file — ko#115 follow-through). Unset,
   the file resolves beside the package (`profiles/profiles.json` — the
@@ -67,7 +67,7 @@ never re-implements them.
 
 Exit codes: **0** ok · **1** no results · **2** usage error or
 unreadable/unparsable manifest (argparse exits 2 on its own). `--json`
-emits a stable JSON shape per §7.4 and is accepted before or after the
+emits a stable JSON shape per spec §6.4 and is accepted before or after the
 subcommand.
 
 ## Verification

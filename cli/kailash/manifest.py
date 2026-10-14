@@ -1,4 +1,4 @@
-"""Loader for the two Kailash manifest files (KA-14.1, plan §7.1).
+"""Loader for the two Kailash manifest files (KA-14.1, spec §6.1).
 
 Per-file env overrides per the §7.3 bake contract (KA-14.2):
 KAILASH_MANIFEST names the tools.yaml FILE and KAILASH_CATEGORIES the

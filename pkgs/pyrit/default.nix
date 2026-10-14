@@ -1,5 +1,5 @@
 # pyrit — pinned from main (nvfetcher/_sources; KA-11.1 #82).
-# Shape 1 (pure python, plan §5.3): buildPythonApplication over the
+# Shape 1 (pure python, spec §4.3): buildPythonApplication over the
 # committed pin; doCheck = false (the upstream suite drives live LLM
 # backends) with pythonImportsCheck as the smoke gate
 # (harness-before-capability). Recipe lineage: the nixpkgs

@@ -1,5 +1,5 @@
 # art — adversarial-robustness-toolbox (Trusted-AI/adversarial-robustness-toolbox; KA-12.1 #84).
-# Shape 1 (interpreted-language tools, plan §5.3): buildPythonLibrary over
+# Shape 1 (interpreted-language tools, spec §4.3): buildPythonLibrary over
 # the committed nvfetcher pin, doCheck = false (no framework tests in the
 # build sandbox), pythonImportsCheck ["art", "art.attacks.evasion",
 # "art.estimators.classification"] as the smoke gate. Recipe lineage: the
@@ -16,7 +16,7 @@
 # import dependency. The framework extras stay documented opt-ins, never
 # build inputs (the pyrit deps.nix scope rule — R2b, §5.3).
 #
-# Licence: MIT — read from the upstream LICENSE at the pin (plan §11.3
+# Licence: MIT — read from the upstream LICENSE at the pin (spec §9.3
 # carried "AGPL-class" unverified; this packaging corrects the record in
 # the manifest entry and PR). Interpreter: python313 — the lock's
 # default python3 is 3.14 and counterfit/a-5 sibling pinning keeps the

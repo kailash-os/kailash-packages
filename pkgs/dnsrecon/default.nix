@@ -1,5 +1,5 @@
 # dnsrecon — pinned from master (nvfetcher/_sources; KA-02.3 #68).
-# Shape 1 (pure python, plan §5.3): buildPythonApplication over the
+# Shape 1 (pure python, spec §4.3): buildPythonApplication over the
 # committed pin; doCheck = false (tests hit live DNS) with
 # pythonImportsCheck as the smoke gate (harness-before-capability).
 # Recipe lineage: nixpkgs pkgs/by-name/dn/dnsrecon, rebuilt against the

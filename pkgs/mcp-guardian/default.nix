@@ -1,6 +1,6 @@
 # mcp-guardian — EqtyLab's MCP Guardian, the proxy/guard layer for
 # exercising MCP server controls (KA-22, kailash-os#22; A-3 agentic/MCP
-# tool-use; plan §9 Phase 5). Shape 4-adjacent (Rust workspace, §5.3):
+# tool-use; spec §8 Phase 5). Shape 4-adjacent (Rust workspace, §5.3):
 # buildRustPackage over the committed nvfetcher pin with the workspace
 # Cargo.lock as the lock pin (hash pinned, cargo-vendor hook).
 #

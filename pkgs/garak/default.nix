@@ -1,5 +1,5 @@
 # garak — LLM vulnerability scanner (NVIDIA/garak; KA-10.1 #80).
-# Shape 1 (interpreted-language tools, plan §5.3): buildPythonApplication
+# Shape 1 (interpreted-language tools, spec §4.3): buildPythonApplication
 # over the committed nvfetcher pin, doCheck = false (VM tests cover
 # behaviour at kailash-os#65) and pythonImportsCheck ["garak"] as the
 # smoke gate. Recipe lineage: garak's own pyproject (flit_core backend,

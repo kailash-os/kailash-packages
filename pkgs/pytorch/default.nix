@@ -29,7 +29,7 @@
 # (.nocall-excluded from this default surface — never pulled by
 # default; labelled CI jobs build it). Documented fallback if the
 # nixpkgs variant fights: the nixvital/ml-pkgs torch-family overlay
-# (plan §5.3; the seam is documented in flake.nix).
+# (spec §4.3; the seam is documented in flake.nix).
 {
   lib,
   python3Packages,

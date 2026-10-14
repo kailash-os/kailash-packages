@@ -1,4 +1,4 @@
-# The auto-call harness (KA-02.3 #68, plan §5.5).
+# The auto-call harness (KA-02.3 #68, spec §4.5).
 #
 # Every directory under pkgs/ is one tool whose derivation takes
 # `pkg ` — the overlay-aware package set (the class in which nixpkgs

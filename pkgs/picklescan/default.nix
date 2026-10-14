@@ -1,6 +1,6 @@
 # picklescan — mmaitre314/picklescan, the static security scanner for
 # pickle/PyTorch model files (KA-22, kailash-os#22; A-4 model supply
-# chain; plan §9 Phase 5). Shape 1 (§5.3): buildPythonApplication over
+# chain; spec §8 Phase 5). Shape 1 (§5.3): buildPythonApplication over
 # the committed nvfetcher pin; setuptools backend (setup.cfg metadata,
 # version 1.0.5 at the pin), zero runtime deps beyond the stdlib
 # (install_requires is EMPTY upstream — verified at the pin), so the

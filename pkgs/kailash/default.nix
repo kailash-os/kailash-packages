@@ -1,6 +1,6 @@
 # kailash — pinned to THIS repository's cli subtree (KA-14.1/KA-14.2).
 #
-# The CLI core is a first-party package (plan §7.1: "packaged in the
+# The CLI core is a first-party package (spec §6.1: "packaged in the
 # packages repo"), not an upstream pin: the source is the manifest-aware
 # cli/ directory at the repo root — the same tree the flake's checks
 # exercise — so the derivation carries the loader + commands exactly as

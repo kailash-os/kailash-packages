@@ -1,5 +1,5 @@
 # guarddog — DataDog/guarddog, the PyPI/npm malicious-package scanner
-# (KA-22, kailash-os#22; A-4 model supply chain; plan §9 Phase 5).
+# (KA-22, kailash-os#22; A-4 model supply chain; spec §8 Phase 5).
 # Shape 1 (§5.3): buildPythonApplication over the committed nvfetcher
 # pin; doCheck = false (the upstream suite needs network-dependent
 # analyser fixtures), pythonImportsCheck ["guarddog"] as the smoke gate
