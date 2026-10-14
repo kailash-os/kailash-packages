@@ -149,7 +149,7 @@ categories:
     name: Exploitation & Post-Exploitation (software)
     purpose: Software-target exploitation, webshells, privesc/post-exploitation.
     coverage: Medium
-    tools: 9
+    tools: 8
     notes: software-only — the AD/lateral-movement/C2 arsenal is excluded
       as doctrine (§4.5); metasploit pinned (KA-07.3).
   - id: c-09-forensics-ir-reporting
@@ -166,7 +166,7 @@ categories:
     name: Runtime AppSec for AI Systems
     purpose: AppSec toolkit aimed at AI endpoints — the ASVS-scoped runtime surface (the layer AISVS scopes out).
     coverage: Medium
-    tools: 8
+    tools: 1
     notes: mitmproxy/zap + AI-endpoint DAST (ais primary, llm-fuzzer,
       oauth-mcp-prober, sdl3-stream-fuzzer bespoke entries) per KA-07.4.
 
@@ -186,7 +186,7 @@ categories:
     name: AI Reconnaissance & Target Discovery
     purpose: Discover the AI surfaces a target exposes — models, agents, org artefacts, leaked AI-provider credentials.
     coverage: Very Low
-    tools: 5
+    tools: 1
     atlas_tactics: [AML.TA0002]
     owasp_llm:
       "2026": [LLM02]
@@ -206,7 +206,7 @@ categories:
     name: LLM Prompt Injection & Jailbreaking
     purpose: Generation-stage prompt attacks — direct/indirect injection, jailbreaks, payload corpora.
     coverage: Low-Medium
-    tools: 8
+    tools: 6
     atlas_tactics: [AML.TA0005, AML.TA0007]
     owasp_llm:
       "2026": [LLM01]
@@ -222,7 +222,7 @@ categories:
     name: Agentic, MCP & Tool-Use Attacks
     purpose: Attack the agentic control plane — tool-use/MCP scanners, agent fuzzers, poisoned-tool probes.
     coverage: Very Low
-    tools: 9
+    tools: 5
     atlas_tactics: [AML.TA0005, AML.TA0006, AML.TA0008, AML.TA0013, AML.TA0015]
     owasp_llm:
       "2026": [LLM01, LLM03, LLM08, LLM10]
@@ -247,7 +247,7 @@ categories:
     name: Model Supply Chain & Artefact Poisoning
     purpose: Attack the model/artefact supply chain — pickles/weights/registry scanners and artefact inspectors.
     coverage: Very Low
-    tools: 8
+    tools: 3
     atlas_tactics: [AML.TA0004, AML.TA0005]
     owasp_llm:
       "2026": [LLM04]
@@ -265,7 +265,7 @@ categories:
     name: Model Extraction, Inversion & MIA
     purpose: Model theft and privacy attacks — extraction, inversion, membership inference.
     coverage: Medium
-    tools: 8
+    tools: 7
     atlas_tactics: [AML.TA0000, AML.TA0010]
     owasp_llm:
       "2026": [LLM02]
@@ -281,7 +281,7 @@ categories:
     name: Multi-modal & Physical-AI Attacks
     purpose: Semantic attacks past the text box — image/voice/camera injection, adversarial visuals; no RF (§3.7).
     coverage: Very Low
-    tools: 5
+    tools: 0
     atlas_tactics: [AML.TA0000, AML.TA0001]
     owasp_llm:
       "2026": [LLM01]
@@ -299,7 +299,7 @@ categories:
     name: AI System Exploitation
     purpose: Exploit deployed AI platform services — inference servers, gateways, vector stores (§6.5 pairing thesis).
     coverage: Very Low
-    tools: 9
+    tools: 0
     atlas_tactics: [AML.TA0004, AML.TA0005, AML.TA0010]
     owasp_llm:
       "2026": [LLM02, LLM10]
@@ -318,7 +318,7 @@ categories:
     name: Data Poisoning & Dataset Attacks
     purpose: Upstream-of-model attack tooling — dataset poisoning, backdoored training data, split-view replay.
     coverage: Very Low
-    tools: 6
+    tools: 1
     atlas_tactics: [AML.TA0001, AML.TA0006]
     owasp_llm:
       "2026": [LLM05]
@@ -358,7 +358,7 @@ categories:
     name: Compute & Serving Infrastructure
     purpose: Model serving, orchestration and container runtimes — the deployed-AI platform the attack layers target.
     coverage: Medium
-    tools: 13
+    tools: 11
     notes: vllm, tgi, torchserve, kserve + ray (module);
       triton-inference-server as the docker-wrapper (§5.3 Shape 3 —
       attack-surface tooling is never this shape); ollama, llama.cpp,
@@ -380,7 +380,7 @@ categories:
     name: Local LLM & Inference Labs
     purpose: Local model serving and inference lab UIs — the self-hosted generation surface.
     coverage: Medium-High
-    tools: 5
+    tools: 4
     notes: ollama primary home here (with the documented tiny test
       model for offline smoke tests); llama.cpp, text-generation-webui,
       open-webui, gguf-quantiser. Ollama/llama.cpp also serve O-2 —
@@ -406,7 +406,7 @@ categories:
     name: Documentation, Reporting & Authoring
     purpose: Engagement-report and docs authoring — the quarto/pandoc/typst pipeline behind generated reports.
     coverage: High
-    tools: 12
+    tools: 10
     notes: quarto, pandoc, typst, mdbook, drawio, excalidraw,
       mermaid-cli, obsidian native; texlive-full rides the opt-in
       kailash-data pack (never on default ISOs, §8.1 budgets) inside
@@ -418,7 +418,7 @@ categories:
     name: Agent & MCP Operability
     purpose: Operate AI agents inside the distro — the MCP server surface, container/lab packs, capability grants.
     coverage: mixed
-    tools: 8
+    tools: 4
     notes: hexstrike-ai + mcp-kali-server (third-party deliverables,
       exp), malicious-mcp-poc + insecure-mcp-lab (lab packs, exp),
       kailash-mcp (first-party, generated from the manifest),
@@ -432,7 +432,7 @@ categories:
     name: AI Runtime Defence & Guardrails
     purpose: Guard and filter LLM traffic at runtime — prompts and completions pass defence rails before reaching the model or the user.
     coverage: Low
-    tools: 7
+    tools: 4
     notes: nemo-guardrails, llm-guard, guardrails-ai, rebuff, gaskunk,
       llm-firewall, whisper-gate (§3.4); bespoke pip derivations,
       Apache/MIT licence class (§11.3); the defensive counterpart the
@@ -443,7 +443,7 @@ categories:
     name: AI Detection, Monitoring, Observability & IR
     purpose: Detect and observe AI-system abuse — LLM traffic telemetry, prompt-injection detection models, canary tokens, incident-response hooks.
     coverage: Low
-    tools: 8
+    tools: 6
     notes: langfuse (module — the heavy one), phoenix, whylogs, evidently,
       otel-ai, prompt-injection-detector-bert, canary-token-generator,
       giskard (§3.4); OTel-aligned AI observability feeding incident
@@ -464,7 +464,7 @@ categories:
     name: Model Provenance, Signing & Trust
     purpose: Prove where models and artefacts came from — provenance attestation, model signing, SBOM/AI-BOM scanning for model supply chains.
     coverage: Medium-High
-    tools: 10
+    tools: 8
     notes: cosign, syft, grype, trivy, cyclonedx-cli (native, pinned) plus
       cdxgen, sigstore-tools, modelsign, hf-repo-auditor,
       model-card-toolkit (bespoke, §3.4); the AI-BOM flow lands at
@@ -475,7 +475,7 @@ categories:
     name: AI Threat Modelling
     purpose: Threat-model AI systems — ATLAS-mapped worksheet packs, visualisers and playbook templates producing reviewable artefacts.
     coverage: Very Low
-    tools: 6
+    tools: 1
     notes: genai-threat-modelling-templates, atlas-visualiser,
       stride-ai-worksheet, maestro, atlas-case-study-explorer,
       ai-incident-playbook-packs (§3.4); data + small CLIs; the AISVS /
@@ -487,7 +487,7 @@ categories:
     name: AI Governance & Regulation Mapping
     purpose: Map AI deployments to governance regimes — EU AI Act checks, NIST AI RMF tooling, ISO/IEC 42001 templates, vendor review forms.
     coverage: n/a
-    tools: 4
+    tools: 0
     notes: ai-act-compliance-checker, nist-ai-rmf-toolkit,
       iso-42001-templates, genai-vendor-review-form (§3.4); pure
       content (data + CLI); the AU IRAP/ISM governance lens-pack is
@@ -498,7 +498,7 @@ categories:
     name: Standards Verification Toolkit
     purpose: Verify against security standards — ASVS 5.0 / AISVS 1.0 / MLSVS / OWASP LLM Top 10 evidence tooling feeding the kailash verifier.
     coverage: n/a
-    tools: 5
+    tools: 0
     notes: asvs-verification-toolkit, aisvs-1.0-toolkit, mlsvs-toolkit,
       llm-top10-toolkit, kailash-verifier (§3.4); D-7 is the
       verification-standards category — the kailash verifier's source

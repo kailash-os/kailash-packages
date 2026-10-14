@@ -1,0 +1,1012 @@
+{
+  "checked_at": "2026-10-14",
+  "manual_entries": {
+    "chkrootkit.org/chkrootkit": {
+      "evidence": "canonical upstream home chkrootkit.org (search-receipt verified 2026-10-14: official project page describing the tool suite; distributions ship 0.58b/0.59 from there; GitHub Magentron/chkrootkit is a fork). Site is the release home \u2014 manual receipt per the probe contract (project site, not an API).",
+      "vcs_url": "https://www.chkrootkit.org/",
+      "verdict": "ok"
+    },
+    "sourceforge/sox": {
+      "evidence": "canonical upstream is the sourceforge.net/projects/sox project (maintainers cbagwell/mansr/robs/rrt/uklauer, updated 2024); sourceforge bot-walls scripted GETs (HTTP 403 by design) \u2014 verified via public search receipts + the Debian salsa mirror sox-ng, not the probe script. Manual contract per probe rule.",
+      "vcs_url": "https://sourceforge.net/projects/sox/",
+      "verdict": "ok"
+    }
+  },
+  "policy": "every tools.yaml vcs_url must record verdict ok here; a row whose upstream record is missing or verdict!=ok is a fabrication (the tool does not exist) and must not ship",
+  "prober": "tests/generate_upstream_cache.py (GitHub API; org-token, unauthenticated-equivalent rate)",
+  "schema": "kailash.upstream-verification-cache/1",
+  "upstreams": {
+    "0x4m4/hexstrike-ai": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "AllegroAI/clearml": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "Arize-ai/phoenix": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "Azure/counterfit": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "CISOfy/lynis": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "CodeMason/JavaSnoop": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "CycloneDX/cdxgen": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "CycloneDX/cyclonedx-cli": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "DataDog/guarddog": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "EleutherAI/lm-evaluation-harness": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "EnableSecurity/wafw00f": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "Giskard-AI/giskard": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "GreatScottGadgets/hackrf": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "JailbreakBench/jailbreakbench": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "JesusFreke/smali": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "Konloch/bytecode-viewer": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "NVIDIA-NeMo/Guardrails": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "NVIDIA/garak": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "NVIDIA/nvidia-container-toolkit": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "NationalSecurityAgency/ghidra": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "NixOS/nixpkgs": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "OJ/gobuster": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "PrefectHQ/prefect": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "ReFirmLabs/binwalk": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "RobustBench/robustbench": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "Rootkit-Hunter/rkhunter": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "SigmaHQ/sigma-cli": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "SparrowOchon/dnsenum2": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "TeX-Live/texlive-source": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "Trusted-AI/AIF360": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "Trusted-AI/adversarial-robustness-toolbox": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "Wh0am123/MCP-Kali-Server": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "WithSecureLabs/chainsaw": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "aboul3la/Sublist3r": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "agentic-threat-modeling/MAESTRO": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "anchore/grype": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "anchore/syft": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "angr/angr": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "anthropics/anthropic-sdk-python": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "apache/airflow": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "aquasecurity/trivy": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "assetnote/kiterunner": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "astral-sh/ruff": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "astral-sh/uv": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "bee-san/RustScan": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "bentoml/BentoML": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "bethgelab/foolbox": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "blackploit/hash-identifier": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "blechschmidt/massdns": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "capstone-engine/capstone": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "cgsecurity/testdisk": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "chroma-core/chroma": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "cleverhans-lab/cleverhans": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "coder/code-server": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "commixproject/commix": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "confident-ai/deepeval": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "containers/podman": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "crewAIInc/crewAI": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "d3mondev/puredns": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "danielmiessler/SecLists": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "darkoperator/dnsrecon": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "dbcli/mssql-cli": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "dbcli/mycli": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "digininja/CeWL": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "digininja/RSMangler": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "digininja/twofi": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "dmlc/xgboost": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "dolevf/graphw00f": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "dominicbreuker/pspy": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "doyensec/inql": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "dradis/dradisframework-ce": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "elastic/elasticsearch": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "elder-plinius/L1B3RT4S": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "epi052/feroxbuster": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "epinna/weevely3": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "eqtylab/mcp-guardian": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "eteran/edb-debugger": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "ethz-spylab/agentdojo": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "evidentlyai/evidently": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "excalidraw/excalidraw": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "extremecoders-re/pyinstxtractor": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "facebookresearch/faiss": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "fairlearn/fairlearn": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "feast-dev/feast": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "ffuf/ffuf": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "findomain/findomain": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "geelen/mcp-remote": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "ggml-org/llama.cpp": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "git-lfs/git-lfs": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "gnebbia/legion": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "gnuradio/gnuradio": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "google/jax": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "google/timesketch": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "googleapis/python-genai": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "gqrx-sdr/gqrx": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "greenbone/gvm-libs": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "guardrails-ai/guardrails": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "hakluke/hakrawler": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "huggingface/datasets": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "huggingface/evaluate": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "huggingface/peft": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "huggingface/text-generation-inference": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "huggingface/transformers": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "huggingface/trl": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "hugsy/gef": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "iBotPeaches/Apktool": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "invariantlabs-ai/mcp-scan": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "iphelix/pack": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "iterative/dvc": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "jaeles-project/gospider": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "java-decompiler/jd-gui": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "jaygreig86/dmitry": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "jessek/hashdeep": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "jgm/pandoc": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "jgraph/drawio": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "jina-ai/cli": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "junk13/laudanum": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "k3s-io/k3s": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "kailash-os/kailash-packages": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "kedro-org/kedro": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "kedro-org/kedro-plugins": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "keydet89/RegRipper3.0": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "kserve/kserve": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "kubernetes-sigs/kind": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "kubernetes/minikube": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "langchain-ai/langchain": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "langchain-ai/langgraph": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "langfuse/langfuse": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "lanmaster53/recon-ng": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "laramies/theharvester": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "librosa/librosa": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "libyal/libewf": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "lightninglabs/faraday": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "log2timeline/plaso": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "longld/peda": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "maurosoria/dirsearch": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "mermaid-js/mermaid-cli": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "microsoft/LightGBM": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "microsoft/PyRIT": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "microsoft/autogen": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "microsoft/onnxruntime": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "microsoft/vscode": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "milvus-io/milvus": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "mitmproxy/mitmproxy": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "mlflow/mlflow": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "mmaitre314/picklescan": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "modelcontextprotocol/inspector": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "mongodb-js/mongosh": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "mschwager/fierce": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "neovim/neovim": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "netdiscover-scanner/netdiscover": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "neuml/txtai": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "nikitastupin/clairvoyance": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "nmap/nmap": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "notarin/hayabusa": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "numpy/numpy": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "obsidianmd/obsidian-releases": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "olafhartong/sysmon-modular": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "ollama/ollama": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "oobabooga/text-generation-webui": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "open-webui/open-webui": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "openai/openai-python": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "openwall/john": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "openwall/johnny": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "owasp-amass/Amass": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "pandas-dev/pandas": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "peass-ng/PEASS-ng": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "pgvector/pgvector": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "pola-rs/polars": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "postgres/postgres": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "privacytrustlab/ml_privacy_meter": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "projectdiscovery/httpx": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "projectdiscovery/katana": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "projectdiscovery/nuclei": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "projectdiscovery/subfinder": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "promptfoo/promptfoo": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "protectai/llm-guard": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "protectai/modelscan": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "protectai/rebuff": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "psypanda/hashID": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "pulkitb124/mcpoison": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "pwndbg/pwndbg": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "pwndoc-ng/pwndoc-ng": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "pxb1988/dex2jar": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "python-lsp/python-lsp-server": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "python/cpython": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "python/mypy": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "pytorch/audio": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "pytorch/pytorch": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "pytorch/serve": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "pytorch/vision": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "qdrant/qdrant": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "qilingframework/qiling": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "quarto-dev/quarto-cli": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "r3nt0n/bopscrk": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "rabitt/pysox": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "radareorg/iaito": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "radareorg/radare2": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "rapid7/metasploit-framework": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "ray-project/ray": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "redis/redis": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "resurrecting-open-source-projects/dnsmap": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "rizinorg/cutter": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "rizinorg/rizin": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "robertdavidgraham/masscan": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "royhills/arp-scan": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "run-llama/llama_index": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "rust-lang/mdBook": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "s0md3v/Arjun": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "s0md3v/Photon": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "s0md3v/uro": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "scikit-learn/scikit-learn": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "scipy/scipy": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "sherlock-project/sherlock": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "sigstore/cosign": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "sigstore/model-transparency": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "simsong/bulk_extractor": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "skylot/jadx": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "sleuthkit/autopsy": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "sleuthkit/sleuthkit": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "slimm609/checksec": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "smicallef/spiderfoot": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "sqlitebrowser/sqlitebrowser": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "sqlmapproject/sqlmap": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "sullo/nikto": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "tarunkant/Gopherus": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "tensorflow/model-card-toolkit": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "tensorflow/privacy": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "tensorflow/tensorflow": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "tomnomnom/assetfinder": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "traceloop/openllmetry": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "tribhuvanesh/knockoffnets": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "triton-inference-server/server": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "trojai/trojai": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "trufflesecurity/trufflehog": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "typst/typst": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "unicorn-engine/unicorn": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "unipacker/unipacker": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "urbanadventurer/whatweb": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "vladko312/SSTImap": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "vllm-project/vllm": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "volatilityfoundation/volatility3": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "wandb/wandb": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "wapiti-scanner/wapiti": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "weaviate/weaviate": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "whylabs/whylogs": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "xmendez/wfuzz": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    },
+    "zaproxy/zaproxy": {
+      "checked_at": "2026-10-14",
+      "verdict": "ok"
+    }
+  }
+}
