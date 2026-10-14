@@ -165,9 +165,12 @@
               pkgsSurface = self.packages.${system};
               a03Exported = [ "mcp-scan" "mcp-guardian" "mcp-remote" "agent-dojo" ];
               a04Exported = [ "guarddog" "picklescan" ];
-              # 404-upstream probe rows (kailash-os#22 lane record) ride NO
-              # derivation — their arrival is the tripwire, never a default
-              # expectation
+              # NO-RESURRECTION GUARD (os#210 phantom purge, 2026-10-14): the
+              # pre-purge 404-upstream probe rows below were REMOVED from the
+              # manifest (registry: kailash-os#210) — the tripwire keeps
+              # firing if a derivation ever appears for one of them WITHOUT
+              # a verified upstream + a fresh manifest row (the rebuild
+              # contract)
               pendRows = [
                 "mcp-unsafe-deser-probe" "langchain-vuln-hunter"
                 "llm-agent-fuzzer" "mcpoison" "gguf-template-inspector"

@@ -5369,11 +5369,13 @@ tools:
   # distro upstream), agent-dojo → ethz-spylab/agentdojo (MIT; plan
   # spelling kept as the row id), mcpoison keyed to the public PoC
   # (pulkitb124/mcpoison, no licence file → LicenceRef-Unknown).
-  # The unsafe-deser probe, langchain-vuln-hunter, llm-agent-fuzzer and
-  # the poisoned-skill pack are planned surface (kailash-os/<id> per
-  # the C-10 precedent; live upstream probes confirmed no canonical
-  # match). exp-gated: mcp-unsafe-deser-probe, mcpoison,
-  # poisoned-skill-pack (Appendix A safety column).
+  # The pre-purge unsafe-deser probe, langchain-vuln-hunter,
+  # llm-agent-fuzzer and poisoned-skill-pack rows were phantom-upstream —
+  # REMOVED by the os#210 phantom purge (2026-10-14); aspirational names
+  # wait in the phantom-upstream registry (kailash-os#210): a row returns
+  # only with a real, verified upstream. mcpoison keeps its exp-class
+  # routing (real upstream pulkitb124/mcpoison, no licence file →
+  # LicenceRef-Unknown; derivation pending).
 
   - id: mcp-scan
     layer: ATTACK
@@ -5664,15 +5666,14 @@ tools:
     tags: [attack, offensive, mia, privacy, bespoke]
 
   # KA-05.4 (kailash-os#77): A-6 Multi-modal & Physical-AI Attacks —
-  # semantic attacks past the text box; no RF/radio tooling (§3.7). All
-  # five rows planned surface (kailash-os/<id>; live upstream probes
-  # 2026-10-11 confirmed no canonical repo matches the plan's tool
-  # names — the adversarial-patch search surfaced only paper-code with
-  # no licence file, so the pack aggregates and records
-  # LicenseRef-Unknown). Appendix A's "target/exp" split applied per
-  # tool: requires-target where a live VLM/camera pipeline is driven;
-  # exp where execution is a lab experiment (adversarial-clothing,
-  # audio-voice-clone-injector). Ids: T0041 Physical Environment Access
+  # semantic attacks past the text box; no RF/radio tooling (§3.7). The
+  # pre-purge five A-6 rows were phantom-upstream (live upstream
+  # probes 2026-10-11 found no canonical repo matching the plan's tool
+  # names) — REMOVED by the os#210 phantom purge (2026-10-14): the
+  # category is empty and the aspirational names wait in the
+  # phantom-upstream registry (kailash-os#210); a row returns only with
+  # a real, verified upstream. ATLAS ids it mapped for its rebuild:
+  # T0041 Physical Environment Access
   # (TA0000 camera/sensor channel), T0043 Craft Adversarial Data
   # (TA0001 staging, incl. its backdoor-trigger sub-technique base),
   # T0088 Generate Deepfakes (TA0001) — dataset-verified; cross-modal
