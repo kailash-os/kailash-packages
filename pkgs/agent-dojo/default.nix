@@ -1,6 +1,6 @@
 # agent-dojo — ETH's prompt-injection attack/defence evaluation
 # environment for LLM agents (KA-22, kailash-os#22; A-3 agentic/MCP
-# tool-use; plan §9 Phase 5). Shape 1 (§5.3): buildPythonApplication
+# tool-use; spec §8 Phase 5). Shape 1 (§5.3): buildPythonApplication
 # over the committed nvfetcher pin; hatchling backend (pyproject at the
 # pin); doCheck = false (the upstream suite needs live LLM endpoints),
 # pythonImportsCheck ["agentdojo"] as the smoke gate.

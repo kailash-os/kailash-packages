@@ -1,5 +1,5 @@
 # mcp-inspector — modelcontextprotocol/inspector, the visual testing tool
-# for MCP servers (KA-25, kailash-os#25; plan §3.5 O-7 — the A-3 tool on
+# for MCP servers (KA-25, kailash-os#25; spec §2.5 O-7 — the A-3 tool on
 # dogfood duty: the CI loop runs the A-3 scanner suite against the
 # distro's kailash-mcp).
 #

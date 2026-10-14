@@ -1,5 +1,5 @@
 # subfinder — pinned from main (nvfetcher/_sources; KA-02.3 #68).
-# Shape 2 (system build — Go, plan §5.3): buildGoModule over the
+# Shape 2 (system build — Go, spec §4.3): buildGoModule over the
 # committed pin; checkPhase skipped (VM tests cover behaviour), the
 # version check is the smoke gate. Recipe lineage: nixpkgs
 # pkgs/by-name/su/subfinder, rebuilt against the overlay pin (the

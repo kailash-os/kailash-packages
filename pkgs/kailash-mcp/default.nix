@@ -1,5 +1,5 @@
 # kailash-mcp — the distro's own MCP server, generated from the manifest
-# (KA-25, kailash-os#25; plan §3.5 O-7, §11.2).
+# (KA-25, kailash-os#25; spec §2.5 O-7, §11.2).
 #
 # FIRST-PARTY: no upstream pin — the source is this repository's cli/
 # subtree, exactly like pkgs/kailash (KA-14.1/14.2). The server face is
@@ -12,7 +12,7 @@
 # §7.3 drift-killer as the CLI derivation) and the MCP tools never
 # hardcode a row.
 #
-# GRANT POSTURE (KA-25 v1, plan §11.2): the read-only MCP tools
+# GRANT POSTURE (KA-25 v1, spec §9.2): the read-only MCP tools
 # (list/search/info/grant_status) serve any unsupervised agent;
 # kailash_run_tool is deny-by-default and routes through the
 # KAILASH_GRANTS state (the OS side's modules/base/agent-grants.nix

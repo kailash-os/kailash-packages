@@ -1,5 +1,5 @@
 # mcp-scan — Invariant's MCP threat scanner (KA-22, kailash-os#22; A-3
-# agentic/MCP tool-use; plan §9 Phase 5). Shape 1 (§5.3):
+# agentic/MCP tool-use; spec §8 Phase 5). Shape 1 (§5.3):
 # buildPythonApplication over the committed nvfetcher pin; hatchling
 # backend; doCheck = false (the upstream suite needs live-scanner
 # fixtures), pythonImportsCheck ["agent_scan"] + an install-time CLI

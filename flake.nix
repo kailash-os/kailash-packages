@@ -198,7 +198,7 @@
                 touch $out
               '';
           # ---- KA-08.4 torch Shape 4 gate (kailash-os#108) ----------------
-          # Shape 4 (plan §5.3/D6): NON-GPU pytorch default + an explicit
+          # Shape 4 (spec §4.3/D6): NON-GPU pytorch default + an explicit
           # -nvidia variant built only by labelled jobs, never pulled by
           # default. No global cudaSupport flip anywhere (D6) — the
           # variant arg lives inside pkgs/torch-nvidia/default.nix.
@@ -487,7 +487,7 @@
       #     exists, is .nocall-excluded, distinct from the default drv,
       #     and CUDA-carrying — without building it).
       #
-      # Documented fallback (plan §5.3): if the nixpkgs variant fights
+      # Documented fallback (spec §4.3): if the nixpkgs variant fights
       # (build breakage, licence churn), the nixvital/ml-pkgs
       # torch-family overlay is the designated fallback source for the
       # variant line — the flake's optional-inputs seam is where it

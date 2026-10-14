@@ -1,5 +1,5 @@
 # mcp-remote — geelen/mcp-remote, the stdio/HTTP bridge for remote MCP
-# transports (KA-22, kailash-os#22; A-3 agentic/MCP tool-use; plan §9
+# transports (KA-22, kailash-os#22; A-3 agentic/MCP tool-use; spec §8
 # Phase 5). Shape 2 (node toolchain, §5.3): pnpm toolchain build over
 # the committed nvfetcher pin. The manifest row binds this as the
 # reachability / MITM-test bridge; safety "requires-target" (a live MCP

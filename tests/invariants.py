@@ -1,13 +1,13 @@
 """No-resurrection blocklist for manifest/tools.yaml (KA-05.1).
 
-The deliberate exclusions of plan §3.7 are policy, not history: the
+The deliberate exclusions of spec §2.7 are policy, not history: the
 manifest validator refuses tooling from these classes even if a later
 lane lands a row for it. AGENTS.md calls this the "no-resurrection
 guard". This module is the data-driven blocklist constant the validator
 consumes; extend it when the owning census lane amends the canon —
 never add a name without a plan ref.
 
-Excluded classes (plan §3.7 "Deliberate exclusions"):
+Excluded classes (spec §2.7 "Deliberate exclusions"):
 
 - hardware / RF / radio tooling: wifi attack suites, Bluetooth stacks,
   general hardware-hacking, USB/pcap device and RF-transmission tools.
@@ -15,7 +15,7 @@ Excluded classes (plan §3.7 "Deliberate exclusions"):
   (categories.yaml `c-07-signal-sdr`, §4.1) — its tools (gnuradio,
   gqrx, hackrf and the DSP/audio libraries) stay OUTSIDE this list but
   also OUT of tools.yaml under a non-`data` packaging status.
-- paid / commercial licences: per plan §3.7; `kailash doctor <tool>`
+- paid / commercial licences: per spec §2.7; `kailash doctor <tool>`
   is the licensing surface (unbuilt at this rev).
 - unmaintained, cloud-only and duplicate-scope classes are doctrinal
   and NOT enumerated yet: their per-name grounds arrive with the

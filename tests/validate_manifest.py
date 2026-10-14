@@ -8,7 +8,7 @@ KA-04.4 adds the OPS census invariants (set existence for O-1…O-7,
 layers renamed BUILD→OPS per the naming umbrella os#121 + mirror #9,
 OPS=91 enforced exactly when present, per-layer reconcile permissive
 to layers whose rows have not landed) and the in-file exclusions
-ledger (plan §3.7, the no-resurrection guard, as a header comment
+ledger (spec §2.7, the no-resurrection guard, as a header comment
 block in categories.yaml); KA-05.1 adds the tools.yaml invariants
 (§5.2 vocabulary: unique tool ids, unknown category ids rejected in
 category and secondary_categories, bespoke => derivation path,
@@ -27,7 +27,7 @@ Categories invariants (KA-04.1):
   - ids are unique
 
 OPS census invariants (KA-04.4):
-  - the deliberate-exclusions ledger (plan §3.7) is recorded in-file
+  - the deliberate-exclusions ledger (spec §2.7) is recorded in-file
     in the categories.yaml header, naming every excluded class
   - every OPS category entry matches the O-1…O-7 census set
 
@@ -86,7 +86,7 @@ ATLAS_TACTIC_BY_ID = {k: True for k in ATLAS_TACTICS}
 # §3.6 DEFENCE census — the category set KA-04.3 owns. The
 # census-existence invariant fails the gate while the DEFENCE layer is
 # still missing from categories.yaml (KA-04.3's RED), independent of
-# per-entry checks. Slug spellings per the plan §4.2 module tree
+# per-entry checks. Slug spellings per the spec §3.2 module tree
 # (d-01-runtime-defence … d-07-standards-verification).
 DEFENCE_CENSUS_IDS = {
     "d-01-runtime-defence",
@@ -112,7 +112,7 @@ OPS_CENSUS_IDS = {
 }
 
 # KA-04.4 exclusions-ledger invariant: the deliberate-exclusions block
-# (plan §3.7 — the no-resurrection guard, mirrored by the KA-05.1
+# (spec §2.7 — the no-resurrection guard, mirrored by the KA-05.1
 # purge-resurrection guard upstream) must be present in the
 # categories.yaml header (schema-stable comment) and must name every
 # excluded class, each with its §3.7 line reference.
@@ -141,7 +141,7 @@ ATLAS_TOOL_PATTERN = _re.compile(ATLAS_TOOL_PATTERN_RE)
 # records the class; the OS side wires the gate.
 SAFETY_LEVELS = {"safe", "requires-target", "exp"}
 
-# KA-24 packaging-reality gate (plan §5.3, os#24): every DEFENCE row
+# KA-24 packaging-reality gate (spec §4.3, os#24): every DEFENCE row
 # claiming `native` names its pinned-nixpkgs attr path here — probed
 # per pin with nix eval against the flake's own locked inputs, never
 # assumed id==attr. Scope is the DEFENCE layer (the KA-24 lane's
@@ -175,7 +175,7 @@ NATIVE_BINDINGS = {
 
 
 def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) -> list:
-    """tools.yaml invariants (KA-05.1, plan §5.2 vocabulary).
+    """tools.yaml invariants (KA-05.1, spec §4.2 vocabulary).
 
     Evaluates the invariant set over a parsed manifest document that
     carries a 'tools' list; every category id referenced by a tool
@@ -327,7 +327,7 @@ def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) ->
             )
             return findings
 
-        # KA-24 packaging-reality gate (plan §5.3, os#24): a DEFENCE row
+        # KA-24 packaging-reality gate (spec §4.3, os#24): a DEFENCE row
         # claims `native` ONLY when NATIVE_BINDINGS carries its probed
         # attr path. Unprobed id==attr guesses are refused exactly like
         # any other invented binding — the table is the single home of
@@ -561,13 +561,13 @@ def main(argv=None) -> int:
         return fail(defence_fail)
 
     # KA-04.4 exclusions ledger: the header must carry the in-file
-    # ledger block (plan §3.7, the no-resurrection guard) and name
+    # ledger block (spec §2.7, the no-resurrection guard) and name
     # every excluded class.
     with open(cats_path) as f:
         cats_text = f.read().lower()
     if LEDGER_MARKER.lower() not in cats_text:
         return fail(
-            "exclusions ledger (plan §3.7, KA-04.4) missing from "
+            "exclusions ledger (spec §2.7, KA-04.4) missing from "
             "categories.yaml header"
         )
     for cls in LEDGER_CLASSES:

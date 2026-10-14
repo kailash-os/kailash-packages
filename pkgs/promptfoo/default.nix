@@ -1,5 +1,5 @@
 # promptfoo — promptfoo/promptfoo, the LLM eval/red-team CLI (KA-11.2 #83).
-# Node toolchain (Shape 2-adjacent: buildNpmPackage, plan §5.1 population
+# Node toolchain (Shape 2-adjacent: buildNpmPackage, spec §4.1 population
 # 2 stale-native override decision → bespoke per the freshness verdict
 # below), pinned via nvfetcher.
 #

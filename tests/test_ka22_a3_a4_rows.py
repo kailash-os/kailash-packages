@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tests for the KA-22 A-3/A-4 row surface (kailash-os#22, plan §9 Phase 5).
+"""Tests for the KA-22 A-3/A-4 row surface (kailash-os#22, spec §8 Phase 5).
 
 Data-driven row assertions over the parsed manifest — the counts and
 membership this lane's categories must present. Nothing hardcoded on
