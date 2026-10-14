@@ -9,7 +9,7 @@ shape, re-based on the real rows that remain:
 
   a-03 = 5 rows: mcp-scan, mcp-guardian, mcp-remote, mcpoison,
          agent-dojo — all bespoke, derivations on disk; no data rows
-         after poisoned-skill-pack (phantom upstream) was removed
+         after the phantom-upstream data-pack row was removed
   a-04 = 3 rows: guarddog, picklescan, modelscan — all bespoke with
          derivations on disk
   ATTACK primaries = 23 post-purge (the 58 basis counted the removed
@@ -18,7 +18,7 @@ shape, re-based on the real rows that remain:
   pinned, unchanged
 
 Derivation-truth invariant (was: the 404-probe rows stay drv-free per
-the llm-red-team-col precedent, kailash-os#104; superseded by the
+the pre-purge keep-rows precedent (kailash-os#104); superseded by the
 os#210 decision — planned/unbuilt tools ship no manifest row at all,
 so those probe rows no longer exist here): every bespoke a-03/a-04
 row has a real derivation on disk. An upstream that does not exist is
@@ -80,7 +80,7 @@ class Ka22A3A4RowSurface(unittest.TestCase):
                 if (t.get("packaging") or {}).get("status") == "data"]
         self.assertEqual(data, [],
                          "a-03 data rows must be [] post-os#210 (the "
-                         "poisoned-skill-pack row was phantom-upstream "
+                         "pre-purge data row was phantom-upstream "
                          "and removed); got %s" % data)
 
     def tests_a03_installable_set(self):

@@ -143,22 +143,20 @@ src.git = "https://github.com/mmaitre314/picklescan"
 src.branch = "main"
 fetch.git = "https://github.com/mmaitre314/picklescan"
 
-# POST-PURGE STATE (os#210 phantom purge, 2026-10-14): the pre-purge
-# A-3/A-4 manifest rows (langchain-vuln-hunter, llm-agent-fuzzer,
-# mcp-unsafe-deser-probe, and the kailash-os/* bespoke probes:
-# gguf-template-inspector, safetensors-checker, hf-repo-inspector,
-# namespace-reuse-check, torch-load-poc; plus poisoned-skill-pack) had
+# POST-PURGE STATE (os#210 phantom purge, 2026-10-14): nine pre-purge
+# A-3/A-4 manifest rows (probe/scanner/fuzzer bespoke rows, four
+# kailash-os/* inspector probes, a PoC row, and a data pack) had
 # NO upstream (each verified HTTP 404 via the GitHub API, 2026-10-12) —
 # by the 2026-10-14 manifest contract (a manifest row names a REAL,
 # reachable upstream only; it supersedes the kailash-os#104 keep-rows
 # precedent for the manifest surface) ALL those rows were REMOVED from
-# the manifest. Aspirational names wait in the phantom-upstream registry
+# the manifest. The names wait in the phantom-upstream registry
 # (kailash-os#210): a tool becomes a nvfetcher pin candidate only when a
 # REAL upstream repo exists (build the tool first, then file the row).
 # No pins for them here — nvfetcher config is contract, and a pin to a
 # non-existent repo breaks the prefetch.
 
-# There is no poisoned-skill-pack data pack here (the row was REMOVED
-# per os#210; when such a pack is rebuilt through the registry, the
+# There is no data-pack row of that family here (removed per os#210;
+# when such a pack is rebuilt through the registry, the
 # data-pack cadence rule keeps corpora off the auto-updater — any re-pin
 # would be an explicit human review).

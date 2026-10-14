@@ -5369,8 +5369,8 @@ tools:
   # distro upstream), agent-dojo → ethz-spylab/agentdojo (MIT; plan
   # spelling kept as the row id), mcpoison keyed to the public PoC
   # (pulkitb124/mcpoison, no licence file → LicenceRef-Unknown).
-  # The pre-purge unsafe-deser probe, langchain-vuln-hunter,
-  # llm-agent-fuzzer and poisoned-skill-pack rows were phantom-upstream —
+  # The pre-purge probe/scanner/fuzzer rows and the data row were
+  # phantom-upstream —
   # REMOVED by the os#210 phantom purge (2026-10-14); aspirational names
   # wait in the phantom-upstream registry (kailash-os#210): a row returns
   # only with a real, verified upstream. mcpoison keeps its exp-class
