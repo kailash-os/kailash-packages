@@ -61,7 +61,7 @@ def cmd_list(args):
 
     if args.layer and args.layer not in {c["layer"] for c in cats}:
         return _fail(
-            "unknown layer '%s' (categories.yaml defines: %s)"
+            "unknown layer '%s' (categories.yaml carries: %s)"
             % (args.layer, ", ".join(sorted({c["layer"] for c in cats})))
         )
 
@@ -190,9 +190,9 @@ def cmd_profile(args):
         if manifest.profiles_path() is None or not os.environ.get(
                 "KAILASH_PROFILES"):
             return _fail(
-                "no profiles found: KAILASH_PROFILES is not set or names an "
+                "no profiles: KAILASH_PROFILES is not set or names an "
                 "absent file, and no profiles/profiles.json exists beside "
-                "the package (the OS-side bake generates it; see ko#115)",
+                "the package",
                 code=1)
         return _fail("no results", code=1)
 
@@ -263,7 +263,7 @@ def cmd_validate(args):
     tests_dir = os.path.join(here, os.pardir, os.pardir, "tests")
     if not os.path.isfile(os.path.join(tests_dir, "validate_manifest.py")):
         return _fail(
-            "tests/validate_manifest.py not found beside the package "
+            "tests/validate_manifest.py is not beside the package "
             "(installed wheels carry cli/ only; the validator ships with "
             "the repo tree)",
             code=2,
@@ -295,59 +295,60 @@ def cmd_validate(args):
 def build_parser():
     p = argparse.ArgumentParser(
         prog=PROG,
-        description="Kailash OS manifest CLI (KA-14.1; spec §6). Commands "
-                    "read the manifest; the nix-wrapper commands land with "
-                    "later KA-14 children.")
+        description="Kailash OS manifest CLI. Commands read the manifest "
+                    "files. The nix-wrapper commands are future work.")
     p.add_argument(
         "--json", action="store_true", default=False,
-        help="emit machine-readable JSON (§7.4 posture)")
+        help="write machine-readable JSON")
     sub = p.add_subparsers(dest="command", required=True)
 
     lst = sub.add_parser(
         "list",
-        help="category tree (tool rows once the census lands)")
+        help="list the manifest tool rows (id, layer, category, status)")
     # default=argparse.SUPPRESS: 3.9-3.11 subparsers parse into a fresh
     # namespace and copy every attribute back to the parent's — a
     # non-SUPPRESS default would clobber the top-level `kailash --json
     # list` parse with None.
     lst.add_argument("--json", action=_JsonParent, nargs=0,
                      default=argparse.SUPPRESS,
-                     help="emit machine-readable JSON (§7.4 posture)")
-    lst.add_argument("--layer", help="filter by layer (categories.yaml ids: "
-                                     "CLASSIC|ATTACK|DEFENCE|BUILD)")
-    lst.add_argument("--category", help="filter by category id")
+                     help="write machine-readable JSON")
+    lst.add_argument("--layer", help="keep rows of one layer "
+                                     "(categories.yaml carries: "
+                                     "CLASSIC|ATTACK|DEFENCE|OPS)")
+    lst.add_argument("--category", help="keep rows of one category id")
     lst.add_argument(
         "--status", choices=manifest.STATUSES,
-        help="filter on tool packaging.status (§5.2)")
+        help="keep rows with one packaging.status value")
     lst.set_defaults(func=cmd_list)
 
     sea = sub.add_parser("search",
-                         help="search over id, name, description, tags")
+                         help="search over id, name, description, tags, "
+                              "and the secondary category ids")
     sea.add_argument("query")
     sea.add_argument("--json", action=_JsonParent, nargs=0,
                      default=argparse.SUPPRESS,
-                     help="emit machine-readable JSON (§7.4 posture)")
+                     help="write machine-readable JSON")
     sea.set_defaults(func=cmd_search)
 
     inf = sub.add_parser("info",
-                         help="print one tool's manifest record as JSON")
+                         help="show one tool's manifest record as JSON")
     inf.add_argument("tool_id")
     inf.add_argument("--json", action=_JsonParent, nargs=0,
                      default=argparse.SUPPRESS,
-                     help="emit machine-readable JSON (§7.4 posture)")
+                     help="write machine-readable JSON")
     inf.set_defaults(func=cmd_info)
 
     prof = sub.add_parser(
         "profile",
-        help="profile subcommands (KA-17.2 stub: list)")
+        help="profile subcommands (only list exists)")
     profsub = prof.add_subparsers(dest="profile_command", required=True)
     plist = profsub.add_parser(
         "list",
-        help="enumerate the OS profiles from the baked profiles.json "
-             "(KAILASH_PROFILES file; repo-tree sample as fallback)")
+        help="read the OS profiles from the baked profiles.json file "
+             "(KAILASH_PROFILES bake; repo-tree sample as fallback)")
     plist.add_argument("--json", action=_JsonParent, nargs=0,
                        default=argparse.SUPPRESS,
-                       help="emit machine-readable JSON (§7.4 posture)")
+                       help="write machine-readable JSON")
     plist.set_defaults(func=cmd_profile)
     prof.set_defaults(func=None)
 
@@ -355,7 +356,7 @@ def build_parser():
     mansub = man.add_subparsers(dest="manifest_command", required=True)
     val = mansub.add_parser(
         "validate",
-        help="run the repo manifest gate in-process (KA-14.3): exit 0 on a "
+        help="run the repo manifest gate in-process: exit 0 on a "
              "well-formed manifest, non-zero on gate failure")
     val.set_defaults(func=cmd_validate)
     chk = mansub.add_parser("check", help="loader self-inventory as JSON "
