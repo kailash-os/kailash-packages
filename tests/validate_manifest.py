@@ -240,7 +240,8 @@ def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) ->
         return findings
     if not tools and require_nonempty:
         findings.append(
-            "manifest-wellformed: FAIL: tools.yaml: no entries (KA-05 seeds rows)"
+            "manifest-wellformed: FAIL: tools.yaml: no entries "
+            "(KA-05 writes the seed rows)"
         )
         return findings
 
@@ -291,10 +292,10 @@ def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) ->
             if packaging_status != "native":
                 findings.append(
                     "manifest-wellformed: FAIL: %s: no source block on a %s "
-                    "row — a claimed build/data pack with no origin is the "
-                    "phantom-row signature (os#210): native rows pin via "
-                    "nixpkgs (track 1), everything else names a verified "
-                    "upstream (track 2)" % (tid, packaging_status)
+                    "row. A claimed build/data pack with no origin is the "
+                    "phantom-row signature (os#210). Native rows carry the "
+                    "nixpkgs pin (track 1). Everything else carries a "
+                    "verified upstream (track 2)" % (tid, packaging_status)
                 )
                 return findings
         elif "github.com" in upstream:
@@ -304,7 +305,7 @@ def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) ->
                 findings.append(
                     "manifest-wellformed: FAIL: %s: upstream %r is not in the "
                     "verified cache (tests/upstream_verified.json) or its "
-                    "verdict is not ok — the upstream does not exist (phantom "
+                    "verdict is not ok. The upstream is absent (phantom "
                     "row, os#210)" % (tid, pair)
                 )
                 return findings
@@ -373,7 +374,7 @@ def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) ->
             if s == category:
                 findings.append(
                     "manifest-wellformed: FAIL: %s: single primary category: %r "
-                    "repeated in secondary_categories" % (tid, s)
+                    "is also in secondary_categories" % (tid, s)
                 )
                 return findings
             if s not in cat_ids:
@@ -406,8 +407,7 @@ def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) ->
             findings.append(
                 "manifest-wellformed: FAIL: %s: native row without a "
                 "NATIVE_BINDINGS entry (KA-24 packaging-reality gate: "
-                "the binding must be probed and recorded, never assumed "
-                "id==attr)" % tid
+                "probes record the binding, never an id==attr guess)" % tid
             )
             return findings
 
@@ -434,8 +434,8 @@ def run_tools_checks(doc: dict, require_nonempty: bool = False, cat_ids=None) ->
         level = (t.get("safety") or {}).get("level")
         if level not in SAFETY_LEVELS:
             findings.append(
-                "manifest-wellformed: FAIL: %s: invalid safety.level %r (expected "
-                "one of: %s)" % (tid, level, ", ".join(sorted(SAFETY_LEVELS)))
+                "manifest-wellformed: FAIL: %s: invalid safety.level %r "
+                "(one of: %s)" % (tid, level, ", ".join(sorted(SAFETY_LEVELS)))
             )
             return findings
 
@@ -543,13 +543,13 @@ def main(argv=None) -> int:
         if "--manifest-dir" in args:
             idx = args.index("--manifest-dir")
             if idx + 1 >= len(args) or not args[idx + 1]:
-                print("--manifest-dir requires a directory argument")
+                print("set a directory argument after --manifest-dir")
                 return 1
             manifest_dir = args[idx + 1]
 
     cats_path = os.path.join(manifest_dir, "categories.yaml")
     if not os.path.exists(cats_path):
-        return fail("categories.yaml missing (KA-04.1 owns it)")
+        return fail("categories.yaml missing (the KA-04.1 invariant)")
     with open(cats_path) as f:
         doc = yaml.safe_load(f)
 
@@ -681,7 +681,7 @@ def main(argv=None) -> int:
     # handover constraint: the empty stub is well-formed for now).
     tools_path = os.path.join(manifest_dir, "tools.yaml")
     if not os.path.exists(tools_path):
-        return fail("tools.yaml missing (KA-02.2 owns it)")
+        return fail("tools.yaml missing (the KA-02.2 invariant)")
     with open(tools_path) as f:
         tdoc = yaml.safe_load(f) or {}
     for tool_fail in run_tools_checks(tdoc, cat_ids=seen):
