@@ -2,6 +2,8 @@
 PR title: Conventional Commits form carrying the task id on roadmap slices,
 e.g. feat(pkgs): KA-12.1 — ART: pin + Shape-1 derivation
 (A CI gate checks the title form on every PR.) One logical change per PR.
+
+Writing: the new prose follows ASD-STE100. One thought per sentence, at or under 20 words, active voice, no idioms.
 -->
 ## What
 
@@ -19,3 +21,4 @@ Closes #__
 
 - [ ] `nix flake check --all-systems` green
 - [ ] relevant gate/manifest evidence linked
+- [ ] The new prose follows ASD-STE100: one thought per sentence, at or under 20 words, active voice, no idioms.
