@@ -47,8 +47,8 @@ category and tool facts live here. Never duplicate them into the OS modules,
 READMEs or site copy.
 
 The census is [the spec's §2.6 post-purge table](https://github.com/kailash-os/kailash-os/blob/master/docs/spec.md#26-the-full-category-table-post-purge-census).
-It records CLASSIC 141 tool slots, ATTACK about 59, DEFENCE about 46 and OPS
-about 91. The C-7 SDR pack is recorded as `opt-in: data-pack`. Default
+The census figures live in that spec table. Read the figures there; never
+restate them. The C-7 SDR pack is recorded as `opt-in: data-pack`. Default
 profiles and images never carry it.
 
 The [spec
